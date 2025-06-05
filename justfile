@@ -5,3 +5,6 @@ build:
 
 format:
   cargo fmt --all
+
+lint:
+  cargo clippy --workspace --all-features
