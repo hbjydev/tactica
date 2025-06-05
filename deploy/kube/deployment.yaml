@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tactica-auth
+  labels:
+    app.kubernetes.io/name: tactica
+    tactica.gg/service: auth
+spec:
+  template:
+    spec:
+      containers:
+        - name: auth
+          image: ghcr.io/hbjydev/tactica:main
+          imagePullPolicy: IfNotExists
+          command:
+            - tactica
+            - auth
+          ports:
+            - name: grpc
+              containerPort: 50051
+              hostPort: 50051
+              protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tactica-gateway
+  labels:
+    app.kubernetes.io/name: tactica
+    tactica.gg/service: gateway
+spec:
+  template:
+    spec:
+      containers:
+        - name: auth
+          image: ghcr.io/hbjydev/tactica:main
+          imagePullPolicy: IfNotExists
+          command:
+            - tactica
+            - gateway
+            - --auth-addr=http://tactica-auth:50051
+          ports:
+            - name: grpc
+              containerPort: 50051
+              hostPort: 50051
+              protocol: TCP
