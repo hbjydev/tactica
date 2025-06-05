@@ -4,6 +4,7 @@ name: Docker
 on:
   push:
     branches: [main]
+  pull_request:
 
 jobs:
   docker:
@@ -35,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           sbom: true
-          push: true
+          push: ${{ github.event_name == "push" }}
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           file: infra/docker/Dockerfile.${{ matrix.service }}
