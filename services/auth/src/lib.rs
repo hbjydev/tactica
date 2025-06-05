@@ -1,7 +1,8 @@
 use tactica_proto::v1::auth::{auth_service_server::{AuthService, AuthServiceServer}, LoginRequest, LoginResponse};
+use tactica_result::{create_error, Success};
 use tonic::{async_trait, transport::Server, Request, Response, Result};
 
-struct AuthServiceImpl {}
+pub struct AuthServiceImpl {}
 
 #[async_trait]
 impl AuthService for AuthServiceImpl {
@@ -13,16 +14,23 @@ impl AuthService for AuthServiceImpl {
     }
 }
 
-pub async fn start(bind_addr: String) {
-    tactica_telemetry::setup_tracing("auth").expect("failed to set up tracing");
-    let addr = bind_addr.parse().expect("invalid bind address");
+pub async fn start(bind_addr: String) -> Success {
+    let addr = bind_addr.parse()
+        .map_err(|e| {
+            tracing::error!(err = ?e, "failed to bind");
+            create_error!(InternalError)
+        })?;
 
     let auth_svc = AuthServiceImpl {};
 
     tracing::info!(?bind_addr, "server starting");
+
     Server::builder()
         .add_service(AuthServiceServer::new(auth_svc))
         .serve(addr)
         .await
-        .expect("failed to serve");
+        .map_err(|e| {
+            tracing::error!(err = ?e, "failed to serve");
+            create_error!(InternalError)
+        })
 }

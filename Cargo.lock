@@ -964,9 +964,12 @@ name = "tactica"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "tactica-result",
  "tactica-svc-auth",
  "tactica-svc-gateway",
+ "tactica-telemetry",
  "tokio",
+ "tracing",
 ]
 
 [[package]]
