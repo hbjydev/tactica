@@ -3,12 +3,12 @@ package tactica.v1.auth;
 
 message LoginRequest {
   string username = 1;
-  string password = 1;
+  string password = 2;
 }
 
 message LoginResponse {
   string access_token = 1;
-  string request_token = 1;
+  string request_token = 2;
 }
 
 service AuthService {

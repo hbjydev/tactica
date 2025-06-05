@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["lib/*", "services/*"]
+members = [ "cli","lib/*", "services/*"]
 
 [workspace.dependencies]
 tactica-proto = { path = "./lib/proto" }
@@ -10,6 +10,7 @@ tactica-telemetry = { path = "./lib/telemetry" }
 tokio = "1.45.1"
 serde = "1.0.219"
 tracing = "0.1.41"
+async-trait = "0.1.88"
 
 axum = "0.8.4"
 http = "1.3.1"

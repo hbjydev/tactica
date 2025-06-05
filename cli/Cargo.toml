@@ -1,0 +1,10 @@
+[package]
+name = "tactica"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.39", features = ["derive"] }
+tactica-svc-auth = { path = "../services/auth" }
+
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }

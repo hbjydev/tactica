@@ -9,5 +9,6 @@ tactica-result = { workspace = true, features = ["axum"] }
 tactica-proto = { workspace = true, features = ["auth-server"] }
 
 tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+async-trait = { workspace = true }
 tracing = { workspace = true }
-axum = { workspace = true }
+tonic = { workspace = true }
