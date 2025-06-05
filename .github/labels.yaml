@@ -1,0 +1,14 @@
+---
+# Areas
+- name: service/auth
+  color: "7057ff"
+- name: service/gateway
+  color: "7057ff"
+
+# Semantic Types
+- name: type/bug
+  color: "d73a4a"
+- name: type/feature
+  color: "0075ca"
+- name: type/docs
+  color: "d876e3"
