@@ -43,14 +43,26 @@ jobs:
       - name: Cargo build (release)
         run: cargo build --bin tactica --release
 
-      - name: Upload binaries
+      - name: Upload binaries (debug)
+        id: upload-debug
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: tactica-debug-linux-amd64
           path: target/debug/tactica
 
-      - name: Upload binaries
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: tactica-debug-linux-amd64
+          subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
+
+      - name: Upload binaries (release)
+        id: upload-release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: tactica-release-linux-amd64
           path: target/release/tactica
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: tactica-release-linux-amd64
+          subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
