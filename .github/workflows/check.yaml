@@ -20,7 +20,7 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Run tests
+      - name: Run Clippy
         run: just lint
 
   format:
@@ -36,5 +36,5 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Run tests
+      - name: Run rustfmt
         run: just format-check
