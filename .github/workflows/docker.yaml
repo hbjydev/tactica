@@ -10,8 +10,10 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
       packages: write
+      attestations: write
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository }}
     steps:
