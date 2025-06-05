@@ -6,5 +6,8 @@ build:
 format:
   cargo fmt --all
 
+format-check:
+  cargo fmt --check --all
+
 lint:
   cargo clippy --workspace --all-features
