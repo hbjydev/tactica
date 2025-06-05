@@ -50,7 +50,7 @@ jobs:
           name: tactica-debug-linux-amd64
           path: target/debug/tactica
 
-      - uses: actions/attest-build-provenance@v2
+      - uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2
         with:
           subject-name: tactica-debug-linux-amd64
           subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
@@ -62,7 +62,7 @@ jobs:
           name: tactica-release-linux-amd64
           path: target/release/tactica
 
-      - uses: actions/attest-build-provenance@v2
+      - uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2
         with:
           subject-name: tactica-release-linux-amd64
           subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
