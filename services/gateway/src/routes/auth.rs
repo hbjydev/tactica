@@ -1,14 +1,13 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, routing::post, Json, Router};
+use axum::{Json, Router, extract::State, http::StatusCode, response::IntoResponse, routing::post};
 use serde::{Deserialize, Serialize};
-use tactica_proto::v1::auth::{auth_service_client::AuthServiceClient, LoginRequest};
+use tactica_proto::v1::auth::{LoginRequest, auth_service_client::AuthServiceClient};
+use tactica_result::{Result, create_error};
 use tonic::transport::Channel;
-use tactica_result::{create_error, Result};
 
 use crate::state::AppState;
 
 pub fn router() -> Router<AppState> {
-    Router::new()
-        .route("/login", post(login))
+    Router::new().route("/login", post(login))
 }
 
 #[derive(Deserialize)]
@@ -40,8 +39,11 @@ async fn login(
 
     let body = resp.get_ref();
 
-    Ok((StatusCode::OK, Json(GwLoginResponse {
-        access_token: body.access_token.clone(),
-        refresh_token: body.request_token.clone(),
-    })))
+    Ok((
+        StatusCode::OK,
+        Json(GwLoginResponse {
+            access_token: body.access_token.clone(),
+            refresh_token: body.request_token.clone(),
+        }),
+    ))
 }

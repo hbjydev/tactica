@@ -1,6 +1,9 @@
-use tactica_proto::v1::auth::{auth_service_server::{AuthService, AuthServiceServer}, LoginRequest, LoginResponse};
-use tactica_result::{create_error, Success};
-use tonic::{async_trait, transport::Server, Request, Response, Result};
+use tactica_proto::v1::auth::{
+    LoginRequest, LoginResponse,
+    auth_service_server::{AuthService, AuthServiceServer},
+};
+use tactica_result::{Success, create_error};
+use tonic::{Request, Response, Result, async_trait, transport::Server};
 
 pub struct AuthServiceImpl {}
 
@@ -15,11 +18,10 @@ impl AuthService for AuthServiceImpl {
 }
 
 pub async fn start(bind_addr: String) -> Success {
-    let addr = bind_addr.parse()
-        .map_err(|e| {
-            tracing::error!(err = ?e, "failed to bind");
-            create_error!(InternalError)
-        })?;
+    let addr = bind_addr.parse().map_err(|e| {
+        tracing::error!(err = ?e, "failed to bind");
+        create_error!(InternalError)
+    })?;
 
     let auth_svc = AuthServiceImpl {};
 

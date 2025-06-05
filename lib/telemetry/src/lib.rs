@@ -23,9 +23,9 @@ pub fn setup_tracing(level: Level) -> tactica_result::Success {
     //let meter_provider = init_meter(&resource)?;
 
     let fmt_layer = tracing_subscriber::fmt::layer();
-    let env_filter = tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or(level.as_str().into());
-    
+    let env_filter =
+        tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or(level.as_str().into());
+
     tracing_subscriber::registry()
         .with(env_filter)
         .with(fmt_layer)

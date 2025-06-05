@@ -1,6 +1,6 @@
 use std::process::exit;
 
-use clap::{Subcommand, Parser};
+use clap::{Parser, Subcommand};
 use tactica_result::Success;
 use tracing::Level;
 
@@ -42,10 +42,7 @@ pub struct Cli {
 pub async fn run() -> Success {
     let cli = Cli::parse();
 
-    let Cli {
-        command,
-        log_level,
-    } = cli;
+    let Cli { command, log_level } = cli;
 
     tactica_telemetry::setup_tracing(log_level)?;
 
@@ -54,11 +51,11 @@ pub async fn run() -> Success {
             match service.as_str() {
                 "auth" => {
                     tactica_svc_auth::start(bind_addr).await?;
-                },
+                }
 
                 "gateway" => {
                     tactica_svc_gateway::start(bind_addr).await?;
-                },
+                }
 
                 _ => {
                     tracing::error!(service, "invalid service provided");
@@ -67,6 +64,6 @@ pub async fn run() -> Success {
             }
 
             Ok(())
-        },
+        }
     }
 }
