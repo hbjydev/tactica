@@ -57,7 +57,7 @@ jobs:
       - uses: actions/attest-build-provenance@v2
         with:
           subject-name: tactica-debug-linux-amd64
-          subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
+          subject-digest: sha256:${{ steps.upload-debug.outputs.artifact-digest }}
 
       - name: Upload binaries (release)
         id: upload-release
@@ -69,4 +69,4 @@ jobs:
       - uses: actions/attest-build-provenance@v2
         with:
           subject-name: tactica-release-linux-amd64
-          subject-digest: sha256:${{ steps.upload.outputs.artifact-digest }}
+          subject-digest: sha256:${{ steps.upload-release.outputs.artifact-digest }}
