@@ -2,6 +2,6 @@
 
 [tools]
 rust = "1.87.0"
-
+protoc = "31.1"
 "aqua:helm/helm" = "3.18.2"
 "aqua:casey/just" = "1.40.0"
