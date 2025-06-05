@@ -24,12 +24,8 @@ jobs:
       - name: Run tests
         run: cargo test
 
-  build-debug:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        SERVICE: [auth]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -43,37 +39,19 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cargo build
-        run: cargo build --bin tactica-svc-${{ matrix.SERVICE }}
+        run: cargo build --bin tactica
+
+      - name: Cargo build (release)
+        run: cargo build --bin tactica --release
 
       - name: Upload binaries
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: ${{ matrix.SERVICE }}-debug-linux-amd64
-          path: target/debug/tactica-svc-${{ matrix.SERVICE }}
-
-  build-release:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        SERVICE: [auth]
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - name: Cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Cargo build
-        run: cargo build --bin tactica-svc-${{ matrix.SERVICE }} --release
+          name: tactica-debug-linux-amd64
+          path: target/debug/tactica
 
       - name: Upload binaries
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: ${{ matrix.SERVICE }}-linux-amd64
-          path: target/release/tactica-svc-${{ matrix.SERVICE }}
+          name: tactica-release-linux-amd64
+          path: target/release/tactica

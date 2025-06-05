@@ -9,10 +9,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        service: [auth]
     permissions:
       contents: read
       packages: write
@@ -44,4 +40,3 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           context: .
           tags: ${{ steps.meta.outputs.tags }}
-          file: infra/docker/Dockerfile.${{ matrix.service }}
