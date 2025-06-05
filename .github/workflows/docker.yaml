@@ -13,6 +13,9 @@ jobs:
       fail-fast: true
       matrix:
         service: [auth]
+    permissions:
+      contents: read
+      packages: write
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository }}/${{ matrix.service }}
     steps:
