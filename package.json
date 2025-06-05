@@ -1,0 +1,5 @@
+{
+  "name": "@tactica/workspace",
+  "private": true,
+  "workspaces": ["services/*", "lib/*"]
+}

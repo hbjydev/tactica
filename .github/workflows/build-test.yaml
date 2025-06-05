@@ -1,0 +1,46 @@
+---
+name: Check & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tsc:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - services/auth
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies (workspace-aware)
+        run: bun install --frozen-lockfile
+
+      - name: Run all tests
+        working-directory: ${{ matrix.package }}
+        run: bun run tsc
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - services/auth
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies (workspace-aware)
+        run: bun install --frozen-lockfile
+
+      - name: Run all tests
+        working-directory: ${{ matrix.package }}
+        run: bun test
