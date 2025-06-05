@@ -1,0 +1,44 @@
+---
+{{- if .Values.auth.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "helm.fullname" . }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+  {{- with .Values.auth.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.auth.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.auth.ingress.tls }}
+  tls:
+    {{- range .Values.auth.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.auth.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ include "helm.fullname" $ }}
+                port:
+                  number: {{ $.Values.auth.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}
