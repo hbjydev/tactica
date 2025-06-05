@@ -1,5 +1,4 @@
-build-docker service:
+build:
   docker build \
-    --file infra/docker/Dockerfile.{{ service }} \
-    --tag ghcr.io/hbjydev/tactica/auth:latest \
+    --tag ghcr.io/hbjydev/tactica:latest \
     .
