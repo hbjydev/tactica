@@ -2,9 +2,9 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: "Bun version",
-      groupName: "Bun",
-      matchPackageNames: ["/bun/"],
+      description: "Rust version",
+      groupName: "Rust",
+      matchPackageNames: ["/rust/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },

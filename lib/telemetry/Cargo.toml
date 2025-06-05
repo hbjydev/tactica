@@ -1,0 +1,9 @@
+[package]
+name = "tactica-telemetry"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tactica-result = { workspace = true }
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+tracing = { workspace = true }

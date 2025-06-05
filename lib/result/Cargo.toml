@@ -1,0 +1,14 @@
+[package]
+name = "tactica-result"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+axum = ["dep:axum", "dep:http", "serde"]
+serde = ["dep:serde"]
+default = []
+
+[dependencies]
+axum = { workspace = true, optional = true }
+http = { workspace = true, optional = true }
+serde = { workspace = true, optional = true, features = ["derive"] }

@@ -1,0 +1,12 @@
+[package]
+name = "tactica-svc-auth"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tactica-telemetry = { workspace = true }
+tactica-result = { workspace = true, features = ["axum"] }
+
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+tracing = { workspace = true }
+axum = { workspace = true }

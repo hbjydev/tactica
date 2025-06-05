@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = ["lib/*", "services/*"]
+
+[workspace.dependencies]
+tactica-result = { path = "./lib/result" }
+tactica-telemetry = { path = "./lib/telemetry" }
+
+tokio = "1.45.1"
+serde = "1.0.219"
+tracing = "0.1.41"
+
+axum = "0.8.4"
+http = "1.3.1"

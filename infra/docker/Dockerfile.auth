@@ -1,26 +1,8 @@
-FROM oven/bun:1.2.15 AS base
-
+FROM rust:1.85.0 AS builder
 WORKDIR /app
-
-# Copy package manifests
-COPY package.json bun.lock ./
-COPY services/auth/package.json ./services/auth/
-
-# Install all deps with workspace awareness
-RUN bun install --frozen-lockfile
-
-# Copy source
 COPY . .
+RUN cargo build --release
 
-FROM base AS build
-
-RUN bun build services/auth \
-  --compile \
-  --outfile /build/auth
-
-FROM alpine:3.22 AS run
-
-RUN apk add --no-cache ca-certificates
-COPY --from=build /build/auth /usr/local/bin/tactica-auth
-
-ENTRYPOINT [ "/usr/local/bin/tactica-auth" ]
+FROM gcr.io/distroless/cc AS auth
+COPY --from=builder /app/target/release/tactica-svc-auth /usr/local/bin/tactica-svc-auth
+ENTRYPOINT ["/usr/local/bin/tactica-svc-auth"]
