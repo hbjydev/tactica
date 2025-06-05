@@ -3,6 +3,7 @@
   extends: [
     "config:recommended",
     "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
     "github>hbjydev/tactica//.renovate/groups.json5",
     ":disableRateLimiting",
     ":dependencyDashboard",
