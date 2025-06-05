@@ -1,0 +1,15 @@
+[package]
+name = "tactica-svc-gateway"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tactica-proto = { workspace = true, features = ["auth-client"] }
+tactica-telemetry = { workspace = true }
+tactica-result = { workspace = true }
+
+tokio = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+axum = { workspace = true, features = ["macros"] }
+tonic = { workspace = true }
+tracing = { workspace = true }
