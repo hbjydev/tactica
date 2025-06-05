@@ -1,0 +1,20 @@
+[package]
+name = "tactica-proto"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+auth-client = []
+auth-server = ["auth-client"]
+default = []
+
+[dependencies]
+axum = { workspace = true, optional = true }
+http = { workspace = true, optional = true }
+serde = { workspace = true, optional = true, features = ["derive"] }
+
+tonic = { workspace = true }
+prost = { workspace = true }
+
+[build-dependencies]
+tonic-build = "0.13.1"
