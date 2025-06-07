@@ -3,10 +3,6 @@ use tactica_result::Result;
 
 mod entity;
 
-pub async fn connect() -> Result<DatabaseConnection> {
-    Ok(
-        Database::connect(
-            std::env::var("TACTICA_DB_URL")?,
-        ).await?
-    )
+pub async fn connect(database_url: String) -> Result<DatabaseConnection> {
+    Ok(Database::connect(database_url).await?)
 }

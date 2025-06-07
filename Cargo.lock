@@ -2502,18 +2502,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tactica"
-version = "0.1.0"
-dependencies = [
- "tactica-result",
- "tactica-svc-auth",
- "tactica-svc-gateway",
- "tactica-telemetry",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "tactica-proto"
 version = "0.1.0"
 dependencies = [
