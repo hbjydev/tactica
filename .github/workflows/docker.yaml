@@ -14,8 +14,11 @@ jobs:
       contents: read
       packages: write
       attestations: write
+    strategy:
+      matrix:
+        service: [auth, gateway]
     env:
-      IMAGE_NAME: ghcr.io/${{ github.repository }}
+      IMAGE_NAME: ghcr.io/${{ github.repository }}/${{ matrix.service }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -41,6 +44,7 @@ jobs:
         with:
           sbom: true
           push: ${{ github.event_name == 'push' }}
+          file: services/${{ matrix.service }}/Dockerfile
           context: .
           tags: ${{ steps.meta.outputs.tags }}
 

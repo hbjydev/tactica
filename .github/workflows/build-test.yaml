@@ -29,6 +29,9 @@ jobs:
       id-token: write
       contents: read
       attestations: write
+    strategy:
+      matrix:
+        service: [auth, gateway]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2
@@ -42,31 +45,31 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cargo build
-        run: cargo build --bin tactica
+        run: cargo build --bin tactica-svc-${{ matrix.service }}
 
       - name: Cargo build (release)
-        run: cargo build --bin tactica --release
+        run: cargo build --bin tactica-svc-${{ matrix.service }} --release
 
       - name: Upload binaries (debug)
         id: upload-debug
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: tactica-debug-linux-amd64
-          path: target/debug/tactica
+          name: tactica-svc-${{ matrix.service }}-debug-linux-amd64
+          path: target/debug/tactica-svc-${{ matrix.service }}
 
       - uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2
         with:
-          subject-name: tactica-debug-linux-amd64
+          subject-name: tactica-svc-${{ matrix.service }}-debug-linux-amd64
           subject-digest: sha256:${{ steps.upload-debug.outputs.artifact-digest }}
 
       - name: Upload binaries (release)
         id: upload-release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: tactica-release-linux-amd64
-          path: target/release/tactica
+          name: tactica-svc-${{ matrix.service }}-release-linux-amd64
+          path: target/release/tactica-svc-${{ matrix.service }}
 
       - uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2
         with:
-          subject-name: tactica-release-linux-amd64
+          subject-name: tactica-svc-${{ matrix.service }}-release-linux-amd64
           subject-digest: sha256:${{ steps.upload-release.outputs.artifact-digest }}
