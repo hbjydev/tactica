@@ -8,8 +8,10 @@ tactica-proto = { workspace = true, features = ["auth-client"] }
 tactica-telemetry = { workspace = true }
 tactica-result = { workspace = true, features = ["axum"] }
 
-tokio = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
 serde = { workspace = true, features = ["derive"] }
 axum = { workspace = true, features = ["macros"] }
 tonic = { workspace = true }
 tracing = { workspace = true }
+
+clap = { workspace = true, features = ["derive"] }

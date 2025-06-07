@@ -2546,6 +2546,7 @@ name = "tactica-svc-gateway"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "clap",
  "serde",
  "tactica-proto",
  "tactica-result",
