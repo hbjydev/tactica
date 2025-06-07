@@ -15,6 +15,7 @@ jobs:
       packages: write
       attestations: write
     strategy:
+      fail-fast: false
       matrix:
         service: [auth, gateway]
     env:
