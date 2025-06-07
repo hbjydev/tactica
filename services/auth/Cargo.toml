@@ -5,10 +5,13 @@ edition = "2024"
 
 [dependencies]
 tactica-telemetry = { workspace = true }
-tactica-result = { workspace = true, features = ["axum"] }
+tactica-result = { workspace = true, features = ["tonic", "sea-orm"] }
 tactica-proto = { workspace = true, features = ["auth-server"] }
 
 tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
 async-trait = { workspace = true }
 tracing = { workspace = true }
 tonic = { workspace = true }
+
+sea-orm = { workspace = true, features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
+clap = { workspace = true, features = ["derive"] }

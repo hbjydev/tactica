@@ -1,7 +1,7 @@
 use axum::{Json, Router, extract::State, http::StatusCode, response::IntoResponse, routing::post};
 use serde::{Deserialize, Serialize};
 use tactica_proto::v1::auth::{LoginRequest, auth_service_client::AuthServiceClient};
-use tactica_result::{Result, create_error};
+use tactica_result::Result;
 use tonic::transport::Channel;
 
 use crate::state::AppState;
@@ -31,11 +31,7 @@ async fn login(
         username: body.username,
         password: body.password,
     })
-        .await
-        .map_err(|status| {
-            tracing::error!(status = ?status, msg = ?status.message(), "error sending login request");
-            create_error!(InternalError)
-        })?;
+        .await?;
 
     let body = resp.get_ref();
 

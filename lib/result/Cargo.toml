@@ -6,9 +6,16 @@ edition = "2024"
 [features]
 axum = ["dep:axum", "dep:http", "serde"]
 serde = ["dep:serde"]
+tonic = ["dep:tonic"]
+sea-orm = ["dep:sea-orm"]
 default = []
 
 [dependencies]
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+sea-orm = { workspace = true, optional = true }
 axum = { workspace = true, optional = true }
 http = { workspace = true, optional = true }
+tonic = { workspace = true, optional = true }
 serde = { workspace = true, optional = true, features = ["derive"] }

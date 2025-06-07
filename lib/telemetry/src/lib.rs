@@ -1,5 +1,6 @@
 use tracing::Level;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
 /// Set up logging via the `tracing` crate.
 ///
 /// <div class="warning">
