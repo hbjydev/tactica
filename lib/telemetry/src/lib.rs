@@ -13,7 +13,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 /// # Example
 ///
 /// ```
-/// tactica_telemetry::setup_tracing("auth");
+/// tactica_telemetry::setup_tracing(tracing::Level::INFO);
 /// tracing::info!("Hello, world!");
 /// // log message: 2025-05-22T16:27:32.634756Z  INFO tactica_auth: Hello, world!
 /// ```
