@@ -40,6 +40,12 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
+                'units' => $request->user()
+                ? $request->user()->units()->select([
+                    'units.id',
+                    'units.slug',
+                    'units.display_name',
+                ])->get() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
