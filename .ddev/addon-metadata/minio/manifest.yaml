@@ -1,0 +1,10 @@
+name: minio
+repository: ddev/ddev-minio
+version: v2.2.0
+install_date: "2026-05-17T00:26:55+01:00"
+project_files:
+    - commands/host/minio
+    - commands/minio/mc
+    - docker-compose.minio.yaml
+global_files: []
+removal_actions: []

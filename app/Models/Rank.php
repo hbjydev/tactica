@@ -12,4 +12,9 @@ class Rank extends Model
 {
     /** @use HasFactory<\Database\Factories\UnitFactory> */
     use HasFactory, HasUlids;
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

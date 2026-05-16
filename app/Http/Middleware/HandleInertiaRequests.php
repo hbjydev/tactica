@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
+        $data = [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
@@ -49,5 +49,11 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
+
+        if ($request->route()->hasParameter('unit')) {
+            $data['unit'] = $request->route()->parameter('unit');
+        }
+
+        return $data;
     }
 }

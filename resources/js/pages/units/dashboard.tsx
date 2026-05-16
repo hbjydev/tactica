@@ -16,7 +16,11 @@ const Dashboard = ({ unit }: Props) => {
 
 Dashboard.layout = (props: Props) => [
     AppLayout,
-    { unit: props.unit, units: props.auth.units, breadcrumbs: [] },
+    {
+        unit: props.unit,
+        auth: props.auth,
+        breadcrumbs: [],
+    },
 ];
 
 export default Dashboard;
