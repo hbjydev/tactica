@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Set up repo
         uses: ./.github/actions/setup-repo
+        with:
+          include-frontend: 'false'
 
       - name: Tests
         run: ddev php artisan test
