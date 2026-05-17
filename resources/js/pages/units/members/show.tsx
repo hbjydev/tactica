@@ -1,6 +1,7 @@
 import Heading from "@/components/heading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
+import { Separator } from "@/components/ui/separator";
 import AppLayout from "@/layouts/app-layout";
 import { toMemberName } from "@/lib/utils";
 import { list } from "@/routes/unit/members";
@@ -77,12 +78,24 @@ const UnitMemberShow = ({
                         <div className="grid grid-cols-2 gap-4 justify-between">
                             <span className="font-bold">Name</span>
                             <span>{member.display_name}</span>
+
+                            <Separator className="col-span-2" />
+
                             <span className="font-bold">Rank</span>
                             <span>{member.rank?.display_name}</span>
+
+                            <Separator className="col-span-2" />
+
                             <span className="font-bold">Rank Held Since</span>
                             <span>{moment(member.rank_changed_at).local().format('DD/MM/YYYY')}</span>
+
+                            <Separator className="col-span-2" />
+
                             <span className="font-bold">Status</span>
                             <span>{memberStatusText}</span>
+
+                            <Separator className="col-span-2" />
+
                             <span className="font-bold">Status Changed At</span>
                             <span>{moment(member.status_changed_at).local().format('DD/MM/YYYY')}</span>
                         </div>
