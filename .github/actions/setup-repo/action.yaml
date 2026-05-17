@@ -2,17 +2,6 @@
 name: 'Set up repository development environment'
 description: Configures a DDEV-based dev environment for use by CI.
 
-inputs:
-  include-frontend:
-    description: Whether or not to include frontend-related steps
-    required: false
-    default: 'true'
-
-  include-backend:
-    description: Whether or not to include backend-related steps
-    required: false
-    default: 'true'
-
 runs:
   using: composite
   steps:
@@ -20,26 +9,21 @@ runs:
       uses: ddev/github-action-setup-ddev@v1
 
     - name: Install Frontend Dependencies
-      if: ${{ inputs.include-frontend == 'true' }}
       run: ddev bun install --frozen-lockfile
       shell: bash
 
     - name: Install Backend Dependencies
-      if: ${{ inputs.include-backend == 'true' }}
       run: ddev composer install --no-interaction --prefer-dist --optimize-autoloader
       shell: bash
 
     - name: Copy Environment File
-      if: ${{ inputs.include-backend == 'true' }}
       run: cp .env.example .env
       shell: bash
 
     - name: Generate Application Key
-      if: ${{ inputs.include-backend == 'true' }}
       run: ddev php artisan key:generate
       shell: bash
 
     - name: Build Assets
-      if: ${{ inputs.include-frontend == 'true' }}
       run: ddev bun run build
       shell: bash
