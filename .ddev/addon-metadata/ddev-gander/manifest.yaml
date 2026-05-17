@@ -1,0 +1,14 @@
+name: ddev-gander
+repository: tag1consulting/ddev-gander
+version: v0.0.14
+dependencies:
+    - ddev/ddev-selenium-standalone-chrome
+install_date: "2026-05-17T10:05:53+01:00"
+project_files:
+    - config.gander.yaml
+    - docker-compose.gander.yaml
+    - phpunit.xml.example
+    - gander-config/
+    - gander-dashboards/
+global_files: []
+removal_actions: []

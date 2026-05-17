@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username' => 'username',
 
     'email' => 'email',
 
@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,9 +86,9 @@ return [
     |
     */
 
-    'prefix' => '',
+    'prefix' => '/auth',
 
-    'domain' => null,
+    'domain' => 'sso.'.config('app.domain'),
 
     /*
     |--------------------------------------------------------------------------
