@@ -1,43 +1,45 @@
 import { Link } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
-import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
-import { edit as editAppearance } from '@/routes/appearance';
-import { edit } from '@/routes/profile';
-import { edit as editSecurity } from '@/routes/security';
+import { edit as editAppearance } from '@/routes/sso/appearance';
+import { edit as profile } from '@/routes/sso/profile';
+import { edit as editSecurity } from '@/routes/sso/security';
 import type { NavItem } from '@/types';
+import { LockIcon, LogOutIcon, MonitorIcon, UserIcon } from 'lucide-react';
+import { logout } from '@/routes';
+import { Card, CardContent } from '@/components/ui/card';
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: edit(),
-        icon: null,
-    },
-    {
-        title: 'Security',
-        href: editSecurity(),
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-        icon: null,
-    },
-];
-
-export default function SettingsLayout({ children }: PropsWithChildren) {
+export default function SsoSettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: 'Profile',
+            href: profile(),
+            icon: UserIcon,
+        },
+        {
+            title: 'Security',
+            href: editSecurity(),
+            icon: LockIcon,
+        },
+        {
+            title: 'Appearance',
+            href: editAppearance(),
+            icon: MonitorIcon,
+        },
+        {
+            title: 'Log out',
+            href: logout(),
+            icon: LogOutIcon,
+        }
+    ];
 
     return (
         <div className="px-4 py-6">
-            <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
-            />
-
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav
@@ -68,9 +70,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 <Separator className="my-6 lg:hidden" />
 
                 <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
-                        {children}
-                    </section>
+                    <Card className="max-w-xl space-y-12">
+                        <CardContent>
+                            {children}
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </div>

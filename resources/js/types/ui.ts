@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react';
 import type { BreadcrumbItem } from '@/types/navigation';
-import { Unit } from './units';
+import { Unit, UnitMember } from './units';
 
 export type AppLayoutProps = {
     unit: Unit;
     units: Unit[];
+    member?: UnitMember;
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
 };

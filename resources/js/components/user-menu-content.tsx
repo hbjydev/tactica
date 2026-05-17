@@ -9,14 +9,16 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
+import { edit as ssoSettings } from '@/routes/sso/profile';
 import type { User } from '@/types';
+import { UnitMember } from '@/types/units';
 
 type Props = {
     user: User;
+    member?: UnitMember;
 };
 
-export function UserMenuContent({ user }: Props) {
+export function UserMenuContent({ user, member }: Props) {
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -28,21 +30,20 @@ export function UserMenuContent({ user }: Props) {
         <>
             <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <UserInfo user={user} showEmail={true} />
+                    <UserInfo user={user} member={member} />
                 </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                    <Link
+                    <a
                         className="block w-full cursor-pointer"
-                        href={edit()}
-                        prefetch
+                        href={ssoSettings().url}
                         onClick={cleanup}
                     >
                         <Settings className="mr-2" />
                         Settings
-                    </Link>
+                    </a>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

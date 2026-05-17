@@ -2,6 +2,7 @@ import { ChevronsUpDownIcon, GalleryVerticalEnd } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import { Unit } from "@/types/units";
+import { dashboard } from "@/routes/unit";
 
 export const UnitSwitcher = ({
     current,
@@ -35,8 +36,14 @@ export const UnitSwitcher = ({
                         {units.map((unit) => (
                             <DropdownMenuItem
                                 key={unit.id}
+                                asChild
+                                className="cursor-pointer"
                             >
-                                {unit.display_name}
+                                <a
+                                    href={dashboard({ slug: unit.slug }).url}
+                                >
+                                    {unit.display_name}
+                                </a>
                             </DropdownMenuItem>
                         ))}
                     </DropdownMenuContent>

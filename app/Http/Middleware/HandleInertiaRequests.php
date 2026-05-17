@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
         $data = [
             ...parent::share($request),
             'name' => config('app.name'),
+            'appUrl' => $request->getSchemeAndHttpHost(),
             'auth' => [
                 'user' => $request->user(),
                 'units' => $request->user()
@@ -52,6 +53,17 @@ class HandleInertiaRequests extends Middleware
 
         if ($request->route()->hasParameter('unit')) {
             $data['unit'] = $request->route()->parameter('unit');
+
+            $user = $request->user();
+            if ($user != null) {
+                $member = $user
+                    ->unitMemberships()
+                    ->where('unit_id', $data['unit']->id)
+                    ->with('rank')
+                    ->first();
+
+                $data['auth']['member'] = $member;
+            }
         }
 
         return $data;

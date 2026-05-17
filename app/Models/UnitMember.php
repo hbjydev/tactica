@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\UnitMemberObserver;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['unit_id', 'user_id', 'rank_id', 'display_name'])]
+#[Fillable(['unit_id', 'user_id', 'rank_id', 'display_name', 'status', 'status_changed_at', 'rank_changed_at'])]
+#[ObservedBy([UnitMemberObserver::class])]
 class UnitMember extends Model
 {
     /** @use HasFactory<\Database\Factories\UnitFactory> */
@@ -16,5 +19,20 @@ class UnitMember extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class);
+    }
+
+    public function serviceRecords()
+    {
+        return $this->hasMany(ServiceRecord::class);
     }
 }
