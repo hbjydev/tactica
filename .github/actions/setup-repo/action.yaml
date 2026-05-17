@@ -16,33 +16,30 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-
     - name: Setup DDEV
       uses: ddev/github-action-setup-ddev@v1
 
     - name: Install Frontend Dependencies
-      if: '${{ inputs.include-frontend == "true" }}'
+      if: ${{ inputs.include-frontend == 'true' }}
       run: ddev bun install --frozen-lockfile
       shell: bash
 
     - name: Install Backend Dependencies
-      if: '${{ inputs.include-backend == "true" }}'
+      if: ${{ inputs.include-backend == 'true' }}
       run: ddev composer install --no-interaction --prefer-dist --optimize-autoloader
       shell: bash
 
     - name: Copy Environment File
-      if: '${{ inputs.include-backend == "true" }}'
+      if: ${{ inputs.include-backend == 'true' }}
       run: cp .env.example .env
       shell: bash
 
     - name: Generate Application Key
-      if: '${{ inputs.include-backend == "true" }}'
+      if: ${{ inputs.include-backend == 'true' }}
       run: ddev php artisan key:generate
       shell: bash
 
     - name: Build Assets
-      if: '${{ inputs.include-frontend == "true" }}'
+      if: ${{ inputs.include-frontend == 'true' }}
       run: ddev bun run build
       shell: bash
