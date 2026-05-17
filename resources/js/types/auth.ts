@@ -1,3 +1,5 @@
+import { Unit } from "./units";
+
 export type User = {
     id: string;
     username: string;
@@ -13,6 +15,8 @@ export type User = {
 
 export type Auth = {
     user: User;
+    units: Unit[];
+    member?: Unit;
 };
 
 export type TwoFactorSetupData = {

@@ -4,7 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
 import AppLayout from "@/layouts/app-layout";
 import { toMemberName } from "@/lib/utils";
-import { list } from "@/routes/unit/members";
+import { list, show } from "@/routes/unit/members";
 import { Unit, UnitMember } from "@/types/units";
 import moment from "moment";
 
@@ -48,6 +48,7 @@ const UnitMemberShow = ({
                 <Heading
                     title={`Personnel record: ${toMemberName(member)}`}
                     description={`Detailed information about ${toMemberName(member)}'s service in ${unit.display_name}.`}
+                    className="!mb-0"
                 />
             </div>
 
@@ -132,11 +133,15 @@ UnitMemberShow.layout = (props: Props) => [
     {
         unit: props.unit,
         auth: props.auth,
-        member: props.member,
+        member: props.auth.member,
         breadcrumbs: [
             {
                 title: 'Members',
                 href: list({ unit: props.unit.slug }),
+            },
+            {
+                title: toMemberName(props.member),
+                href: show({ unit: props.unit.slug, member: props.member.id }),
             }
         ],
     },

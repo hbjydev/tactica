@@ -11,6 +11,7 @@ interface Props {
     members: Paginated<UnitMember>;
     auth: {
         units: Unit[];
+        member?: UnitMember;
     };
 }
 
@@ -31,7 +32,7 @@ UnitMembersList.layout = (props: Props) => [
     {
         unit: props.unit,
         auth: props.auth,
-        member: props.member,
+        member: props.auth.member,
         breadcrumbs: [
             {
                 title: 'Members',

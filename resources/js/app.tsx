@@ -1,4 +1,4 @@
-import { createInertiaApp, router } from '@inertiajs/react';
+import { createInertiaApp, router, http } from '@inertiajs/react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -7,8 +7,11 @@ import AuthLayout from '@/layouts/auth-layout';
 import SsoSettingsLayout from '@/layouts/sso-settings/layout';
 import AuthLayoutWide from './layouts/auth-layout-wide';
 import { toast } from 'sonner';
+import { CredentialedXhrClient } from './xhr-client';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+http.setClient(new CredentialedXhrClient());
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

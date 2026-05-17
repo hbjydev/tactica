@@ -39,6 +39,9 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'appUrl' => $request->getSchemeAndHttpHost(),
+            'base' => [
+                'baseDomain' => config('app.domain'),
+            ],
             'auth' => [
                 'user' => $request->user(),
                 'units' => $request->user()

@@ -14,9 +14,9 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { UnitMember } from '@/types/units';
+import { Unit, UnitMember } from '@/types/units';
 
-export function NavUser({ member }: { member?: UnitMember }) {
+export function NavUser({ member, unit }: { member?: UnitMember; unit: Unit; }) {
     const { auth } = usePage().props;
     const { state } = useSidebar();
     const isMobile = useIsMobile();
@@ -50,7 +50,7 @@ export function NavUser({ member }: { member?: UnitMember }) {
                                   : 'bottom'
                         }
                     >
-                        <UserMenuContent user={auth.user} member={member} />
+                        <UserMenuContent user={auth.user} member={member} unit={unit} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

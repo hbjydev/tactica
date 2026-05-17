@@ -28,6 +28,7 @@ export function AppSidebar({
             title: 'Dashboard',
             href: dashboard({ unit: currentUnit.slug }),
             icon: LayoutGrid,
+            matchExact: true,
         },
 
         {
@@ -54,7 +55,7 @@ export function AppSidebar({
             </SidebarContent>
 
             <SidebarFooter>
-                <NavUser member={member} />
+                <NavUser member={member} unit={currentUnit} />
             </SidebarFooter>
         </Sidebar>
     );

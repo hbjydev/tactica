@@ -27,6 +27,7 @@ return new class extends Migration
             $table->ulid('unit_id')->constrained('units')->cascadeOnDelete();
             $table->string('display_name', 64);
             $table->string('abbreviation', 6);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 

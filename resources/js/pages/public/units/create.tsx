@@ -8,7 +8,11 @@ import { store } from '@/routes/public/unit';
 import { Textarea } from '@/components/ui/textarea';
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@/components/ui/input-group';
 
-export default function CreateUnit() {
+interface Props {
+    base: { baseDomain: string };
+}
+
+export default function CreateUnit({ base: { baseDomain } }: Props) {
     return (
         <>
             <Head title="New Unit" />
@@ -49,7 +53,7 @@ export default function CreateUnit() {
                                         placeholder="23rd-ranger"
                                     />
                                     <InputGroupAddon align="inline-end">
-                                        <InputGroupText>.tactica.systems</InputGroupText>
+                                        <InputGroupText>.{baseDomain}</InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                                 <InputError message={errors.slug} />

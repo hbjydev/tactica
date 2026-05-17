@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -11,9 +11,11 @@ import type { NavItem } from '@/types';
 import { LockIcon, LogOutIcon, MonitorIcon, UserIcon } from 'lucide-react';
 import { logout } from '@/routes';
 import { Card, CardContent } from '@/components/ui/card';
+import { UnitSwitcher } from '@/components/unit-switcher';
 
 export default function SsoSettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
+    const { props: { auth: { units } } } = usePage();
 
     const sidebarNavItems: NavItem[] = [
         {
@@ -65,6 +67,13 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
                             </Button>
                         ))}
                     </nav>
+
+                    <Separator className="my-4" />
+
+                    <div className="flex flex-col gap-y-2">
+                        <span className="text-sm text-muted-foreground px-2">Back to a unit:</span>
+                        <UnitSwitcher units={units} inSidebar={false} />
+                    </div>
                 </aside>
 
                 <Separator className="my-6 lg:hidden" />

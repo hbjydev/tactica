@@ -1,4 +1,4 @@
-import { Rank, Unit } from "@/types/units";
+import { Rank, Unit, UnitMember } from "@/types/units";
 import AppLayout from "@/layouts/app-layout";
 import { DataTable } from "@/components/ui/data-table";
 import { rankColumns } from "@/components/views/ranks/columns";
@@ -10,6 +10,7 @@ type Props = {
     ranks: Rank[];
     auth: {
         units: Unit[];
+        member?: UnitMember;
     };
 };
 
@@ -30,6 +31,7 @@ RanksList.layout = (props: Props) => [
     {
         unit: props.unit,
         auth: props.auth,
+        member: props.auth.member,
         breadcrumbs: [
             {
                 title: 'Ranks',
