@@ -21,26 +21,17 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-
-      - name: Install Dependencies
-        run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
+      - name: Set up repo
+        uses: ./.github/actions/setup-repo
 
       - name: Run Pint
-        run: composer lint
+        run: ddev composer lint
 
       - name: Format Frontend
-        run: npm run format
+        run: ddev bun run format
 
       - name: Lint Frontend
-        run: npm run lint
+        run: ddev bun run lint
 
       # - name: Commit Changes
       #   uses: stefanzweifel/git-auto-commit-action@v7
