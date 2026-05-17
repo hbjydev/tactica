@@ -1,0 +1,29 @@
+---
+name: 'Set up repository development environment'
+description: Configures a DDEV-based dev environment for use by CI.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup DDEV
+      uses: ddev/github-action-setup-ddev@v1
+
+    - name: Install Frontend Dependencies
+      run: ddev bun install --frozen-lockfile
+      shell: bash
+
+    - name: Install Backend Dependencies
+      run: ddev composer install --no-interaction --prefer-dist --optimize-autoloader
+      shell: bash
+
+    - name: Copy Environment File
+      run: cp .env.example .env
+      shell: bash
+
+    - name: Generate Application Key
+      run: ddev php artisan key:generate
+      shell: bash
+
+    - name: Build Assets
+      run: ddev bun run build
+      shell: bash
