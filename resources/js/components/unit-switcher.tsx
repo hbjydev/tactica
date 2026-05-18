@@ -5,6 +5,7 @@ import { Unit } from "@/types/units";
 import { dashboard } from "@/routes/unit";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { usePage } from "@inertiajs/react";
 
 export const UnitSwitcher = ({
     current,
@@ -15,6 +16,23 @@ export const UnitSwitcher = ({
     units: Unit[];
     inSidebar?: boolean;
 }) => {
+    const { props: { auth } } = usePage();
+
+    if (!auth.user) {
+        return (
+            <div className="p-2 flex items-center gap-2">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <GalleryVerticalEnd className="size-4" />
+                </div>
+                <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-medium">
+                        {current ? current.display_name : 'Select a unit'}
+                    </span>
+                </div>
+            </div>
+        );
+    }
+
     const UsedButton = inSidebar ? SidebarMenuButton : Button;
 
     const inner = (
