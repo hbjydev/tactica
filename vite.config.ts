@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
+import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -37,5 +38,11 @@ export default defineConfig({
         cors: {
             origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.ddev\.site)(?::\d+)?$/,
         },
-    }
+    },
+
+    resolve: {
+        alias: {
+            '@legal': path.resolve(__dirname, 'docs/hosted/legal'),
+        },
+    },
 });
