@@ -26,8 +26,8 @@ account information up to date.
 ### 3.2 Account Security
 You are responsible for maintaining the confidentiality of your account
 credentials and for all activity that occurs under your account. You must notify
-us immediately at [contact email] if you suspect any unauthorised access to your
-account.
+us immediately at support@tactica.systems if you suspect any unauthorised access
+to your account.
 
 ### 3.3 Account Termination
 We reserve the right to suspend or terminate your account at our sole
