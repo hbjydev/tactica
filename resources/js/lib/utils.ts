@@ -1,4 +1,4 @@
-import { UnitMember } from '@/types/units';
+import { App } from '@/wayfinder/types';
 import type { InertiaLinkProps } from '@inertiajs/react';
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
@@ -12,7 +12,7 @@ export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
 }
 
-export function toMemberName(member: UnitMember): string {
+export function toMemberName(member: App.Models.UnitMember): string {
     if (!member.rank) throw new Error('Member does not have rank info!');
     return `${member.rank.abbreviation} ${member.display_name}`;
 }

@@ -1,4 +1,4 @@
-import AppLogoIcon from "@/components/app-logo-icon";
+import AppLogoIcon from '@/components/app-logo-icon';
 
 export const PublicFooter = () => {
     return (
@@ -11,9 +11,22 @@ export const PublicFooter = () => {
                     <span className="font-medium text-foreground">Tactica</span>
                 </div>
                 <div className="flex items-center gap-4">
-                    <a href="/terms" className="transition-colors hover:text-foreground">Terms</a>
-                    <a href="/privacy" className="transition-colors hover:text-foreground">Privacy</a>
-                    <span>&copy; {new Date().getFullYear()} Tactica. All rights reserved.</span>
+                    <a
+                        href="/terms"
+                        className="transition-colors hover:text-foreground"
+                    >
+                        Terms
+                    </a>
+                    <a
+                        href="/privacy"
+                        className="transition-colors hover:text-foreground"
+                    >
+                        Privacy
+                    </a>
+                    <span>
+                        &copy; {new Date().getFullYear()} Tactica. All rights
+                        reserved.
+                    </span>
                 </div>
             </div>
         </footer>

@@ -1,5 +1,5 @@
-import { Unit } from "@/types/units";
-import { createContext, useContext } from "react";
+import { Unit } from '@/types/units';
+import { createContext, useContext } from 'react';
 
 export type UnitState = {
     currentUnit?: Unit;
@@ -11,14 +11,14 @@ export const UnitProvider = ({
     unit,
     children,
 }: {
-    unit: Unit,
-    children: React.ReactNode,
+    unit: Unit;
+    children: React.ReactNode;
 }) => {
     return (
         <unitContext.Provider value={{ currentUnit: unit }}>
             {children}
         </unitContext.Provider>
-    )
+    );
 };
 
 export const useUnit = () => {
@@ -27,4 +27,4 @@ export const useUnit = () => {
         throw new Error('useUnit must be used within a UnitProvider');
     }
     return context.currentUnit;
-}
+};

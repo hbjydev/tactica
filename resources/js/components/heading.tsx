@@ -10,7 +10,12 @@ export default function Heading({
     className?: string;
 }) {
     return (
-        <header className={(variant === 'small' ? '' : 'mb-8 space-y-0.5') + ` ${className}`}>
+        <header
+            className={
+                (variant === 'small' ? '' : 'mb-8 space-y-0.5') +
+                ` ${className}`
+            }
+        >
             <h2
                 className={
                     variant === 'small'

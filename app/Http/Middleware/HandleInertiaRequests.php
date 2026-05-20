@@ -35,6 +35,25 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        // $unit and $member are defined here to ensure Wayfinder will detect
+        // type hints for them when generating the Inertia shared data types.
+
+        /** @var \App\Models\Unit|null $unit */
+        $unit = null;
+
+        /** @var \App\Models\UnitMember|null $member */
+        $member = null;
+
+        /** @var list<\App\Models\Unit> $member */
+        $userUnits = [];
+        if ($request->user()) {
+            $userUnits = $request->user()->units()->select([
+                'units.id',
+                'units.slug',
+                'units.display_name',
+            ])->get();
+        }
+
         $data = [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -44,30 +63,12 @@ class HandleInertiaRequests extends Middleware
             ],
             'auth' => [
                 'user' => $request->user(),
-                'units' => $request->user()
-                ? $request->user()->units()->select([
-                    'units.id',
-                    'units.slug',
-                    'units.display_name',
-                ])->get() : null,
+                'units' => $userUnits,
+                'member' => $member,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'unit' => $unit,
         ];
-
-        if ($request->route()->hasParameter('unit')) {
-            $data['unit'] = $request->route()->parameter('unit');
-
-            $user = $request->user();
-            if ($user != null) {
-                $member = $user
-                    ->unitMemberships()
-                    ->where('unit_id', $data['unit']->id)
-                    ->with('rank')
-                    ->first();
-
-                $data['auth']['member'] = $member;
-            }
-        }
 
         return $data;
     }

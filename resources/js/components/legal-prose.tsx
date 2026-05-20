@@ -16,7 +16,14 @@ function slugify(text: string): string {
 // A Marked instance that injects `id` attributes into heading elements.
 const markedWithIds = new Marked({
     renderer: {
-        heading({ depth, text }: { depth: number; text: string; tokens: object[] }) {
+        heading({
+            depth,
+            text,
+        }: {
+            depth: number;
+            text: string;
+            tokens: object[];
+        }) {
             const id = slugify(text);
             return `<h${depth} id="${id}">${text}</h${depth}>\n`;
         },
@@ -31,7 +38,10 @@ function parse(raw: string): { html: string; headings: Heading[] } {
     const tokens = marked.lexer(stripped);
     const headings: Heading[] = [];
     for (const token of tokens) {
-        if (token.type === 'heading' && (token.depth === 2 || token.depth === 3)) {
+        if (
+            token.type === 'heading' &&
+            (token.depth === 2 || token.depth === 3)
+        ) {
             headings.push({
                 id: slugify(token.text),
                 text: token.text,
@@ -74,7 +84,7 @@ export default function LegalProse({ raw }: Props) {
             {/* sticky TOC sidebar */}
             <aside className="hidden lg:block">
                 <div className="sticky top-24">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
+                    <p className="mb-3 text-xs font-semibold tracking-widest text-muted-foreground/60 uppercase">
                         On this page
                     </p>
                     <nav className="flex flex-col gap-0.5">

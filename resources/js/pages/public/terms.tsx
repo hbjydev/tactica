@@ -14,5 +14,7 @@ export default function TermsPage() {
 }
 
 TermsPage.layout = (page: ReactNode) => (
-    <LegalLayout title="Terms of Service" updatedAt="11 May 2026">{page}</LegalLayout>
+    <LegalLayout title="Terms of Service" updatedAt="11 May 2026">
+        {page}
+    </LegalLayout>
 );

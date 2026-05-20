@@ -41,16 +41,16 @@ export default function Profile({
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">Username</Label>
 
                                 <Input
-                                    id="name"
+                                    id="username"
                                     className="mt-1 block w-full"
-                                    defaultValue={auth.user.username}
-                                    name="name"
+                                    defaultValue={auth.user?.username}
+                                    name="username"
                                     required
-                                    autoComplete="name"
-                                    placeholder="Full name"
+                                    autoComplete="username"
+                                    placeholder="XxX_G4m3r_69_XxX"
                                 />
 
                                 <InputError
@@ -66,7 +66,7 @@ export default function Profile({
                                     id="email"
                                     type="email"
                                     className="mt-1 block w-full"
-                                    defaultValue={auth.user.email}
+                                    defaultValue={auth.user?.email}
                                     name="email"
                                     required
                                     autoComplete="username"
@@ -80,7 +80,7 @@ export default function Profile({
                             </div>
 
                             {mustVerifyEmail &&
-                                auth.user.email_verified_at === null && (
+                                auth.user?.email_verified_at === null && (
                                     <div>
                                         <p className="-mt-4 text-sm text-muted-foreground">
                                             Your email address is unverified.{' '}

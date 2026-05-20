@@ -1,7 +1,12 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
@@ -13,7 +18,7 @@ type Props = {} & InertiaConfig['sharedPageProps'];
 
 const RanksCreate = ({ unit }: Props) => {
     return (
-        <div className="flex flex-col p-4 gap-4">
+        <div className="flex flex-col gap-4 p-4">
             <Heading
                 title="Create Rank"
                 description={`Create a new rank for your unit. Ranks are used to organize personnel and can be assigned to members to indicate their position within the unit hierarchy.`}
@@ -29,7 +34,9 @@ const RanksCreate = ({ unit }: Props) => {
                             <>
                                 <FieldGroup>
                                     <Field>
-                                        <FieldLabel htmlFor="display_name">Name</FieldLabel>
+                                        <FieldLabel htmlFor="display_name">
+                                            Name
+                                        </FieldLabel>
                                         <Input
                                             id="display_name"
                                             type="text"
@@ -42,8 +49,13 @@ const RanksCreate = ({ unit }: Props) => {
                                         <FieldError
                                             errors={
                                                 errors.display_name
-                                                  ? [{ message: errors.display_name }]
-                                                  : []
+                                                    ? [
+                                                          {
+                                                              message:
+                                                                  errors.display_name,
+                                                          },
+                                                      ]
+                                                    : []
                                             }
                                         />
                                     </Field>
@@ -62,15 +74,25 @@ const RanksCreate = ({ unit }: Props) => {
                                         <FieldError
                                             errors={
                                                 errors.abbreviation
-                                                  ? [{ message: errors.abbreviation }]
-                                                  : []
+                                                    ? [
+                                                          {
+                                                              message:
+                                                                  errors.abbreviation,
+                                                          },
+                                                      ]
+                                                    : []
                                             }
                                         />
                                     </Field>
                                 </FieldGroup>
 
                                 <FieldGroup>
-                                    <Button type="submit" tabIndex={3} disabled={processing} data-test="save-button">
+                                    <Button
+                                        type="submit"
+                                        tabIndex={3}
+                                        disabled={processing}
+                                        data-test="save-button"
+                                    >
                                         {processing && <Spinner />}
                                         Save
                                     </Button>
@@ -98,9 +120,9 @@ RanksCreate.layout = (props: Props) => [
             {
                 title: 'Create',
                 href: create({ unit: props.unit?.slug! }),
-            }
-        ]
-    }
+            },
+        ],
+    },
 ];
 
 export default RanksCreate;

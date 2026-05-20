@@ -2,21 +2,30 @@ import { XhrHttpClient } from '@inertiajs/core';
 import type { HttpRequestConfig, HttpResponse } from '@inertiajs/core';
 
 export class CredentialedXhrClient extends XhrHttpClient {
-    protected override doRequest(config: HttpRequestConfig): Promise<HttpResponse> {
+    protected override doRequest(
+        config: HttpRequestConfig,
+    ): Promise<HttpResponse> {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
             const url = new URL(config.url);
             if (config.params) {
-                Object.entries(config.params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+                Object.entries(config.params).forEach(([k, v]) =>
+                    url.searchParams.set(k, String(v)),
+                );
             }
 
             xhr.open(config.method.toUpperCase(), url.toString(), true);
 
-            const xsrfToken = document.cookie.match(new RegExp('(^|;\\s*)(XSRF-TOKEN)=([^;]*)'))?.[3];
+            const xsrfToken = document.cookie.match(
+                new RegExp('(^|;\\s*)(XSRF-TOKEN)=([^;]*)'),
+            )?.[3];
             if (xsrfToken) {
-                xhr.setRequestHeader('X-XSRF-TOKEN', decodeURIComponent(xsrfToken));
+                xhr.setRequestHeader(
+                    'X-XSRF-TOKEN',
+                    decodeURIComponent(xsrfToken),
+                );
             }
 
             if (config.headers) {
@@ -30,7 +39,9 @@ export class CredentialedXhrClient extends XhrHttpClient {
 
             if (config.onUploadProgress) {
                 xhr.upload.onprogress = (event) => {
-                    const progress = event.lengthComputable ? event.loaded / event.total : undefined;
+                    const progress = event.lengthComputable
+                        ? event.loaded / event.total
+                        : undefined;
                     config.onUploadProgress!({
                         progress,
                         percentage: progress ? Math.round(progress * 100) : 0,
@@ -48,13 +59,20 @@ export class CredentialedXhrClient extends XhrHttpClient {
             xhr.onerror = () => reject(new Error('Network error'));
             xhr.onload = () => {
                 const headers: Record<string, string> = {};
-                xhr.getAllResponseHeaders().split('\r\n').forEach((line) => {
-                    const idx = line.indexOf(':');
-                    if (idx > 0) {
-                        headers[line.slice(0, idx).toLowerCase().trim()] = line.slice(idx + 1).trim();
-                    }
+                xhr.getAllResponseHeaders()
+                    .split('\r\n')
+                    .forEach((line) => {
+                        const idx = line.indexOf(':');
+                        if (idx > 0) {
+                            headers[line.slice(0, idx).toLowerCase().trim()] =
+                                line.slice(idx + 1).trim();
+                        }
+                    });
+                resolve({
+                    status: xhr.status,
+                    data: xhr.responseText,
+                    headers,
                 });
-                resolve({ status: xhr.status, data: xhr.responseText, headers });
             };
 
             let body: BodyInit | null = null;

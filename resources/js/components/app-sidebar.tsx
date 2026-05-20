@@ -11,17 +11,17 @@ import { dashboard } from '@/routes/unit';
 import { list as listRanks } from '@/routes/unit/ranks';
 import { list as listMembers } from '@/routes/unit/members';
 import type { NavItem } from '@/types';
-import { Unit, UnitMember } from '@/types/units';
 import { UnitSwitcher } from './unit-switcher';
+import { App } from '@/wayfinder/types';
 
 export function AppSidebar({
     currentUnit,
     units,
     member,
 }: {
-    currentUnit: Unit;
-    units: Unit[];
-    member?: UnitMember;
+    currentUnit: App.Models.Unit;
+    units: App.Models.Unit[];
+    member: App.Models.UnitMember | null;
 }) {
     const mainNavItems: NavItem[] = [
         {

@@ -15,7 +15,11 @@ import { UnitSwitcher } from '@/components/unit-switcher';
 
 export default function SsoSettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
-    const { props: { auth: { units } } } = usePage();
+    const {
+        props: {
+            auth: { units },
+        },
+    } = usePage();
 
     const sidebarNavItems: NavItem[] = [
         {
@@ -37,7 +41,7 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
             title: 'Log out',
             href: logout(),
             icon: LogOutIcon,
-        }
+        },
     ];
 
     return (
@@ -71,7 +75,9 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
                     <Separator className="my-4" />
 
                     <div className="flex flex-col gap-y-2">
-                        <span className="text-sm text-muted-foreground px-2">Back to a unit:</span>
+                        <span className="px-2 text-sm text-muted-foreground">
+                            Back to a unit:
+                        </span>
                         <UnitSwitcher units={units} inSidebar={false} />
                     </div>
                 </aside>
@@ -80,9 +86,7 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
 
                 <div className="flex-1 md:max-w-2xl">
                     <Card className="max-w-xl space-y-12">
-                        <CardContent>
-                            {children}
-                        </CardContent>
+                        <CardContent>{children}</CardContent>
                     </Card>
                 </div>
             </div>

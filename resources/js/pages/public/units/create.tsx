@@ -6,7 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/public/unit';
 import { Textarea } from '@/components/ui/textarea';
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@/components/ui/input-group';
+import {
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+    InputGroupText,
+} from '@/components/ui/input-group';
 
 interface Props {
     base: { baseDomain: string };
@@ -25,7 +30,9 @@ export default function CreateUnit({ base: { baseDomain } }: Props) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="display_name">Display Name</Label>
+                                <Label htmlFor="display_name">
+                                    Display Name
+                                </Label>
                                 <Input
                                     id="display_name"
                                     type="text"
@@ -53,7 +60,9 @@ export default function CreateUnit({ base: { baseDomain } }: Props) {
                                         placeholder="23rd-ranger"
                                     />
                                     <InputGroupAddon align="inline-end">
-                                        <InputGroupText>.{baseDomain}</InputGroupText>
+                                        <InputGroupText>
+                                            .{baseDomain}
+                                        </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                                 <InputError message={errors.slug} />

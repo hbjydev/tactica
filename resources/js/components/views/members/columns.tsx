@@ -12,12 +12,15 @@ export const memberColumns: ColumnDef<UnitMember>[] = [
         cell: ({ row, renderValue }) => {
             return (
                 <Link
-                    href={show({ unit: row.original.unit?.slug!, member: row.original.id })}
+                    href={show({
+                        unit: row.original.unit?.slug!,
+                        member: row.original.id,
+                    })}
                     className="underline hover:text-primary"
                 >
                     {renderValue() as ReactNode}
                 </Link>
-            )
+            );
         },
     },
     {
@@ -27,6 +30,7 @@ export const memberColumns: ColumnDef<UnitMember>[] = [
     {
         accessorKey: 'created_at',
         header: 'Member Since',
-        cell: ({ getValue }) => moment(getValue<string>()).local().format('DD/MM/YYYY'),
-    }
+        cell: ({ getValue }) =>
+            moment(getValue<string>()).local().format('DD/MM/YYYY'),
+    },
 ];

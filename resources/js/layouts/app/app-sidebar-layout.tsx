@@ -5,9 +5,8 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import type { AppLayoutProps } from '@/types';
 
 export default function AppSidebarLayout({
+    auth: { units, member },
     unit,
-    units,
-    member,
     children,
     breadcrumbs = [],
 }: AppLayoutProps) {

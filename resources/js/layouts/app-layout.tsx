@@ -1,29 +1,20 @@
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import type { BreadcrumbItem } from '@/types';
-import { Unit, UnitMember } from '@/types/units';
+import { App, Inertia } from '@/wayfinder/types';
 
 export default function AppLayout({
     breadcrumbs = [],
     unit,
-    member,
     auth,
     children,
 }: {
-    unit: Unit;
-    member?: UnitMember;
-    auth: {
-        units: Unit[];
-    };
+    unit: App.Models.Unit;
+    auth: Inertia.SharedData['auth'];
     breadcrumbs?: BreadcrumbItem[];
     children: React.ReactNode;
 }) {
     return (
-        <AppLayoutTemplate
-            unit={unit}
-            units={auth.units}
-            member={member}
-            breadcrumbs={breadcrumbs}
-        >
+        <AppLayoutTemplate unit={unit} auth={auth} breadcrumbs={breadcrumbs}>
             {children}
         </AppLayoutTemplate>
     );

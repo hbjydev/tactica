@@ -14,5 +14,7 @@ export default function PrivacyPage() {
 }
 
 PrivacyPage.layout = (page: ReactNode) => (
-    <LegalLayout title="Privacy Policy" updatedAt="11 May 2026">{page}</LegalLayout>
+    <LegalLayout title="Privacy Policy" updatedAt="11 May 2026">
+        {page}
+    </LegalLayout>
 );

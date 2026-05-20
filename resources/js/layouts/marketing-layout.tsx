@@ -11,9 +11,7 @@ export default function MarketingLayout({ children }: Props) {
         <div className="flex min-h-svh flex-col bg-background text-foreground">
             <PublicHeader />
 
-            <main className="flex-1">
-                {children}
-            </main>
+            <main className="flex-1">{children}</main>
 
             <PublicFooter />
         </div>

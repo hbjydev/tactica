@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Units;
 
+use App\Actions\Units\CreateNewUnit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\UnitCreateRequest;
-use App\Models\Unit;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UnitsController extends Controller
@@ -14,10 +14,9 @@ class UnitsController extends Controller
         return Inertia::render('public/units/create');
     }
 
-    public function store(UnitCreateRequest $request)
+    public function store(Request $request, CreateNewUnit $action)
     {
-        $unit = Unit::createUnit($request->validated(), $request->user());
-
+        $unit = $action->create($request->user(), $request->all());
         return Inertia::location(route('unit.dashboard', ['unit' => $unit->slug]));
     }
 }

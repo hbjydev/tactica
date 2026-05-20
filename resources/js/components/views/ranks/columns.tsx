@@ -9,5 +9,5 @@ export const rankColumns: ColumnDef<Rank>[] = [
     {
         accessorKey: 'abbreviation',
         header: 'Abbreviation',
-    }
+    },
 ];

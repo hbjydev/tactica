@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react';
 import type { BreadcrumbItem } from '@/types/navigation';
-import { Unit, UnitMember } from './units';
+import { App, Inertia } from '@/wayfinder/types';
 
 export type AppLayoutProps = {
-    unit: Unit;
-    units: Unit[];
-    member?: UnitMember;
-    children: ReactNode;
+    unit: App.Models.Unit;
+    auth: Inertia.SharedData['auth'];
     breadcrumbs?: BreadcrumbItem[];
+    children: React.ReactNode;
 };
 
 export type AppVariant = 'header' | 'sidebar';

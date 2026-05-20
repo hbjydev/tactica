@@ -11,13 +11,12 @@ import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
 import { show as memberProfile } from '@/routes/unit/members';
 import { edit as ssoSettings } from '@/routes/sso/profile';
-import type { User } from '@/types';
-import { Unit, UnitMember } from '@/types/units';
+import { App } from '@/wayfinder/types';
 
 type Props = {
-    user: User;
-    unit: Unit;
-    member?: UnitMember;
+    user: App.Models.User;
+    unit: App.Models.Unit;
+    member: App.Models.UnitMember | null;
 };
 
 export function UserMenuContent({ user, unit, member }: Props) {
@@ -41,7 +40,10 @@ export function UserMenuContent({ user, unit, member }: Props) {
                     <DropdownMenuItem asChild>
                         <Link
                             className="block w-full cursor-pointer"
-                            href={memberProfile({ unit: unit.slug, member: member.id })}
+                            href={memberProfile({
+                                unit: unit.slug,
+                                member: member.id,
+                            })}
                             onClick={cleanup}
                         >
                             <User2Icon className="mr-2" />

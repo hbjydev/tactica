@@ -8,22 +8,4 @@ declare module 'react' {
     }
 }
 
-declare module '@inertiajs/core' {
-    export interface InertiaConfig {
-        flashDataType: {
-            toast?: {
-                type: 'success' | 'error' | 'info';
-                message: string;
-            }
-        }
-
-        sharedPageProps: {
-            name: string;
-            appUrl: string;
-            unit?: Unit;
-            auth: Auth;
-            sidebarOpen: boolean;
-            [key: string]: unknown;
-        };
-    }
-}
+/// <reference types="@/wayfinder/types" />

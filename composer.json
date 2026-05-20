@@ -14,7 +14,7 @@
         "laravel/fortify": "^1.34",
         "laravel/framework": "^13.7",
         "laravel/tinker": "^3.0",
-        "laravel/wayfinder": "^0.1.14",
+        "laravel/wayfinder": "dev-next",
         "open-telemetry/exporter-otlp": "^1.4",
         "open-telemetry/opentelemetry-auto-guzzle": "^1.3",
         "open-telemetry/opentelemetry-auto-laravel": "^1.7",

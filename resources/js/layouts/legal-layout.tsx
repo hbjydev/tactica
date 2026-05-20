@@ -17,7 +17,7 @@ export default function LegalLayout({ children, title, updatedAt }: Props) {
                 {/* page title band */}
                 <div className="border-b border-border/40 bg-muted/20 px-6 py-12">
                     <div className="mx-auto max-w-5xl">
-                        <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                        <p className="mb-2 text-xs font-medium tracking-widest text-muted-foreground uppercase">
                             Legal
                         </p>
                         <h1 className="font-heading text-3xl font-bold tracking-tight text-foreground md:text-4xl">
@@ -32,9 +32,7 @@ export default function LegalLayout({ children, title, updatedAt }: Props) {
                 </div>
 
                 {/* prose content */}
-                <div className="mx-auto max-w-5xl px-6 py-12">
-                    {children}
-                </div>
+                <div className="mx-auto max-w-5xl px-6 py-12">{children}</div>
             </main>
 
             <PublicFooter />

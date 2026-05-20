@@ -1,26 +1,22 @@
-import Heading from "@/components/heading";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table";
-import { Separator } from "@/components/ui/separator";
-import AppLayout from "@/layouts/app-layout";
-import { toMemberName } from "@/lib/utils";
-import { list, show } from "@/routes/unit/members";
-import { Unit, UnitMember } from "@/types/units";
-import moment from "moment";
+import Heading from '@/components/heading';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { DataTable } from '@/components/ui/data-table';
+import { Separator } from '@/components/ui/separator';
+import AppLayout from '@/layouts/app-layout';
+import { toMemberName } from '@/lib/utils';
+import { list, show } from '@/routes/unit/members';
+import { Inertia } from '@/wayfinder/types';
+import moment from 'moment';
 
-type Props = {
-    unit: Unit;
-    member: UnitMember;
-    auth: {
-        units: Unit[];
-        member?: UnitMember;
-    };
-};
+type Props = Inertia.Pages.Units.Members.Show;
 
-const UnitMemberShow = ({
-    member,
-    unit,
-}: Props) => {
+const UnitMemberShow = ({ member, unit }: Props) => {
     let memberStatusText;
     let memberStatusColor;
     switch (member.status) {
@@ -43,11 +39,11 @@ const UnitMemberShow = ({
     }
 
     return (
-        <div className="p-4 grid xl:grid-cols-7 gap-4">
+        <div className="grid gap-4 p-4 xl:grid-cols-7">
             <div className="flex flex-col xl:col-span-7">
                 <Heading
                     title={`Personnel record: ${toMemberName(member)}`}
-                    description={`Detailed information about ${toMemberName(member)}'s service in ${unit.display_name}.`}
+                    description={`Detailed information about ${toMemberName(member)}'s service in ${unit?.display_name}.`}
                     className="!mb-0"
                 />
             </div>
@@ -55,14 +51,25 @@ const UnitMemberShow = ({
             <div className="grid gap-4 xl:col-span-2">
                 <div className="aspect-square rounded-xl bg-muted" />
                 <div className="flex flex-col">
-                    <div className="bg-muted h-8 border-x border-t rounded-t-xl flex flex-col items-center justify-center">
-                        <span className="text-sm font-medium">{member.id.toUpperCase()}</span>
+                    <div className="flex h-8 flex-col items-center justify-center rounded-t-xl border-x border-t bg-muted">
+                        <span className="text-sm font-medium">
+                            {member.id.toUpperCase()}
+                        </span>
                     </div>
-                    <div className={`${memberStatusColor} border-x h-16 flex flex-col items-center justify-center`}>
-                        <span className="text-lg font-medium">{memberStatusText}</span>
+                    <div
+                        className={`${memberStatusColor} flex h-16 flex-col items-center justify-center border-x`}
+                    >
+                        <span className="text-lg font-medium">
+                            {memberStatusText}
+                        </span>
                     </div>
-                    <div className="bg-muted border-x border-b h-8 rounded-b-xl flex flex-col items-center justify-center">
-                        <span className="text-sm font-medium">Member since {moment(member.created_at).local().format('DD/MM/YYYY')}</span>
+                    <div className="flex h-8 flex-col items-center justify-center rounded-b-xl border-x border-b bg-muted">
+                        <span className="text-sm font-medium">
+                            Member since{' '}
+                            {moment(member.created_at)
+                                .local()
+                                .format('DD/MM/YYYY')}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -71,12 +78,14 @@ const UnitMemberShow = ({
                 <Card>
                     <CardHeader>
                         <CardTitle>Overview</CardTitle>
-                        <CardDescription>A summary of {toMemberName(member)}'s current status and role within the unit.</CardDescription>
+                        <CardDescription>
+                            A summary of {toMemberName(member)}'s current status
+                            and role within the unit.
+                        </CardDescription>
                     </CardHeader>
 
                     <CardContent>
-
-                        <div className="grid grid-cols-2 gap-4 justify-between">
+                        <div className="grid grid-cols-2 justify-between gap-4">
                             <span className="font-bold">Name</span>
                             <span>{member.display_name}</span>
 
@@ -88,7 +97,11 @@ const UnitMemberShow = ({
                             <Separator className="col-span-2" />
 
                             <span className="font-bold">Rank Held Since</span>
-                            <span>{moment(member.rank_changed_at).local().format('DD/MM/YYYY')}</span>
+                            <span>
+                                {moment(member.rank_changed_at)
+                                    .local()
+                                    .format('DD/MM/YYYY')}
+                            </span>
 
                             <Separator className="col-span-2" />
 
@@ -98,9 +111,12 @@ const UnitMemberShow = ({
                             <Separator className="col-span-2" />
 
                             <span className="font-bold">Status Changed At</span>
-                            <span>{moment(member.status_changed_at).local().format('DD/MM/YYYY')}</span>
+                            <span>
+                                {moment(member.status_changed_at)
+                                    .local()
+                                    .format('DD/MM/YYYY')}
+                            </span>
                         </div>
-
                     </CardContent>
                 </Card>
             </div>
@@ -117,12 +133,9 @@ const UnitMemberShow = ({
                 <Heading
                     variant="small"
                     title="Service history"
-                    description={`A detailed record of ${toMemberName(member)}'s service in ${unit.display_name}, including deployments, awards, and disciplinary actions.`}
+                    description={`A detailed record of ${toMemberName(member)}'s service in ${unit?.display_name}, including deployments, awards, and disciplinary actions.`}
                 />
-                <DataTable
-                    data={[]}
-                    columns={[]}
-                />
+                <DataTable data={[]} columns={[]} />
             </div>
         </div>
     );
@@ -137,12 +150,15 @@ UnitMemberShow.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Members',
-                href: list({ unit: props.unit.slug }),
+                href: list({ unit: props.unit?.slug! }),
             },
             {
                 title: toMemberName(props.member),
-                href: show({ unit: props.unit.slug, member: props.member.id }),
-            }
+                href: show({
+                    unit: props.unit?.slug!,
+                    member: props.member.id,
+                }),
+            },
         ],
     },
 ];
