@@ -60,6 +60,8 @@ class CreateNewUnit
                 'status_changed_at' => now('UTC'),
             ]);
 
+            DB::commit();
+
             return $unit;
         } catch (\Exception $e) {
             DB::rollBack();
