@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -10,6 +10,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import { FieldDescription } from '@/components/ui/field';
+import { privacy, terms } from '@/routes/public/legal';
 
 type Props = {
     status?: string;
@@ -81,6 +83,13 @@ export default function Login({
                                 />
                                 <Label htmlFor="remember">Remember me</Label>
                             </div>
+
+                            <FieldDescription>
+                                By continuing, you agree to our&nbsp;
+                                <Link href={terms()}>Terms of Service</Link>
+                                &nbsp;and our&nbsp;
+                                <Link href={privacy()}>Privacy Policy</Link>.
+                            </FieldDescription>
 
                             <Button
                                 type="submit"

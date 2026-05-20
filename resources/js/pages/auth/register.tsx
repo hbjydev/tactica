@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
+import { FieldDescription } from '@/components/ui/field';
+import { privacy, terms } from '@/routes/public/legal';
 
 type Props = {
     passwordRules: string;
@@ -104,6 +106,13 @@ export default function Register({ passwordRules }: Props) {
                                     message={errors.password_confirmation}
                                 />
                             </div>
+
+                            <FieldDescription>
+                                By continuing, you agree to our&nbsp;
+                                <Link href={terms()}>Terms of Service</Link>
+                                &nbsp;and our&nbsp;
+                                <Link href={privacy()}>Privacy Policy</Link>.
+                            </FieldDescription>
 
                             <Button
                                 type="submit"
