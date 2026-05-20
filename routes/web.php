@@ -21,6 +21,12 @@ Route::domain(config('app.domain'))
 Route::domain('sso.' . config('app.domain'))
     ->name('sso.')
     ->group(function () {
+        Route::get('/', function () {
+            return auth()->check()
+                ? redirect('/settings/profile')
+                : redirect('/login');
+        })->name('home');
+
         require __DIR__.'/settings.php';
     });
 
