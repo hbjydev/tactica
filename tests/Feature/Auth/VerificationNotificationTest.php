@@ -28,7 +28,7 @@ test('does not send verification notification if email is verified', function ()
 
     $this->actingAs($user)
         ->post(route('verification.send'))
-        ->assertRedirect('/unit-wizard');
+        ->assertRedirect(config('app.url').'/unit-wizard');
 
     Notification::assertNothingSent();
 });

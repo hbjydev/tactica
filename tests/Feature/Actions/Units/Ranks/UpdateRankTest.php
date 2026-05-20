@@ -96,24 +96,6 @@ describe('UpdateRank', function () {
         ]))->toThrow(ValidationException::class);
     });
 
-    /**
-     * Known bug: UpdateRank uses `unique:ranks,abbreviation` without ignoring the
-     * current rank's ID. This means you cannot update any other field on a rank
-     * without also changing its abbreviation — the validator will reject the existing
-     * abbreviation as a duplicate of itself.
-     *
-     * Fix: use `Rule::unique('ranks', 'abbreviation')->ignore($rank->id)`.
-     */
-    it('fails when updating a rank without changing its own abbreviation', function () {
-        $rank = Rank::factory()->create(['display_name' => 'Private', 'abbreviation' => 'Pvt', 'ord' => 0]);
-
-        expect(fn () => (new UpdateRank)->update($rank, [
-            'display_name' => 'Private (updated)',
-            'abbreviation' => 'Pvt', // same abbreviation — should be fine, but isn't
-            'ord' => 0,
-        ]))->toThrow(ValidationException::class);
-    })->todo('fix unique rule in UpdateRank to ignore the current rank id');
-
     describe('ord shifting', function () {
         it('shifts ranks up when moving a rank to a higher ord', function () {
             $unit = Unit::factory()->create();

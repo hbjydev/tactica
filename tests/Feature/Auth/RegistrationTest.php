@@ -22,5 +22,5 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect('/unit-wizard');
+    $response->assertRedirect(config('app.url').'/unit-wizard');
 });
