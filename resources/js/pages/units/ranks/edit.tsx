@@ -2,29 +2,30 @@ import Heading from '@/components/heading';
 import { Card, CardContent } from '@/components/ui/card';
 import { RankForm } from '@/components/views/ranks/form';
 import AppLayout from '@/layouts/app-layout';
-import { create, list } from '@/routes/unit/ranks';
-import { Inertia } from '@/wayfinder/types';
+import { list } from '@/routes/unit/ranks';
+import { edit } from '@/wayfinder/routes/unit/ranks';
+import { App } from '@/wayfinder/types';
+import type { InertiaConfig } from '@inertiajs/core';
 
-type Props = Inertia.Pages.Units.Ranks.Create;
+type Props = {
+    rank: App.Models.Rank;
+} & InertiaConfig['sharedPageProps'];
 
-const RanksCreate = ({ nextOrd, unit }: Props) => {
+const RanksEdit = ({ rank, unit }: Props) => {
     return (
         <div className="flex flex-col gap-4 p-4 max-w-xl w-full mx-auto">
-            <Heading
-                title="Create Rank"
-                description={`Create a new rank for your unit. Ranks are used to organize personnel and can be assigned to members to indicate their position within the unit hierarchy.`}
-            />
+            <Heading title="Update Rank" />
 
             <Card>
                 <CardContent className="flex flex-col gap-8">
-                    <RankForm unit={unit!} nextOrd={nextOrd} />
+                    <RankForm rank={rank} unit={unit!} />
                 </CardContent>
             </Card>
         </div>
     );
 };
 
-RanksCreate.layout = (props: Props) => [
+RanksEdit.layout = (props: Props) => [
     AppLayout,
     {
         unit: props.unit,
@@ -36,11 +37,11 @@ RanksCreate.layout = (props: Props) => [
                 href: list({ unit: props.unit?.slug! }),
             },
             {
-                title: 'Create',
-                href: create({ unit: props.unit?.slug! }),
+                title: 'Update',
+                href: edit({ unit: props.unit?.slug!, rank: props.rank.id }),
             },
         ],
     },
 ];
 
-export default RanksCreate;
+export default RanksEdit;

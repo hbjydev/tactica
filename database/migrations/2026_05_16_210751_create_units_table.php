@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('display_name', 64);
             $table->string('abbreviation', 6);
             $table->text('description')->nullable();
+            $table->integer('ord')->default(0);
             $table->timestamps();
         });
 

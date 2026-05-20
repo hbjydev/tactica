@@ -17,7 +17,10 @@ class ShareUnitData
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $unit = $request->route('unit');
+        $unit = Unit::query()
+            ->where('slug', $request->route()->originalParameter('unit'))
+            ->firstOrFail();
+
         Inertia::shareOnce('unit', fn() => $unit);
 
         $user = $request->user();

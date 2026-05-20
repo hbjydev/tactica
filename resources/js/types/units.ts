@@ -14,8 +14,12 @@ export type Rank = {
     unit_id: string;
     display_name: string;
     abbreviation: string;
+    description?: string;
+    ord: number;
     created_at: string;
     updated_at: string;
+
+    unit?: Unit;
 };
 
 export type UnitMember = {

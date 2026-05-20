@@ -2,8 +2,8 @@
 
 namespace App\Actions\Units;
 
+use App\Actions\Units\Ranks\CreateNewRank;
 use App\Models\Enums\UnitMemberStatus;
-use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use App\Models\User;
@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CreateNewUnit
 {
+    public function __construct(
+        private CreateNewRank $newRankAction
+    ) {}
+
     /**
      * Create a new unit with a given owner.
      */
@@ -32,22 +36,22 @@ class CreateNewUnit
                 'description' => $input['description'] ?? null,
             ]);
 
-            $captain = Rank::create([
-                'unit_id' => $unit->id,
+            $captain = $this->newRankAction->create($unit, [
                 'display_name' => 'Captain',
                 'abbreviation' => 'Cpt.',
+                'ord' => 0,
             ]);
 
-            Rank::create([
-                'unit_id' => $unit->id,
+            $this->newRankAction->create($unit, [
                 'display_name' => 'Sergeant',
                 'abbreviation' => 'Sgt.',
+                'ord' => 1,
             ]);
 
-            Rank::create([
-                'unit_id' => $unit->id,
+            $this->newRankAction->create($unit, [
                 'display_name' => 'Private',
                 'abbreviation' => 'Pvt.',
+                'ord' => 2,
             ]);
 
             UnitMember::create([

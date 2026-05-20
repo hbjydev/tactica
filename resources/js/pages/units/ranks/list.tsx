@@ -1,21 +1,15 @@
 import { Rank, Unit, UnitMember } from '@/types/units';
 import AppLayout from '@/layouts/app-layout';
 import { DataTable } from '@/components/ui/data-table';
-import { rankColumns } from '@/components/views/ranks/columns';
+import { createRankColumns } from '@/components/views/ranks/columns';
 import { create, list } from '@/routes/unit/ranks';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import { Inertia } from '@/wayfinder/types';
 
-type Props = {
-    unit: Unit;
-    ranks: Rank[];
-    auth: {
-        units: Unit[];
-        member?: UnitMember;
-    };
-};
+type Props = Inertia.Pages.Units.Ranks.List;
 
 const RanksList = ({ unit, ranks }: Props) => {
     return (
@@ -28,14 +22,14 @@ const RanksList = ({ unit, ranks }: Props) => {
                 />
 
                 <Button variant="outline" asChild>
-                    <Link href={create({ unit: unit.slug! })}>
+                    <Link href={create({ unit: unit?.slug! })}>
                         <PlusIcon />
                         Create
                     </Link>
                 </Button>
             </div>
 
-            <DataTable columns={rankColumns} data={ranks} />
+            <DataTable columns={createRankColumns(unit!, ranks)} data={ranks} />
         </div>
     );
 };

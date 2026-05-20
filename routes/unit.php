@@ -12,10 +12,15 @@ Route::prefix('/ranks')
     ->scopeBindings()
     ->group(function () {
         Route::get('/', [RanksController::class, 'list'])->name('list');
+
         Route::get('/create', [RanksController::class, 'create'])->name('create');
         Route::post('/', [RanksController::class, 'store'])->name('store');
-    })
-    ->scopeBindings();
+
+        Route::get('/{rank}/edit', [RanksController::class, 'edit'])->name('edit');
+        Route::patch('/{rank}', [RanksController::class, 'update'])->name('update');
+
+        Route::delete('/{rank}', [RanksController::class, 'destroy'])->name('destroy');
+    });
 
 Route::prefix('/members')
     ->name('members.')
