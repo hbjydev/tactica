@@ -14,7 +14,7 @@ Route::domain(config('app.domain'))
             Route::inertia('/privacy', 'public/privacy')->name('privacy');
         });
 
-        Route::middleware(['auth'])->group(function () {
+        Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/unit-wizard', [UnitWizardController::class, 'create'])->name('unit.create');
             Route::post('/unit-wizard', [UnitWizardController::class, 'store'])->name('unit.store');
         });
