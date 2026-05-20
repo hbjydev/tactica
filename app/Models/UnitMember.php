@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\UnitMemberObserver;
+use Database\Factories\UnitFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 #[ObservedBy([UnitMemberObserver::class])]
 class UnitMember extends Model
 {
-    /** @use HasFactory<\Database\Factories\UnitFactory> */
+    /** @use HasFactory<UnitFactory> */
     use HasFactory, HasUlids;
 
     public function unit()

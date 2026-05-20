@@ -21,7 +21,7 @@ class ShareUnitData
             ->where('slug', $request->route()->originalParameter('unit'))
             ->firstOrFail();
 
-        Inertia::shareOnce('unit', fn() => $unit);
+        Inertia::shareOnce('unit', fn () => $unit);
 
         $user = $request->user();
         if ($user != null) {
@@ -31,7 +31,7 @@ class ShareUnitData
                 ->with('rank')
                 ->first();
 
-            Inertia::shareOnce('auth.member', fn() => $member);
+            Inertia::shareOnce('auth.member', fn () => $member);
         }
 
         return $next($request);

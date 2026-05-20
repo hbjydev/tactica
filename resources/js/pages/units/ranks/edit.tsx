@@ -13,7 +13,7 @@ type Props = {
 
 const RanksEdit = ({ rank, unit }: Props) => {
     return (
-        <div className="flex flex-col gap-4 p-4 max-w-xl w-full mx-auto">
+        <div className="mx-auto flex w-full max-w-xl flex-col gap-4 p-4">
             <Heading title="Update Rank" />
 
             <Card>

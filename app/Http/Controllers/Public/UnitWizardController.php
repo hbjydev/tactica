@@ -17,6 +17,7 @@ class UnitWizardController extends Controller
     public function store(Request $request, CreateNewUnit $action)
     {
         $unit = $action->create($request->user(), $request->all());
+
         return Inertia::location(route('unit.dashboard', ['unit' => $unit->slug]));
     }
 }

@@ -12,7 +12,7 @@ class DeleteRank
     public function delete(Rank $rank)
     {
         if ($rank->members->count() > 0) {
-            throw new RankNotEmptyException();
+            throw new RankNotEmptyException;
         }
 
         $rank->delete();

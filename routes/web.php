@@ -20,13 +20,13 @@ Route::domain(config('app.domain'))
         });
     });
 
-Route::domain('sso.' . config('app.domain'))
+Route::domain('sso.'.config('app.domain'))
     ->name('sso.')
     ->group(function () {
         require __DIR__.'/settings.php';
     });
 
-Route::domain('{unit:slug}.' . config('app.domain'))
+Route::domain('{unit:slug}.'.config('app.domain'))
     ->name('unit.')
     ->middleware([ShareUnitData::class])
     ->group(function () {

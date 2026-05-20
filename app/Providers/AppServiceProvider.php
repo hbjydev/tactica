@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         RedirectIfAuthenticated::redirectUsing(function (Request $request) {
             $firstUnit = $request->user()->units()->first(['units.slug']);
 
-            if (!$firstUnit) {
+            if (! $firstUnit) {
                 return route(
                     'public.unit.create',
                     []

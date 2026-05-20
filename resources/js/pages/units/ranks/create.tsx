@@ -9,7 +9,7 @@ type Props = Inertia.Pages.Units.Ranks.Create;
 
 const RanksCreate = ({ nextOrd, unit }: Props) => {
     return (
-        <div className="flex flex-col gap-4 p-4 max-w-xl w-full mx-auto">
+        <div className="mx-auto flex w-full max-w-xl flex-col gap-4 p-4">
             <Heading
                 title="Create Rank"
                 description={`Create a new rank for your unit. Ranks are used to organize personnel and can be assigned to members to indicate their position within the unit hierarchy.`}

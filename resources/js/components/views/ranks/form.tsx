@@ -1,11 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
-import RanksController from "@/wayfinder/App/Http/Controllers/Units/RanksController";
-import { App } from "@/wayfinder/types";
-import { Form } from "@inertiajs/react";
+import { Button } from '@/components/ui/button';
+import {
+    FieldGroup,
+    Field,
+    FieldLabel,
+    FieldError,
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
+import RanksController from '@/wayfinder/App/Http/Controllers/Units/RanksController';
+import { App } from '@/wayfinder/types';
+import { Form } from '@inertiajs/react';
 
 type Props = {
     rank?: App.Models.Rank;
@@ -28,11 +33,9 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
         >
             {({ processing, errors }) => (
                 <>
-                    <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <Field>
-                            <FieldLabel htmlFor="display_name">
-                                Name
-                            </FieldLabel>
+                            <FieldLabel htmlFor="display_name">Name</FieldLabel>
                             <Input
                                 id="display_name"
                                 type="text"
@@ -40,7 +43,9 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                 required
                                 autoFocus
                                 tabIndex={1}
-                                defaultValue={rank ? rank.display_name : undefined}
+                                defaultValue={
+                                    rank ? rank.display_name : undefined
+                                }
                                 placeholder="Lance Corporal"
                             />
                             <FieldError
@@ -48,8 +53,7 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                     errors.display_name
                                         ? [
                                               {
-                                                  message:
-                                                      errors.display_name,
+                                                  message: errors.display_name,
                                               },
                                           ]
                                         : []
@@ -58,7 +62,9 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="abbreviation">Abbreviation</FieldLabel>
+                            <FieldLabel htmlFor="abbreviation">
+                                Abbreviation
+                            </FieldLabel>
                             <Input
                                 id="abbreviation"
                                 type="text"
@@ -66,7 +72,9 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                 required
                                 tabIndex={2}
                                 placeholder="LCpl"
-                                defaultValue={rank ? rank.abbreviation : undefined}
+                                defaultValue={
+                                    rank ? rank.abbreviation : undefined
+                                }
                             />
 
                             <FieldError
@@ -74,8 +82,7 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                     errors.abbreviation
                                         ? [
                                               {
-                                                  message:
-                                                      errors.abbreviation,
+                                                  message: errors.abbreviation,
                                               },
                                           ]
                                         : []
@@ -86,13 +93,19 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
 
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
+                            <FieldLabel htmlFor="description">
+                                Description
+                            </FieldLabel>
                             <Textarea
                                 id="description"
                                 name="description"
                                 tabIndex={3}
                                 placeholder="Granted after 8 operations."
-                                defaultValue={rank ? rank.description ?? undefined : undefined}
+                                defaultValue={
+                                    rank
+                                        ? (rank.description ?? undefined)
+                                        : undefined
+                                }
                             />
 
                             <FieldError
@@ -100,8 +113,7 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                     errors.description
                                         ? [
                                               {
-                                                  message:
-                                                      errors.description,
+                                                  message: errors.description,
                                               },
                                           ]
                                         : []
@@ -119,14 +131,16 @@ export const RankForm = ({ rank, unit, nextOrd }: Props) => {
                                 tabIndex={4}
                                 defaultValue={
                                     rank
-                                        ? rank.ord ?? undefined
+                                        ? (rank.ord ?? undefined)
                                         : typeof nextOrd !== 'undefined'
-                                            ? nextOrd
-                                            : undefined
+                                          ? nextOrd
+                                          : undefined
                                 }
                             />
 
-                            {errors.ord && <FieldError>{errors.ord}</FieldError>}
+                            {errors.ord && (
+                                <FieldError>{errors.ord}</FieldError>
+                            )}
                         </Field>
                     </FieldGroup>
 

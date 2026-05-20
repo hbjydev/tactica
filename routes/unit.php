@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Units\DashboardController;
-use App\Http\Controllers\Units\RanksController;
 use App\Http\Controllers\Units\MembersController;
+use App\Http\Controllers\Units\RanksController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'show'])->name('dashboard');

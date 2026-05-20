@@ -19,7 +19,7 @@ class UnitMemberObserver
                 'type' => ServiceRecordEntryType::Promotion,
                 'data' => [
                     'rank_id' => $member->rank_id,
-                ]
+                ],
             ]);
         }
 

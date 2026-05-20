@@ -2,7 +2,8 @@
 
 namespace App\Models\Enums;
 
-enum ServiceRecordEntryType: string {
+enum ServiceRecordEntryType: string
+{
     case Promotion = 'promotion';
     case Demotion = 'demotion';
     case Award = 'award';

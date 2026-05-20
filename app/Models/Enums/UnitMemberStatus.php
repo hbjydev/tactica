@@ -2,7 +2,8 @@
 
 namespace App\Models\Enums;
 
-enum UnitMemberStatus: string {
+enum UnitMemberStatus: string
+{
     case Active = 'active';
     case Reserve = 'reserve';
     case LeaveOfAbsence = 'loa';

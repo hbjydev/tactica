@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [config('app.domain'), '*.' . config('app.domain')],
+    'allowed_origins' => [config('app.domain'), '*.'.config('app.domain')],
 
     'allowed_origins_patterns' => [],
 

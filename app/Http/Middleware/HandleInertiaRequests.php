@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Unit;
+use App\Models\UnitMember;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -38,13 +40,13 @@ class HandleInertiaRequests extends Middleware
         // $unit and $member are defined here to ensure Wayfinder will detect
         // type hints for them when generating the Inertia shared data types.
 
-        /** @var \App\Models\Unit|null $unit */
+        /** @var Unit|null $unit */
         $unit = null;
 
-        /** @var \App\Models\UnitMember|null $member */
+        /** @var UnitMember|null $member */
         $member = null;
 
-        /** @var list<\App\Models\Unit> $member */
+        /** @var list<Unit> $member */
         $userUnits = [];
         if ($request->user()) {
             $userUnits = $request->user()->units()->select([

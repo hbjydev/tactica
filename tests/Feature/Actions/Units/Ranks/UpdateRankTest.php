@@ -163,7 +163,7 @@ describe('UpdateRank', function () {
 
             $rankInUnit1 = Rank::factory()->for($unit1)->create(['abbreviation' => 'A', 'ord' => 1]);
             $rankInUnit2 = Rank::factory()->for($unit2)->create(['abbreviation' => 'B', 'ord' => 1]);
-            $movingRank  = Rank::factory()->for($unit1)->create(['abbreviation' => 'C', 'ord' => 0]);
+            $movingRank = Rank::factory()->for($unit1)->create(['abbreviation' => 'C', 'ord' => 0]);
 
             // Move C in unit1 from ord:0 → ord:1
             (new UpdateRank)->update($movingRank, [

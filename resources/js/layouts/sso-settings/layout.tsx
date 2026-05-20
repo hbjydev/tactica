@@ -86,7 +86,9 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
 
                 <div className="flex-1 md:max-w-2xl">
                     <Card className="max-w-xl space-y-12">
-                        <CardContent className="flex flex-col gap-y-8">{children}</CardContent>
+                        <CardContent className="flex flex-col gap-y-8">
+                            {children}
+                        </CardContent>
                     </Card>
                 </div>
             </div>

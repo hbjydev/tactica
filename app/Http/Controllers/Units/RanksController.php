@@ -11,7 +11,6 @@ use App\Http\Requests\Units\Ranks\CreateRankRequest;
 use App\Models\Rank;
 use App\Models\Unit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -59,7 +58,9 @@ class RanksController extends Controller
         try {
             $action->update($rank, $request->post());
         } catch (\Exception $e) {
-            if ($e instanceof ValidationException) throw $e;
+            if ($e instanceof ValidationException) {
+                throw $e;
+            }
 
             Inertia::flash('toast', ['type' => 'error', 'message' => __('Failed to update rank.')]);
 
@@ -78,6 +79,7 @@ class RanksController extends Controller
         } catch (\Exception $e) {
             if ($e instanceof RankNotEmptyException) {
                 Inertia::flash('toast', ['type' => 'error', 'message' => __('You cannot delete this rank as it has members attached to it.')]);
+
                 return back();
             }
 

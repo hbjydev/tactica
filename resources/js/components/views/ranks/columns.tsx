@@ -2,11 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Unit } from '@/types/units';
 import { router, Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon, TrashIcon } from 'lucide-react';
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    PencilIcon,
+    TrashIcon,
+} from 'lucide-react';
 import { destroy, edit, update } from '@/wayfinder/routes/unit/ranks';
 import { App } from '@/wayfinder/types';
 
-export const createRankColumns = (unit: App.Models.Unit, ranks: App.Models.Rank[]): ColumnDef<App.Models.Rank>[] => {
+export const createRankColumns = (
+    unit: App.Models.Unit,
+    ranks: App.Models.Rank[],
+): ColumnDef<App.Models.Rank>[] => {
     const maxOrd = Math.max(...ranks.map((r) => r.ord));
     const minOrd = Math.min(...ranks.map((r) => r.ord));
 
@@ -37,8 +45,12 @@ export const createRankColumns = (unit: App.Models.Unit, ranks: App.Models.Rank[
             accessorKey: 'description',
             header: 'Description',
             cell: ({ row }) => {
-                return row.original.description || <span className="text-muted-foreground">&mdash;</span>;
-            }
+                return (
+                    row.original.description || (
+                        <span className="text-muted-foreground">&mdash;</span>
+                    )
+                );
+            },
         },
         {
             id: 'actions',
@@ -68,13 +80,20 @@ export const createRankColumns = (unit: App.Models.Unit, ranks: App.Models.Rank[
                         </Button>
 
                         <Button variant="outline" size="icon" asChild>
-                            <Link href={edit({ unit: unit.slug, rank: rank.id })}>
+                            <Link
+                                href={edit({ unit: unit.slug, rank: rank.id })}
+                            >
                                 <PencilIcon />
                             </Link>
                         </Button>
 
                         <Button variant="destructive" size="icon" asChild>
-                            <Link href={destroy({ unit: unit.slug, rank: rank.id })}>
+                            <Link
+                                href={destroy({
+                                    unit: unit.slug,
+                                    rank: rank.id,
+                                })}
+                            >
                                 <TrashIcon />
                             </Link>
                         </Button>
