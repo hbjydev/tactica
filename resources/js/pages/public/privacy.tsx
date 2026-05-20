@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
-import LegalLayout from '@/layouts/legal-layout';
-import LegalProse from '@/components/legal-prose';
 import type { ReactNode } from 'react';
+import LegalProse from '@/components/legal-prose';
+import LegalLayout from '@/layouts/legal-layout';
 import privacyRaw from '@legal/privacy.md?raw';
 
 export default function PrivacyPage() {

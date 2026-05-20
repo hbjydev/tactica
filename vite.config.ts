@@ -5,7 +5,10 @@ import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     plugins: [
