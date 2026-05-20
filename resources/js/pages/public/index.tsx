@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLogoIcon from '@/components/app-logo-icon';
 import MarketingLayout from '@/layouts/marketing-layout';
-import { login, register } from '@/routes/index';
+import { login } from '@/routes/index';
 import { create } from '@/routes/public/unit';
 import type { ReactNode } from 'react';
 import {
