@@ -1,9 +1,5 @@
-import AppLogoIcon from '@/components/app-logo-icon';
-import { Button } from '@/components/ui/button';
 import { PublicFooter } from '@/components/views/public/footer';
 import { PublicHeader } from '@/components/views/public/header';
-import { login, register } from '@/routes/index';
-import { create } from '@/routes/public/unit';
 import type { ReactNode } from 'react';
 
 interface Props {
