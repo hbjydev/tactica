@@ -4,7 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     plugins: [
@@ -12,10 +16,13 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
+                bunny('Space Grotesk', {
                     weights: [400, 500, 600],
                 }),
-            ],
+                bunny('Geist', {
+                    weights: [400, 500, 600],
+                }),
+            ]
         }),
         inertia(),
         react({
@@ -37,5 +44,11 @@ export default defineConfig({
         cors: {
             origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.ddev\.site)(?::\d+)?$/,
         },
-    }
+    },
+
+    resolve: {
+        alias: {
+            '@legal': path.resolve(__dirname, 'docs/hosted/legal'),
+        },
+    },
 });
