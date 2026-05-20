@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Units;
+namespace App\Http\Controllers\Public;
 
 use App\Actions\Units\CreateNewUnit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class UnitsController extends Controller
+class UnitWizardController extends Controller
 {
     public function create()
     {

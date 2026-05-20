@@ -5,6 +5,12 @@ use App\Http\Controllers\Settings\SecurityController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return auth('web')->check()
+            ? redirect(route('sso.profile.edit'))
+            : redirect(route('login'));
+    })->name('home');
+
     Route::redirect('settings', '/settings/profile');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
