@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\UnitMemberStatus;
 use App\Observers\UnitMemberObserver;
 use Database\Factories\UnitFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -16,6 +17,12 @@ class UnitMember extends Model
 {
     /** @use HasFactory<UnitFactory> */
     use HasFactory, HasUlids;
+
+    protected $casts = [
+        'status' => UnitMemberStatus::class,
+        'status_changed_at' => 'datetime',
+        'rank_changed_at' => 'datetime',
+    ];
 
     public function unit()
     {
