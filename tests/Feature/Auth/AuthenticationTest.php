@@ -19,7 +19,7 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('public.unit.create'));
+    $response->assertRedirect(route('home.unit.create'));
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
