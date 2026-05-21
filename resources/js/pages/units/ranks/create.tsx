@@ -2,7 +2,7 @@ import Heading from '@/components/heading';
 import { Card, CardContent } from '@/components/ui/card';
 import { RankForm } from '@/components/views/ranks/form';
 import AppLayout from '@/layouts/app-layout';
-import { create, list } from '@/routes/unit/ranks';
+import { create, list } from '@/wayfinder/routes/unit/ranks';
 import { Inertia } from '@/wayfinder/types';
 
 type Props = Inertia.Pages.Units.Ranks.Create;

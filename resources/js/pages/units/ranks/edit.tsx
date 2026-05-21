@@ -2,7 +2,7 @@ import Heading from '@/components/heading';
 import { Card, CardContent } from '@/components/ui/card';
 import { RankForm } from '@/components/views/ranks/form';
 import AppLayout from '@/layouts/app-layout';
-import { list } from '@/routes/unit/ranks';
+import { list } from '@/wayfinder/routes/unit/ranks';
 import { edit } from '@/wayfinder/routes/unit/ranks';
 import { App } from '@/wayfinder/types';
 import type { InertiaConfig } from '@inertiajs/core';

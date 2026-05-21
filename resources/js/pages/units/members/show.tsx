@@ -10,7 +10,7 @@ import { DataTable } from '@/components/ui/data-table';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { toMemberName } from '@/lib/utils';
-import { list, show } from '@/routes/unit/members';
+import { list, show } from '@/wayfinder/routes/unit/members';
 import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
 

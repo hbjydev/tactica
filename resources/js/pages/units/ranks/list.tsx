@@ -1,8 +1,7 @@
-import { Rank, Unit, UnitMember } from '@/types/units';
 import AppLayout from '@/layouts/app-layout';
 import { DataTable } from '@/components/ui/data-table';
 import { createRankColumns } from '@/components/views/ranks/columns';
-import { create, list } from '@/routes/unit/ranks';
+import { create, list } from '@/wayfinder/routes/unit/ranks';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
@@ -43,7 +42,7 @@ RanksList.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Ranks',
-                href: list({ unit: props.unit.slug }),
+                href: list({ unit: props.unit?.slug! }),
             },
         ],
     },

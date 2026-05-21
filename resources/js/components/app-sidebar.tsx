@@ -7,9 +7,9 @@ import {
     SidebarFooter,
     SidebarHeader,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes/unit';
-import { list as listRanks } from '@/routes/unit/ranks';
-import { list as listMembers } from '@/routes/unit/members';
+import { dashboard } from '@/wayfinder/routes/unit';
+import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
+import { list as listMembers } from '@/wayfinder/routes/unit/members';
 import type { NavItem } from '@/types';
 import { UnitSwitcher } from './unit-switcher';
 import { App } from '@/wayfinder/types';

@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import Heading from '@/components/heading';
-import { dashboard } from '@/routes/unit';
+import { dashboard } from '@/wayfinder/routes/unit';
 import { Inertia } from '@/wayfinder/types';
 
 type Props = Inertia.Pages.Units.Dashboard;

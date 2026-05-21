@@ -1,11 +1,11 @@
-import { show } from '@/routes/unit/members';
-import { UnitMember } from '@/types/units';
+import { show } from '@/wayfinder/routes/unit/members';
+import { App } from '@/wayfinder/types';
 import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import moment from 'moment';
 import { ReactNode } from 'react';
 
-export const memberColumns: ColumnDef<UnitMember>[] = [
+export const memberColumns: ColumnDef<App.Models.UnitMember>[] = [
     {
         accessorKey: 'display_name',
         header: 'Display Name',

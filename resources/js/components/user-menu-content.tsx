@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes';
-import { show as memberProfile } from '@/routes/unit/members';
-import { edit as ssoSettings } from '@/routes/sso/profile';
+import { logout } from '@/wayfinder/routes';
+import { show as memberProfile } from '@/wayfinder/routes/unit/members';
+import { edit as ssoSettings } from '@/wayfinder/routes/sso/profile';
 import { App } from '@/wayfinder/types';
 
 type Props = {

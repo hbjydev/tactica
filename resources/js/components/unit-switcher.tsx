@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar';
-import { dashboard } from '@/routes/unit';
+import { dashboard } from '@/wayfinder/routes/unit';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { usePage } from '@inertiajs/react';

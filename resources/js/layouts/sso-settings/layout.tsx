@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
-import { edit as editAppearance } from '@/routes/sso/appearance';
-import { edit as profile } from '@/routes/sso/profile';
-import { edit as editSecurity } from '@/routes/sso/security';
+import { edit as editAppearance } from '@/wayfinder/routes/sso/appearance';
+import { edit as profile } from '@/wayfinder/routes/sso/profile';
+import { edit as editSecurity } from '@/wayfinder/routes/sso/security';
 import type { NavItem } from '@/types';
 import { LockIcon, LogOutIcon, MonitorIcon, UserIcon } from 'lucide-react';
-import { logout } from '@/routes';
+import { logout } from '@/wayfinder/routes';
 import { Card, CardContent } from '@/components/ui/card';
 import { UnitSwitcher } from '@/components/unit-switcher';
 

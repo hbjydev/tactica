@@ -7,11 +7,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+import { register } from '@/wayfinder/routes';
+import { store } from '@/wayfinder/routes/login';
+import { request } from '@/wayfinder/routes/password';
 import { FieldDescription } from '@/components/ui/field';
-import { privacy, terms } from '@/routes/public/legal';
+import { privacy, terms } from '@/wayfinder/routes/public/legal';
 
 type Props = {
     status?: string;
