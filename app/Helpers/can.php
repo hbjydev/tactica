@@ -7,7 +7,7 @@ use App\Models\UnitRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-if (! function_exists('can')) {
+if (!function_exists('can')) {
     function can(
         UnitPermission $permission,
         ?Unit $unit = null,

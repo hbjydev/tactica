@@ -139,6 +139,8 @@ function PermissionsTab({
             { permissions: perms },
             {
                 preserveScroll: true,
+                preserveState: true,
+                only: ['roles'],
                 onSuccess: () => setDirty(false),
             },
         );
@@ -224,7 +226,12 @@ function AddMemberDialog({
         router.post(
             addBinding.url({ unit: unit.slug, role: role.id }),
             { member_id: memberId },
-            { preserveScroll: true, onSuccess: () => setOpen(false) },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                only: ['roles'],
+                onSuccess: () => setOpen(false),
+            },
         );
     }
 
@@ -304,7 +311,11 @@ function MembersTab({
                 role: role.id,
                 member: memberId,
             }),
-            { preserveScroll: true },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                only: ['roles'],
+            },
         );
     }
 
@@ -316,17 +327,30 @@ function MembersTab({
                     {assignedMembers.length === 1 ? 'member' : 'members'} with
                     this role.
                 </p>
-                {editable && (
-                    <AddMemberDialog
-                        role={role}
-                        unit={unit}
-                        allMembers={allMembers}
-                        assignedIds={assignedIds}
-                    />
-                )}
+
+                {
+                    (role.type !== 'everyone' && role.type !== 'members') && (
+                        <AddMemberDialog
+                            role={role}
+                            unit={unit}
+                            allMembers={allMembers}
+                            assignedIds={assignedIds}
+                        />
+                    )
+                }
             </div>
 
             <div className="flex flex-col gap-1">
+                {role.type === 'everyone' && (
+                    <p className="py-8 text-center text-sm text-muted-foreground">
+                        This role applies to every user of Tactica, you cannot assign members to it directly.
+                    </p>
+                )}
+                {role.type === 'members' && (
+                    <p className="py-8 text-center text-sm text-muted-foreground">
+                        This role applies to every member of your unit automatically, you cannot assign members to it directly.
+                    </p>
+                )}
                 {assignedMembers.length === 0 && (
                     <p className="py-8 text-center text-sm text-muted-foreground">
                         No members with this role yet.

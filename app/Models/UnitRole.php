@@ -61,7 +61,7 @@ class UnitRole extends Model
 
     public function hasPermission(UnitPermission $permission): bool
     {
-        return ($this->permissions & $permission->value) === $permission;
+        return ($this->permissions & $permission->value) === $permission->value;
     }
 
     public function addPermission(UnitPermission $permission): void
