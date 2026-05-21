@@ -21,6 +21,7 @@ const RanksList = ({ unit, ranks }: Props) => {
                 />
 
                 <Button variant="outline" asChild>
+                    {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
                     <Link href={create({ unit: unit?.slug! })}>
                         <PlusIcon />
                         Create
@@ -42,6 +43,7 @@ RanksList.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Ranks',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: list({ unit: props.unit?.slug! }),
             },
         ],

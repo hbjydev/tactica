@@ -13,6 +13,7 @@ export const memberColumns: ColumnDef<App.Models.UnitMember>[] = [
             return (
                 <Link
                     href={show({
+                        // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                         unit: row.original.unit?.slug!,
                         member: row.original.id,
                     })}

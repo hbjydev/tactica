@@ -150,11 +150,13 @@ UnitMemberShow.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Members',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: list({ unit: props.unit?.slug! }),
             },
             {
                 title: toMemberName(props.member),
                 href: show({
+                    // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                     unit: props.unit?.slug!,
                     member: props.member.id,
                 }),
