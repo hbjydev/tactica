@@ -61,7 +61,7 @@ const UnitMemberShow = ({ auth, member, unit }: Props) => {
                     className="!mb-0"
                 />
 
-                {auth.member && (
+                {auth.user && auth.user.member && (
                     <div className="flex items-center gap-x-2">
                         <Button size="icon" asChild>
                             {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}

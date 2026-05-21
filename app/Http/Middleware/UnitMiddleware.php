@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShareUnitData
+class UnitMiddleware
 {
     /**
      * Handle an incoming request.
@@ -21,18 +21,9 @@ class ShareUnitData
             ->where('slug', $request->route()->originalParameter('unit'))
             ->firstOrFail();
 
+        Unit::setCurrent($unit);
+
         Inertia::shareOnce('unit', fn () => $unit);
-
-        $user = $request->user();
-        if ($user != null) {
-            $member = $user
-                ->unitMemberships()
-                ->where('unit_id', $unit->id)
-                ->with('rank')
-                ->first();
-
-            Inertia::shareOnce('auth.member', fn () => $member);
-        }
 
         return $next($request);
     }

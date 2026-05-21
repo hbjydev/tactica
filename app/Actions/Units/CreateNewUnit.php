@@ -6,7 +6,6 @@ use App\Actions\Units\Members\CreateNewUnitMember;
 use App\Actions\Units\Ranks\CreateNewRank;
 use App\Models\Enums\UnitMemberStatus;
 use App\Models\Unit;
-use App\Models\UnitMember;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -32,6 +31,7 @@ class CreateNewUnit
         DB::beginTransaction();
 
         try {
+            /** @var Unit $unit */
             $unit = Unit::create([
                 'slug' => $input['slug'],
                 'display_name' => $input['display_name'],
@@ -56,7 +56,9 @@ class CreateNewUnit
                 'ord' => 2,
             ]);
 
-            $this->newMemberAction->create($unit, $owner, [
+            ['admin' => $role] = $unit->createDefaultRoles();
+
+            $member = $this->newMemberAction->create($unit, $owner, [
                 'display_name' => $owner->display_name,
 
                 'rank_id' => $captain->id,
@@ -64,6 +66,10 @@ class CreateNewUnit
 
                 'status' => UnitMemberStatus::Active,
                 'status_changed_at' => now('UTC'),
+            ]);
+
+            $member->roleBindings()->create([
+                'unit_role_id' => $role->id,
             ]);
 
             DB::commit();

@@ -1,4 +1,4 @@
-import { LayoutGrid, Medal, Users } from 'lucide-react';
+import { LayoutGrid, Medal, Shield, Users } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -10,6 +10,7 @@ import {
 import { dashboard } from '@/wayfinder/routes/unit';
 import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
 import { list as listMembers } from '@/wayfinder/routes/unit/members';
+import { list as listRoles } from '@/wayfinder/routes/unit/roles';
 import type { NavItem } from '@/types';
 import { UnitSwitcher } from './unit-switcher';
 import { App } from '@/wayfinder/types';
@@ -35,6 +36,12 @@ export function AppSidebar({
             title: 'Ranks',
             href: listRanks({ unit: currentUnit.slug }),
             icon: Medal,
+        },
+
+        {
+            title: 'Roles',
+            href: listRoles({ unit: currentUnit.slug }),
+            icon: Shield,
         },
 
         {

@@ -17,6 +17,8 @@ class MembersController extends Controller
 {
     public function list(Unit $unit)
     {
+        Gate::authorize('viewAny', UnitMember::class);
+
         /** @var LengthAwarePaginator<int, UnitMember> $members */
         $members = $unit
             ->members()
@@ -31,7 +33,7 @@ class MembersController extends Controller
 
     public function show(Unit $unit, UnitMember $member)
     {
-        Gate::authorize('show', $member);
+        Gate::authorize('view', $member);
 
         return Inertia::render('units/members/show', [
             'member' => $member->load('rank', 'user'),
@@ -77,6 +79,7 @@ class MembersController extends Controller
 
         $action->delete($member);
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully removed member from unit.')]);
+
         return to_route('unit.members.list', ['unit' => $unit]);
     }
 }
