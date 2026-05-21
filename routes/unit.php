@@ -28,4 +28,7 @@ Route::prefix('/members')
     ->group(function () {
         Route::get('/', [MembersController::class, 'list'])->name('list');
         Route::get('/{member}', [MembersController::class, 'show'])->name('show');
+
+        Route::get('/{member}/edit', [MembersController::class, 'edit'])->name('edit');
+        Route::patch('/{member}', [MembersController::class, 'update'])->name('update');
     });

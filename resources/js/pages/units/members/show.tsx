@@ -10,7 +10,8 @@ import { DataTable } from '@/components/ui/data-table';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { toMemberName } from '@/lib/utils';
-import { list, show } from '@/wayfinder/routes/unit/members';
+import { edit, list, show } from '@/wayfinder/routes/unit/members';
+import { Link } from '@inertiajs/react';
 import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
 
@@ -126,6 +127,17 @@ const UnitMemberShow = ({ member, unit }: Props) => {
                     <CardHeader>
                         <CardTitle>{toMemberName(member)}</CardTitle>
                     </CardHeader>
+                    <CardContent>
+                        <Link
+                            href={edit({
+                                unit: unit?.slug!,
+                                member: member.id,
+                            })}
+                            className="text-sm underline hover:text-primary"
+                        >
+                            Edit profile
+                        </Link>
+                    </CardContent>
                 </Card>
             </div>
 
