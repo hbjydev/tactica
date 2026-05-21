@@ -29,7 +29,7 @@ describe('UpdateUnitMember', function () {
         $rankB = Rank::factory()->for($unit)->create(['abbreviation' => 'Cpl', 'ord' => 1]);
         $member = UnitMember::factory()->for($unit)->for($rankA)->create(['status' => UnitMemberStatus::Active]);
 
-        actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create());
 
         (new UpdateUnitMember)->update($member, [
             'display_name' => $member->display_name,
