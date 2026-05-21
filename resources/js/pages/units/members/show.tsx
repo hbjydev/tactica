@@ -137,8 +137,7 @@ const UnitMemberShow = ({ member, unit }: Props) => {
                     <CardHeader>
                         <CardTitle>{toMemberName(member)}</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                    </CardContent>
+                    <CardContent></CardContent>
                 </Card>
             </div>
 

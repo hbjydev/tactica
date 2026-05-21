@@ -102,9 +102,7 @@ export const MemberForm = ({ member, unit, ranks }: Props) => {
                     </Select>
                     <FieldError
                         errors={
-                            errors.rank_id
-                                ? [{ message: errors.rank_id }]
-                                : []
+                            errors.rank_id ? [{ message: errors.rank_id }] : []
                         }
                     />
                 </Field>
@@ -141,9 +139,7 @@ export const MemberForm = ({ member, unit, ranks }: Props) => {
                     </Select>
                     <FieldError
                         errors={
-                            errors.status
-                                ? [{ message: errors.status }]
-                                : []
+                            errors.status ? [{ message: errors.status }] : []
                         }
                     />
                 </Field>
