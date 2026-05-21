@@ -9,7 +9,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/wayfinder/routes';
 import { store } from '@/wayfinder/routes/register';
 import { FieldDescription } from '@/components/ui/field';
-import { privacy, terms } from '@/wayfinder/routes/public/legal';
+import { privacy, terms } from '@/wayfinder/routes/home/legal';
 
 type Props = {
     passwordRules: string;

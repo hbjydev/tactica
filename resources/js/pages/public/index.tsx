@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLogoIcon from '@/components/app-logo-icon';
 import MarketingLayout from '@/layouts/marketing-layout';
 import { login } from '@/wayfinder/routes/index';
-import { create } from '@/wayfinder/routes/public/unit';
+import { create } from '@/wayfinder/routes/home/unit';
 import type { ReactNode } from 'react';
 import {
     IconUsers,

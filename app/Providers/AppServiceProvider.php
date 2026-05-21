@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
             if (! $firstUnit) {
                 return route(
-                    'public.unit.create',
+                    'home.unit.create',
                     []
                 );
             }

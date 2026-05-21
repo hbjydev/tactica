@@ -11,7 +11,7 @@ import { register } from '@/wayfinder/routes';
 import { store } from '@/wayfinder/routes/login';
 import { request } from '@/wayfinder/routes/password';
 import { FieldDescription } from '@/components/ui/field';
-import { privacy, terms } from '@/wayfinder/routes/public/legal';
+import { privacy, terms } from '@/wayfinder/routes/home/legal';
 
 type Props = {
     status?: string;
