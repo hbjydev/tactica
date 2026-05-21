@@ -43,4 +43,4 @@ jobs:
         uses: ./.github/actions/setup-repo
 
       - name: Run Pint
-        run: ddev php artisan lint
+        run: ddev php vendor/bin/pint --test --diff=main
