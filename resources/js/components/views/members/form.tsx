@@ -17,7 +17,7 @@ import { Spinner } from '@/components/ui/spinner';
 import MembersController from '@/wayfinder/App/Http/Controllers/Units/MembersController';
 import { App } from '@/wayfinder/types';
 import { useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { SubmitEvent } from 'react';
 
 type Props = {
     member: App.Models.UnitMember;
@@ -44,7 +44,7 @@ export const MemberForm = ({ member, unit, ranks }: Props) => {
         member: member.id,
     });
 
-    const submit = (e: FormEvent<HTMLFormElement>) => {
+    const submit = (e: SubmitEvent) => {
         e.preventDefault();
         patch(action, { preserveScroll: true });
     };
@@ -95,7 +95,7 @@ export const MemberForm = ({ member, unit, ranks }: Props) => {
                         <SelectContent>
                             {ranks.map((rank) => (
                                 <SelectItem key={rank.id} value={rank.id}>
-                                    {rank.display_name}
+                                    {rank.display_name} ({rank.abbreviation})
                                 </SelectItem>
                             ))}
                         </SelectContent>
