@@ -15,9 +15,12 @@ class UpdateUnitMember
      */
     public function update(UnitMember $member, array $input): void
     {
-        Validator::make($input, $this->unitMemberRules($member->unit_id))->validate();
+        $validated = Validator::make(
+            $input,
+            $this->unitMemberRules($member->unit_id),
+        )->validate();
 
-        $member->fill($input);
+        $member->fill($validated);
         $member->save();
     }
 }
