@@ -14,6 +14,8 @@ import { edit, list, show } from '@/wayfinder/routes/unit/members';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
+import { Button } from '@/components/ui/button';
+import { PencilIcon } from 'lucide-react';
 
 type Props = Inertia.Pages.Units.Members.Show;
 
@@ -41,12 +43,20 @@ const UnitMemberShow = ({ member, unit }: Props) => {
 
     return (
         <div className="grid gap-4 p-4 xl:grid-cols-7">
-            <div className="flex flex-col xl:col-span-7">
+            <div className="flex items-center justify-between xl:col-span-7">
                 <Heading
                     title={`Personnel record: ${toMemberName(member)}`}
                     description={`Detailed information about ${toMemberName(member)}'s service in ${unit?.display_name}.`}
                     className="!mb-0"
                 />
+
+                <Button variant="outline" asChild>
+                    {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
+                    <Link href={edit({ unit: unit?.slug!, member: member.id })}>
+                        <PencilIcon />
+                        Edit
+                    </Link>
+                </Button>
             </div>
 
             <div className="grid gap-4 xl:col-span-2">
@@ -128,15 +138,6 @@ const UnitMemberShow = ({ member, unit }: Props) => {
                         <CardTitle>{toMemberName(member)}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Link
-                            href={edit({
-                                unit: unit?.slug!,
-                                member: member.id,
-                            })}
-                            className="text-sm underline hover:text-primary"
-                        >
-                            Edit profile
-                        </Link>
                     </CardContent>
                 </Card>
             </div>
