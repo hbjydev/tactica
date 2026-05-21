@@ -34,10 +34,12 @@ RanksEdit.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Ranks',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: list({ unit: props.unit?.slug! }),
             },
             {
                 title: 'Update',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: edit({ unit: props.unit?.slug!, rank: props.rank.id }),
             },
         ],

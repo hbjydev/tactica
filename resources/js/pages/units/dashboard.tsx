@@ -48,6 +48,7 @@ Dashboard.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Dashboard',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: dashboard({ slug: props.unit?.slug! }),
             },
         ],

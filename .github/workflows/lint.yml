@@ -28,10 +28,10 @@ jobs:
         uses: ./.github/actions/setup-repo
 
       - name: Format Frontend
-        run: ddev bun run format
+        run: ddev bun run format:check
 
       - name: Lint Frontend
-        run: ddev bun run lint
+        run: ddev bun run lint:check
 
   quality-backend:
     runs-on: ubuntu-latest
@@ -43,4 +43,4 @@ jobs:
         uses: ./.github/actions/setup-repo
 
       - name: Run Pint
-        run: ddev php artisan lint
+        run: ddev composer run lint:check

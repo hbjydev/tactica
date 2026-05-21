@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { store } from '@/wayfinder/routes/public/unit';
+import { store } from '@/wayfinder/routes/home/unit';
 import { Textarea } from '@/components/ui/textarea';
 import {
     InputGroup,

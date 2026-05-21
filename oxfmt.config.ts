@@ -1,0 +1,21 @@
+import { defineConfig } from 'oxfmt';
+
+export default defineConfig({
+    semi: true,
+    singleQuote: true,
+    singleAttributePerLine: false,
+    htmlWhitespaceSensitivity: 'css',
+    printWidth: 80,
+    tabWidth: 4,
+
+    sortPackageJson: false,
+    sortTailwindcss: {
+        stylesheet: 'resources/css/app.css',
+        functions: ['clsx', 'cn', 'cva'],
+    },
+
+    ignorePatterns: [
+        'resources/js/components/ui/*',
+        'resources/views/mail/*'
+    ]
+});

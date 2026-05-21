@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Public;
+namespace App\Http\Controllers\Home;
 
 use App\Actions\Units\CreateNewUnit;
 use App\Http\Controllers\Controller;

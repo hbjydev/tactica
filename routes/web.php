@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Public\UnitWizardController;
+use App\Http\Controllers\Home\UnitWizardController;
 use App\Http\Middleware\ShareUnitData;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('app.domain'))
-    ->name('public.')
+    ->name('home.')
     ->group(function () {
-        Route::inertia('/', 'public/index')->name('home');
+        Route::inertia('/', 'public/index')->name('index');
 
         Route::name('legal.')->group(function () {
             Route::inertia('/terms', 'public/terms')->name('terms');

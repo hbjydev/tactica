@@ -14,8 +14,11 @@ const UnitMembersList = ({ members, unit }: Props) => {
                 title="Members"
                 description={`The members of ${unit?.display_name}, with links to their service records.`}
             />
-            {/* @ts-expect-error This fails because of some Wayfinder issues (it doesn't typecast pagination) */}
-            <DataTable columns={memberColumns} data={members.data as App.Models.UnitMember[]} />
+            <DataTable
+                columns={memberColumns}
+                // @ts-expect-error This fails because of some Wayfinder issues (it doesn't typecast pagination)
+                data={members.data as App.Models.UnitMember[]}
+            />
         </div>
     );
 };
@@ -29,6 +32,7 @@ UnitMembersList.layout = (props: Props) => [
         breadcrumbs: [
             {
                 title: 'Members',
+                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
                 href: list({ unit: props.unit?.slug! }),
             },
         ],

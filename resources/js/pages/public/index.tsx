@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLogoIcon from '@/components/app-logo-icon';
 import MarketingLayout from '@/layouts/marketing-layout';
+import { create } from '@/wayfinder/routes/home/unit';
 import { login } from '@/wayfinder/routes/index';
-import { create } from '@/wayfinder/routes/public/unit';
 import type { ReactNode } from 'react';
 import {
     IconUsers,

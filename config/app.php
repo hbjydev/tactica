@@ -53,7 +53,7 @@ return [
     */
 
     'domain' => env('APP_DOMAIN', 'tactica.ddev.site'),
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://tactica.ddev.site'),
 
     /*
     |--------------------------------------------------------------------------
