@@ -1,5 +1,16 @@
 import Heading from '@/components/heading';
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
     Card,
     CardContent,
     CardDescription,
@@ -10,16 +21,16 @@ import { DataTable } from '@/components/ui/data-table';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { toMemberName } from '@/lib/utils';
-import { edit, list, show } from '@/wayfinder/routes/unit/members';
-import { Link } from '@inertiajs/react';
+import { destroy, edit, list, show } from '@/wayfinder/routes/unit/members';
+import { Link, router } from '@inertiajs/react';
 import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
 import { Button } from '@/components/ui/button';
-import { PencilIcon } from 'lucide-react';
+import { PencilIcon, TrashIcon } from 'lucide-react';
 
 type Props = Inertia.Pages.Units.Members.Show;
 
-const UnitMemberShow = ({ member, unit }: Props) => {
+const UnitMemberShow = ({ auth, member, unit }: Props) => {
     let memberStatusText;
     let memberStatusColor;
     switch (member.status) {
@@ -50,13 +61,61 @@ const UnitMemberShow = ({ member, unit }: Props) => {
                     className="!mb-0"
                 />
 
-                <Button variant="outline" asChild>
-                    {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
-                    <Link href={edit({ unit: unit?.slug!, member: member.id })}>
-                        <PencilIcon />
-                        Edit
-                    </Link>
-                </Button>
+                {auth.member && (
+                    <div className="flex items-center gap-x-2">
+                        <Button size="icon" asChild>
+                            {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
+                            <Link
+                                href={edit({
+                                    unit: unit?.slug!,
+                                    member: member.id,
+                                })}
+                            >
+                                <PencilIcon />
+                            </Link>
+                        </Button>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button size="icon" variant="destructive">
+                                    <TrashIcon />
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Delete {toMemberName(member)}?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This will permanently delete{' '}
+                                        {toMemberName(member)}'s personnel
+                                        record and all associated data. This
+                                        action cannot be undone.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() =>
+                                            router.delete(
+                                                destroy.url({
+                                                    // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
+                                                    unit: unit?.slug!,
+                                                    member: member.id,
+                                                }),
+                                            )
+                                        }
+                                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    >
+                                        Delete member
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
+                )}
             </div>
 
             <div className="grid gap-4 xl:col-span-2">

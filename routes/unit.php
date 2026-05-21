@@ -31,4 +31,6 @@ Route::prefix('/members')
 
         Route::get('/{member}/edit', [MembersController::class, 'edit'])->name('edit');
         Route::patch('/{member}', [MembersController::class, 'update'])->name('update');
+
+        Route::delete('/{member}', [MembersController::class, 'destroy'])->name('destroy');
     });

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Units;
 
+use App\Actions\Units\Members\CreateNewUnitMember;
 use App\Actions\Units\Ranks\CreateNewRank;
 use App\Models\Enums\UnitMemberStatus;
 use App\Models\Unit;
@@ -13,7 +14,8 @@ use Illuminate\Support\Facades\Validator;
 class CreateNewUnit
 {
     public function __construct(
-        private CreateNewRank $newRankAction
+        private CreateNewRank $newRankAction,
+        private CreateNewUnitMember $newMemberAction,
     ) {}
 
     /**
@@ -54,12 +56,12 @@ class CreateNewUnit
                 'ord' => 2,
             ]);
 
-            UnitMember::create([
-                'unit_id' => $unit->id,
-                'user_id' => $owner->id,
+            $this->newMemberAction->create($unit, $owner, [
                 'display_name' => $owner->display_name,
+
                 'rank_id' => $captain->id,
                 'rank_changed_at' => now('UTC'),
+
                 'status' => UnitMemberStatus::Active,
                 'status_changed_at' => now('UTC'),
             ]);
