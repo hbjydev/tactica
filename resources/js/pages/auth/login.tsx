@@ -8,10 +8,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/wayfinder/routes';
+import { privacy, terms } from '@/wayfinder/routes/home/legal';
 import { store } from '@/wayfinder/routes/login';
 import { request } from '@/wayfinder/routes/password';
 import { FieldDescription } from '@/components/ui/field';
-import { privacy, terms } from '@/wayfinder/routes/home/legal';
 
 type Props = {
     status?: string;
