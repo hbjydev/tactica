@@ -15,7 +15,10 @@ const UnitMembersList = ({ members, unit }: Props) => {
                 description={`The members of ${unit?.display_name}, with links to their service records.`}
             />
             {/* @ts-expect-error This fails because of some Wayfinder issues (it doesn't typecast pagination) */}
-            <DataTable columns={memberColumns} data={members.data as App.Models.UnitMember[]} />
+            <DataTable
+                columns={memberColumns}
+                data={members.data as App.Models.UnitMember[]}
+            />
         </div>
     );
 };
