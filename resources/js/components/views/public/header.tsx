@@ -1,7 +1,7 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Button } from '@/components/ui/button';
 import { login } from '@/wayfinder/routes';
-import { home } from '@/wayfinder/routes/home';
+import { index as home } from '@/wayfinder/routes/home';
 import { create } from '@/wayfinder/routes/home/unit';
 
 export const PublicHeader = () => {

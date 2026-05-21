@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::domain(config('app.domain'))
     ->name('home.')
     ->group(function () {
-        Route::inertia('/', 'public/index')->name('home');
+        Route::inertia('/', 'public/index')->name('index');
 
         Route::name('legal.')->group(function () {
             Route::inertia('/terms', 'public/terms')->name('terms');
