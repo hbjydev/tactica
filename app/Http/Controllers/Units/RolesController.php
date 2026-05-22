@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Units;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enums\UnitRoleType;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use App\Models\UnitRole;
@@ -35,6 +36,67 @@ class RolesController extends Controller
             'roles' => $roles,
             'members' => $members,
         ]);
+    }
+
+    public function store(Unit $unit, Request $request)
+    {
+        Gate::authorize('create', UnitRole::class);
+
+        $validated = $request->validate([
+            'display_name' => ['required', 'string', 'max:64'],
+            'description' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $role = UnitRole::create([
+            'unit_id' => $unit->id,
+            'display_name' => $validated['display_name'],
+            'description' => $validated['description'] ?? null,
+            'permissions' => 0,
+            'type' => UnitRoleType::CUSTOM,
+        ]);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role created.')]);
+
+        return back()->with('newRoleId', $role->id);
+    }
+
+    public function update(Unit $unit, UnitRole $role, Request $request)
+    {
+        Gate::authorize('update', $role);
+
+        if (! $role->isEditable()) {
+            abort(403, 'This role cannot be edited.');
+        }
+
+        $validated = $request->validate([
+            'display_name' => ['required', 'string', 'max:64'],
+            'description' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $role->update([
+            'display_name' => $validated['display_name'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role updated.')]);
+
+        return back();
+    }
+
+    public function destroy(Unit $unit, UnitRole $role)
+    {
+        Gate::authorize('delete', $role);
+
+        if (! $role->isEditable()) {
+            abort(403, 'This role cannot be deleted.');
+        }
+
+        $role->bindings()->delete();
+        $role->delete();
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role deleted.')]);
+
+        return back();
     }
 
     public function updatePermissions(Unit $unit, UnitRole $role, Request $request)

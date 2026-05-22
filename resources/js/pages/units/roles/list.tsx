@@ -4,6 +4,9 @@ import AppLayout from '@/layouts/app-layout';
 import { Inertia } from '@/wayfinder/types';
 import {
     list,
+    store,
+    update,
+    destroy,
     updatePermissions,
     addBinding,
     removeBinding,
@@ -13,6 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import {
     Dialog,
@@ -21,8 +25,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { PlusIcon, Trash2Icon, ShieldIcon } from 'lucide-react';
+import { PlusIcon, Trash2Icon, ShieldIcon, PencilIcon } from 'lucide-react';
 
 // Mirrors App\Models\Enums\UnitPermission
 const PERMISSIONS = [
@@ -75,7 +90,6 @@ function roleInitials(name: string) {
 }
 
 // Local types that match what the PHP controller actually sends.
-// Wayfinder model types in this environment are minimal (local build artefact).
 interface UserData {
     id: string;
     username: string;
@@ -110,6 +124,184 @@ type Props = Inertia.SharedData & {
 };
 
 type Tab = 'permissions' | 'members';
+
+// ─── Create role dialog ──────────────────────────────────────────────────────
+
+function CreateRoleDialog({
+    unit,
+    onCreated,
+}: {
+    unit: UnitData;
+    onCreated?: () => void;
+}) {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault();
+        router.post(
+            store.url({ unit: unit.slug }),
+            { display_name: name, description: description || null },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                only: ['roles'],
+                onSuccess: () => {
+                    setOpen(false);
+                    setName('');
+                    setDescription('');
+                    onCreated?.();
+                },
+            },
+        );
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-full justify-start gap-2 px-2 text-sm text-muted-foreground hover:text-foreground"
+                >
+                    <PlusIcon className="size-3.5" />
+                    New role
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-sm">
+                <DialogHeader>
+                    <DialogTitle>Create role</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={submit} className="mt-2 flex flex-col gap-3">
+                    <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="role-name">Name</Label>
+                        <Input
+                            id="role-name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="e.g. Squad Leader"
+                            required
+                            autoFocus
+                            maxLength={64}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="role-description">
+                            Description{' '}
+                            <span className="font-normal text-muted-foreground">
+                                (optional)
+                            </span>
+                        </Label>
+                        <Textarea
+                            id="role-description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="What is this role for?"
+                            rows={2}
+                            maxLength={255}
+                        />
+                    </div>
+                    <div className="flex justify-end gap-2 pt-1">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button type="submit" size="sm" disabled={!name.trim()}>
+                            Create
+                        </Button>
+                    </div>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+// ─── Rename role dialog ──────────────────────────────────────────────────────
+
+function RenameRoleDialog({ role, unit }: { role: RoleData; unit: UnitData }) {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState(role.display_name);
+    const [description, setDescription] = useState(role.description ?? '');
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault();
+        router.patch(
+            update.url({ unit: unit.slug, role: role.id }),
+            { display_name: name, description: description || null },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                only: ['roles'],
+                onSuccess: () => setOpen(false),
+            },
+        );
+    }
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    className="size-7 shrink-0 text-muted-foreground hover:text-foreground"
+                >
+                    <PencilIcon className="size-3.5" />
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-sm">
+                <DialogHeader>
+                    <DialogTitle>Edit role</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={submit} className="mt-2 flex flex-col gap-3">
+                    <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="rename-name">Name</Label>
+                        <Input
+                            id="rename-name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            autoFocus
+                            maxLength={64}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="rename-description">
+                            Description{' '}
+                            <span className="font-normal text-muted-foreground">
+                                (optional)
+                            </span>
+                        </Label>
+                        <Textarea
+                            id="rename-description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={2}
+                            maxLength={255}
+                        />
+                    </div>
+                    <div className="flex justify-end gap-2 pt-1">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button type="submit" size="sm" disabled={!name.trim()}>
+                            Save
+                        </Button>
+                    </div>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
 // ─── Permissions tab ────────────────────────────────────────────────────────
 
@@ -327,31 +519,24 @@ function MembersTab({
                     {assignedMembers.length === 1 ? 'member' : 'members'} with
                     this role.
                 </p>
-
-                {
-                    (role.type !== 'everyone' && role.type !== 'members') && (
-                        <AddMemberDialog
-                            role={role}
-                            unit={unit}
-                            allMembers={allMembers}
-                            assignedIds={assignedIds}
-                        />
-                    )
-                }
+                {editable && (
+                    <AddMemberDialog
+                        role={role}
+                        unit={unit}
+                        allMembers={allMembers}
+                        assignedIds={assignedIds}
+                    />
+                )}
             </div>
 
             <div className="flex flex-col gap-1">
                 {role.type === 'everyone' && (
                     <p className="py-8 text-center text-sm text-muted-foreground">
-                        This role applies to every user of Tactica, you cannot assign members to it directly.
+                        This role applies to every member of your unit
+                        automatically, you cannot assign members to it directly.
                     </p>
                 )}
-                {role.type === 'members' && (
-                    <p className="py-8 text-center text-sm text-muted-foreground">
-                        This role applies to every member of your unit automatically, you cannot assign members to it directly.
-                    </p>
-                )}
-                {assignedMembers.length === 0 && (
+                {role.type !== 'everyone' && assignedMembers.length === 0 && (
                     <p className="py-8 text-center text-sm text-muted-foreground">
                         No members with this role yet.
                     </p>
@@ -402,8 +587,17 @@ const RolesList = ({ roles, members, unit }: Props) => {
     const [activeTab, setActiveTab] = useState<Tab>('permissions');
 
     const selected = roles.find((r) => r.id === selectedId) ?? null;
-    // unit is always present in unit-scoped routes
     const unitData = unit as UnitData;
+
+    function deleteRole(role: RoleData) {
+        router.delete(destroy.url({ unit: unitData.slug, role: role.id }), {
+            preserveScroll: true,
+            preserveState: false, // let state reset so we land on the next role
+            only: ['roles'],
+            onSuccess: () =>
+                setSelectedId(roles.find((r) => r.id !== role.id)?.id ?? null),
+        });
+    }
 
     return (
         <div className="flex h-full min-h-0 overflow-hidden">
@@ -448,6 +642,10 @@ const RolesList = ({ roles, members, unit }: Props) => {
                                 </button>
                             );
                         })}
+
+                        <Separator className="my-1" />
+
+                        <CreateRoleDialog unit={unitData} />
                     </div>
                 </div>
             </aside>
@@ -462,8 +660,8 @@ const RolesList = ({ roles, members, unit }: Props) => {
                     <>
                         {/* Role header */}
                         <div className="border-b px-6 py-4">
-                            <div className="flex items-center gap-3">
-                                <div>
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
                                     <h2 className="text-lg leading-none font-semibold">
                                         {selected.display_name}
                                     </h2>
@@ -473,6 +671,63 @@ const RolesList = ({ roles, members, unit }: Props) => {
                                         </p>
                                     )}
                                 </div>
+
+                                {/* Actions — only for editable (non-admin) roles */}
+                                {selected.type !== 'admin' && (
+                                    <div className="flex shrink-0 items-center gap-1">
+                                        <RenameRoleDialog
+                                            role={selected}
+                                            unit={unitData}
+                                        />
+
+                                        {selected.type === 'custom' && (
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="size-7 shrink-0 text-muted-foreground hover:text-destructive"
+                                                    >
+                                                        <Trash2Icon className="size-3.5" />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>
+                                                            Delete{' '}
+                                                            {
+                                                                selected.display_name
+                                                            }
+                                                            ?
+                                                        </AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This will
+                                                            permanently delete
+                                                            the role and remove
+                                                            it from all members.
+                                                            This cannot be
+                                                            undone.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>
+                                                            Cancel
+                                                        </AlertDialogCancel>
+                                                        <AlertDialogAction
+                                                            onClick={() =>
+                                                                deleteRole(
+                                                                    selected,
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Tab bar */}
@@ -513,7 +768,10 @@ const RolesList = ({ roles, members, unit }: Props) => {
                                 role={selected}
                                 unit={unitData}
                                 allMembers={members}
-                                editable={selected.type !== 'admin'}
+                                editable={
+                                    selected.type !== 'admin' &&
+                                    selected.type !== 'everyone'
+                                }
                             />
                         )}
                     </>

@@ -43,6 +43,11 @@ Route::prefix('/roles')
     ->group(function () {
         Route::get('/', [RolesController::class, 'list'])->name('list');
 
+        Route::post('/', [RolesController::class, 'store'])->name('store');
+
+        Route::patch('/{role}', [RolesController::class, 'update'])->name('update');
+        Route::delete('/{role}', [RolesController::class, 'destroy'])->name('destroy');
+
         Route::patch('/{role}/permissions', [RolesController::class, 'updatePermissions'])->name('updatePermissions');
 
         Route::post('/{role}/bindings', [RolesController::class, 'addBinding'])->name('addBinding');
