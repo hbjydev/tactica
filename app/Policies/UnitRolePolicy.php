@@ -10,12 +10,12 @@ class UnitRolePolicy
 {
     public function viewAny(?User $user): bool
     {
-        return can(UnitPermission::VIEW_UNIT);
+        return can(UnitPermission::MANAGE_ROLES);
     }
 
     public function view(?User $user, UnitRole $role): bool
     {
-        return can(UnitPermission::VIEW_UNIT);
+        return can(UnitPermission::MANAGE_ROLES);
     }
 
     public function create(User $user): bool
