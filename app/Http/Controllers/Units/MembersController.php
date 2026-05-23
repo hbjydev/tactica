@@ -24,8 +24,11 @@ class MembersController extends Controller
         /** @var LengthAwarePaginator<int, UnitMember> $members */
         $members = $unit
             ->members()
-            ->with('user', 'rank', 'serviceRecords', 'unit:id,slug')
-            ->orderBy('created_at', 'desc')
+            ->select('unit_members.*')
+            ->join('ranks', 'ranks.id', '=', 'unit_members.rank_id')
+            ->orderBy('ranks.ord', 'desc')
+            ->orderBy('unit_members.created_at', 'asc')
+            ->with('rank', 'unit:id,slug')
             ->paginate(15);
 
         return Inertia::render('units/members/list', [
