@@ -88,7 +88,7 @@ class UnitRole extends Model
 
         $role = self::query()
             ->where('unit_id', $unitId)
-            ->where('type', UnitRoleType::EVERYONE)
+            ->where('type', $type)
             ->firstOrFail();
 
         return $role;
