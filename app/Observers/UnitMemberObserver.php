@@ -8,6 +8,12 @@ use App\Models\UnitMember;
 
 class UnitMemberObserver
 {
+    public function creating(UnitMember $member)
+    {
+        $member->rank_changed_at = now();
+        $member->status_changed_at = now();
+    }
+
     public function updating(UnitMember $member)
     {
         if ($member->isDirty('rank_id')) {
