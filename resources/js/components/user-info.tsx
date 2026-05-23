@@ -17,7 +17,7 @@ export function UserInfo({ user }: { user: App.Models.User }) {
                 {user.member && (
                     <span className="truncate">
                         <span className="font-semibold">
-                            {user.member.formal_name}
+                            {user.member.formal_name as string}
                         </span>
                     </span>
                 )}

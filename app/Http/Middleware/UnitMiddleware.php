@@ -26,6 +26,11 @@ class UnitMiddleware
         Inertia::share('unit', $unit);
         Inertia::shareOnce('publicPermissions', fn () => UnitRole::everyoneRole($unit)->permissions);
 
+        if ($request->user()) {
+            // Pre-load the request user's membership, if it exists.
+            $request->user()->load('member');
+        }
+
         return $next($request);
     }
 }
