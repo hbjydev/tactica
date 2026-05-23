@@ -56,13 +56,22 @@ export const InviteAnalyticsSheet = ({
 
         let cancelled = false;
         setLoading(true);
+        setData(null);
         fetch(show.url({ unit: unit.slug, invite: invite.id }), {
             headers: { Accept: 'application/json' },
             credentials: 'same-origin',
         })
-            .then((r) => r.json())
+            .then((r) => {
+                if (!r.ok) {
+                    throw new Error(`Request failed: ${r.status}`);
+                }
+                return r.json();
+            })
             .then((json: ApiResponse) => {
                 if (!cancelled) setData(json);
+            })
+            .catch(() => {
+                if (!cancelled) setData(null);
             })
             .finally(() => {
                 if (!cancelled) setLoading(false);

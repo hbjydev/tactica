@@ -5,6 +5,7 @@ namespace App\Actions\Units\Invites;
 use App\Models\Unit;
 use App\Models\UnitInvite;
 use App\Models\UnitMember;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -14,6 +15,12 @@ class CreateUnitInvite
 {
     public function create(Unit $unit, ?UnitMember $createdBy, array $input): UnitInvite
     {
+        if ($createdBy !== null && $createdBy->unit_id !== $unit->id) {
+            throw new AuthorizationException(
+                'Invite creator must be a member of the target unit.',
+            );
+        }
+
         $validated = Validator::make($input, [
             'notes' => ['nullable', 'string', 'max:255'],
             'expires_at' => ['nullable', 'date', 'after:now'],

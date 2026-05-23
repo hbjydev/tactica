@@ -25,7 +25,7 @@ class AcceptUnitInvite
      */
     public function accept(UnitInvite $invite, User $user): array
     {
-        return DB::transaction(function () use ($invite, $user) {
+        $result = DB::transaction(function () use ($invite, $user) {
             /** @var UnitInvite $locked */
             $locked = UnitInvite::query()
                 ->whereKey($invite->id)
@@ -44,7 +44,11 @@ class AcceptUnitInvite
                 ->first();
 
             if ($existing !== null) {
-                return ['member' => $existing, 'alreadyMember' => true];
+                return [
+                    'member' => $existing,
+                    'alreadyMember' => true,
+                    'unit' => $unit,
+                ];
             }
 
             $rankId = $locked->default_rank_id ?? Rank::query()
@@ -79,9 +83,22 @@ class AcceptUnitInvite
 
             $locked->increment('uses');
 
-            $user->notify(new WelcomeToUnitNotification($unit, $member));
-
-            return ['member' => $member, 'alreadyMember' => false];
+            return [
+                'member' => $member,
+                'alreadyMember' => false,
+                'unit' => $unit,
+            ];
         });
+
+        if (! $result['alreadyMember']) {
+            $user->notify(
+                new WelcomeToUnitNotification($result['unit'], $result['member']),
+            );
+        }
+
+        return [
+            'member' => $result['member'],
+            'alreadyMember' => $result['alreadyMember'],
+        ];
     }
 }

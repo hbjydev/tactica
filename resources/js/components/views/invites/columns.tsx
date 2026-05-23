@@ -195,8 +195,9 @@ export const createInviteColumns = ({
                             size="icon"
                             onClick={() => copyLink(invite)}
                             title="Copy invite link"
+                            aria-label="Copy invite link"
                         >
-                            <CopyIcon />
+                            <CopyIcon aria-hidden="true" />
                         </Button>
 
                         <Button
@@ -204,8 +205,9 @@ export const createInviteColumns = ({
                             size="icon"
                             onClick={() => onViewAnalytics(invite)}
                             title="View analytics"
+                            aria-label="View analytics"
                         >
-                            <ChartColumnIcon />
+                            <ChartColumnIcon aria-hidden="true" />
                         </Button>
 
                         {isActive && (
@@ -214,8 +216,9 @@ export const createInviteColumns = ({
                                 size="icon"
                                 onClick={() => onEdit(invite)}
                                 title="Edit invite"
+                                aria-label="Edit invite"
                             >
-                                <PencilIcon />
+                                <PencilIcon aria-hidden="true" />
                             </Button>
                         )}
 
@@ -225,8 +228,9 @@ export const createInviteColumns = ({
                                 size="icon"
                                 onClick={() => revokeInvite(invite)}
                                 title="Revoke invite"
+                                aria-label="Revoke invite"
                             >
-                                <XCircleIcon />
+                                <XCircleIcon aria-hidden="true" />
                             </Button>
                         )}
 
@@ -235,8 +239,9 @@ export const createInviteColumns = ({
                             size="icon"
                             onClick={() => onDelete(invite)}
                             title="Delete invite"
+                            aria-label="Delete invite"
                         >
-                            <TrashIcon />
+                            <TrashIcon aria-hidden="true" />
                         </Button>
                     </div>
                 );

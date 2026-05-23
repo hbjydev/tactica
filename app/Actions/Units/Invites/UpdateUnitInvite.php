@@ -30,14 +30,20 @@ class UpdateUnitInvite
         ])->validate();
 
         return DB::transaction(function () use ($invite, $validated) {
-            $invite->update([
-                'notes' => $validated['notes'] ?? null,
-                'expires_at' => $validated['expires_at'] ?? null,
-                'max_uses' => $validated['max_uses'] ?? null,
-                'default_rank_id' => $validated['default_rank_id'] ?? null,
-            ]);
+            $updateData = [];
+            foreach (['notes', 'expires_at', 'max_uses', 'default_rank_id'] as $key) {
+                if (array_key_exists($key, $validated)) {
+                    $updateData[$key] = $validated[$key];
+                }
+            }
 
-            $invite->defaultRoles()->sync($validated['default_role_ids'] ?? []);
+            if (! empty($updateData)) {
+                $invite->update($updateData);
+            }
+
+            if (array_key_exists('default_role_ids', $validated)) {
+                $invite->defaultRoles()->sync($validated['default_role_ids'] ?? []);
+            }
 
             return $invite->fresh(['defaultRank', 'defaultRoles', 'createdByMember.user']);
         });

@@ -56,7 +56,7 @@ describe('Invite analytics', function () {
         expect($e1->ip_hash)->toHaveLength(64);
     });
 
-    it('keeps views counter in sync with event log', function () {
+    it('only increments views for view events', function () {
         $unit = Unit::factory()->create();
         Unit::setCurrent($unit);
         $unit->createDefaultRoles();
@@ -69,7 +69,7 @@ describe('Invite analytics', function () {
         $action->record($invite, UnitInviteEventType::REJECTED, $request);
         $action->record($invite, UnitInviteEventType::ACCEPTED, $request);
 
-        expect($invite->fresh()->views)->toBe(3);
+        expect($invite->fresh()->views)->toBe(1);
         expect($invite->events()->count())->toBe(3);
     });
 

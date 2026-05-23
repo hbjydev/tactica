@@ -30,7 +30,9 @@ class RecordInviteEvent
             'referer' => $referer ? Str::limit($referer, 510, '') : null,
         ]);
 
-        $invite->increment('views');
+        if ($type === UnitInviteEventType::VIEWED) {
+            $invite->increment('views');
+        }
 
         return $event;
     }
