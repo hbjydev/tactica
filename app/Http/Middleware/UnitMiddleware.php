@@ -3,12 +3,13 @@
 namespace App\Http\Middleware;
 
 use App\Models\Unit;
+use App\Models\UnitRole;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShareUnitData
+class UnitMiddleware
 {
     /**
      * Handle an incoming request.
@@ -21,17 +22,13 @@ class ShareUnitData
             ->where('slug', $request->route()->originalParameter('unit'))
             ->firstOrFail();
 
-        Inertia::shareOnce('unit', fn () => $unit);
+        Unit::setCurrent($unit);
+        Inertia::share('unit', $unit);
+        Inertia::shareOnce('publicPermissions', fn () => UnitRole::everyoneRole($unit)->permissions);
 
-        $user = $request->user();
-        if ($user != null) {
-            $member = $user
-                ->unitMemberships()
-                ->where('unit_id', $unit->id)
-                ->with('rank')
-                ->first();
-
-            Inertia::shareOnce('auth.member', fn () => $member);
+        if ($request->user()) {
+            // Pre-load the request user's membership, if it exists.
+            $request->user()->load('member');
         }
 
         return $next($request);

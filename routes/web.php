@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Home\UnitWizardController;
-use App\Http\Middleware\ShareUnitData;
+use App\Http\Middleware\UnitMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('app.domain'))
@@ -28,7 +28,7 @@ Route::domain('sso.'.config('app.domain'))
 
 Route::domain('{unit:slug}.'.config('app.domain'))
     ->name('unit.')
-    ->middleware([ShareUnitData::class])
+    ->middleware([UnitMiddleware::class])
     ->group(function () {
         require __DIR__.'/unit.php';
     });

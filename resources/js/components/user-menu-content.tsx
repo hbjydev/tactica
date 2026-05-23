@@ -16,10 +16,9 @@ import { App } from '@/wayfinder/types';
 type Props = {
     user: App.Models.User;
     unit: App.Models.Unit;
-    member: App.Models.UnitMember | null;
 };
 
-export function UserMenuContent({ user, unit, member }: Props) {
+export function UserMenuContent({ user, unit }: Props) {
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -31,18 +30,18 @@ export function UserMenuContent({ user, unit, member }: Props) {
         <>
             <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <UserInfo user={user} member={member} />
+                    <UserInfo user={user} />
                 </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                {member && (
+                {user.member && (
                     <DropdownMenuItem asChild>
                         <Link
                             className="block w-full cursor-pointer"
                             href={memberProfile({
                                 unit: unit.slug,
-                                member: member.id,
+                                member: user.member.id,
                             })}
                             onClick={cleanup}
                         >

@@ -1,0 +1,2 @@
+[tools]
+railway = { version = "4.61.1", exe = "railway" }

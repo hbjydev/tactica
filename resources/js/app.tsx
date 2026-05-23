@@ -8,6 +8,7 @@ import SsoSettingsLayout from '@/layouts/sso-settings/layout';
 import AuthLayoutWide from './layouts/auth-layout-wide';
 import { toast } from 'sonner';
 import { CredentialedXhrClient } from './xhr-client';
+import { FlashToast } from './types';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -31,20 +32,25 @@ createInertiaApp({
     withApp(app) {
         router.on('flash', (event) => {
             if (event.detail.flash.toast) {
+                const toastData = event.detail.flash.toast as FlashToast;
+
                 let toastFn;
-                switch (event.detail.flash.toast.type) {
+                switch (toastData.type) {
                     case 'success':
                         toastFn = toast.success;
                         break;
                     case 'error':
                         toastFn = toast.error;
                         break;
+                    case 'warning':
+                        toastFn = toast.warning;
+                        break;
                     case 'info':
                         toastFn = toast.info;
                         break;
                 }
 
-                toastFn(event.detail.flash.toast.message);
+                toastFn(toastData.message);
             }
         });
 

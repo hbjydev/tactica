@@ -5,6 +5,8 @@ use App\Models\Enums\UnitMemberStatus;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\UnitMember;
+use App\Models\UnitRole;
+use App\Models\UnitRoleBinding;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
@@ -25,11 +27,27 @@ describe('UpdateUnitMember', function () {
 
     it('updates the rank of a member', function () {
         $unit = Unit::factory()->create();
+        $unit->createDefaultRoles();
         $rankA = Rank::factory()->for($unit)->create(['abbreviation' => 'Pvt', 'ord' => 0]);
         $rankB = Rank::factory()->for($unit)->create(['abbreviation' => 'Cpl', 'ord' => 1]);
-        $member = UnitMember::factory()->for($unit)->for($rankA)->create(['status' => UnitMemberStatus::Active]);
+        $user = User::factory()->create();
 
-        $this->actingAs(User::factory()->create());
+        $member = UnitMember::factory()
+            ->for($unit)
+            ->for($rankA)
+            ->for($user)
+            ->create([
+                'status' => UnitMemberStatus::Active,
+            ]);
+
+        $role = UnitRole::administratorRole($unit);
+        $roleBinding = new UnitRoleBinding;
+        $roleBinding->unit_member_id = $member->id;
+        $roleBinding->unit_role_id = $role->id;
+        $roleBinding->save();
+
+        Unit::setCurrent($unit);
+        $this->actingAs($user);
 
         (new UpdateUnitMember)->update($member, [
             'display_name' => $member->display_name,

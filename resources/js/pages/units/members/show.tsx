@@ -27,6 +27,8 @@ import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { PencilIcon, TrashIcon } from 'lucide-react';
+import { AuthGuard } from '@/components/auth-guard';
+import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
 
 type Props = Inertia.Pages.Units.Members.Show;
 
@@ -61,7 +63,14 @@ const UnitMemberShow = ({ auth, member, unit }: Props) => {
                     className="!mb-0"
                 />
 
-                {auth.member && (
+                <AuthGuard
+                    permission={UnitPermission.MANAGE_MEMBERS}
+                    bypass={
+                        (auth.user &&
+                            auth.user.member &&
+                            auth.user.member.id === member.id) === true
+                    }
+                >
                     <div className="flex items-center gap-x-2">
                         <Button size="icon" asChild>
                             {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
@@ -115,7 +124,7 @@ const UnitMemberShow = ({ auth, member, unit }: Props) => {
                             </AlertDialogContent>
                         </AlertDialog>
                     </div>
-                )}
+                </AuthGuard>
             </div>
 
             <div className="grid gap-4 xl:col-span-2">

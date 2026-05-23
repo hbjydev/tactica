@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Units;
 use App\Actions\Units\Members\DeleteUnitMember;
 use App\Actions\Units\Members\UpdateUnitMember;
 use App\Http\Controllers\Controller;
+use App\Models\Enums\UnitPermission;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -17,6 +19,8 @@ class MembersController extends Controller
 {
     public function list(Unit $unit)
     {
+        Gate::authorize('viewAny', UnitMember::class);
+
         /** @var LengthAwarePaginator<int, UnitMember> $members */
         $members = $unit
             ->members()
@@ -31,7 +35,7 @@ class MembersController extends Controller
 
     public function show(Unit $unit, UnitMember $member)
     {
-        Gate::authorize('show', $member);
+        Gate::authorize('view', $member);
 
         return Inertia::render('units/members/show', [
             'member' => $member->load('rank', 'user'),
@@ -53,6 +57,13 @@ class MembersController extends Controller
     public function update(Unit $unit, UnitMember $member, Request $request, UpdateUnitMember $action)
     {
         Gate::authorize('update', $member);
+
+        if ($request->has('rank_id') && $member->rank_id != $request->post('rank_id')) {
+            can(UnitPermission::MANAGE_MEMBERS)
+                || throw new UnauthorizedException(
+                    'You do not have permission to change this member\'s rank.',
+                );
+        }
 
         try {
             $action->update($member, $request->post());
@@ -77,6 +88,7 @@ class MembersController extends Controller
 
         $action->delete($member);
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully removed member from unit.')]);
+
         return to_route('unit.members.list', ['unit' => $unit]);
     }
 }

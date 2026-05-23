@@ -7,9 +7,20 @@ export type BreadcrumbItem = {
 };
 
 export type NavItem = {
-    title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
-    matchExact?: boolean;
-    icon?: LucideIcon | null;
-    isActive?: boolean;
-};
+    id: string;
+    requiredPermissions: number;
+} & (
+    | {
+          type: 'link';
+          title: string;
+          href: NonNullable<InertiaLinkProps['href']>;
+          matchExact?: boolean;
+          icon?: LucideIcon | null;
+          isActive?: boolean;
+      }
+    | {
+          type: 'section';
+          title?: string;
+          items: NavItem[];
+      }
+);

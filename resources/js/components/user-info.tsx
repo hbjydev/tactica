@@ -2,13 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
 import { App } from '@/wayfinder/types';
 
-export function UserInfo({
-    user,
-    member,
-}: {
-    user: App.Models.User;
-    member: App.Models.UnitMember | null;
-}) {
+export function UserInfo({ user }: { user: App.Models.User }) {
     const getInitials = useInitials();
 
     return (
@@ -20,12 +14,11 @@ export function UserInfo({
                 </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-                {member && (
+                {user.member && (
                     <span className="truncate">
                         <span className="font-semibold">
-                            {member.rank?.abbreviation}&nbsp;
+                            {user.member.formal_name as string}
                         </span>
-                        {member.display_name}
                     </span>
                 )}
                 <span className="truncate text-muted-foreground">

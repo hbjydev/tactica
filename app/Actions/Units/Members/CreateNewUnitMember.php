@@ -24,9 +24,11 @@ class CreateNewUnitMember
 
         /** @var UnitMember $member */
         $member = UnitMember::create([
+            ...$validated,
             'unit_id' => $unit->id,
             'user_id' => $user->id,
-            ...$validated,
+            'rank_changed_at' => now(),
+            'status_changed_at' => now(),
         ]);
 
         $member->save();

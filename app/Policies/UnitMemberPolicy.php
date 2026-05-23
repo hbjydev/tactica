@@ -2,34 +2,43 @@
 
 namespace App\Policies;
 
+use App\Models\Enums\UnitPermission;
 use App\Models\UnitMember;
 use App\Models\User;
 
 class UnitMemberPolicy
 {
-    public function show(): bool
+    public function viewAny(?User $user): bool
     {
-        // Members are public
-        return true;
+        return can(UnitPermission::VIEW_UNIT);
+    }
+
+    public function view(?User $user, UnitMember $member): bool
+    {
+        return $this->isSelf($user, $member) || can(UnitPermission::VIEW_UNIT);
     }
 
     public function update(User $user, UnitMember $member): bool
     {
-        return $this->isSelf($user, $member) || $this->isUnitMember($user, $member);
+        return $this->isSelf($user, $member) || can(UnitPermission::MANAGE_MEMBERS);
+    }
+
+    public function changeRank(User $user, UnitMember $member): bool
+    {
+        return can(UnitPermission::MANAGE_MEMBERS);
     }
 
     public function destroy(User $user, UnitMember $member): bool
     {
-        return $this->isSelf($user, $member);
+        return $this->isSelf($user, $member) || can(UnitPermission::MANAGE_MEMBERS);
     }
 
-    protected function isUnitMember(User $user, UnitMember $member): bool
+    protected function isSelf(?User $user, UnitMember $member): bool
     {
-        return $user->units()->where('units.id', $member->unit->id)->exists();
-    }
+        if ($user === null) {
+            return false;
+        }
 
-    protected function isSelf(User $user, UnitMember $member): bool
-    {
-        return $member->user_id === $user->id;
+        return $user->member?->id == $member->id;
     }
 }
