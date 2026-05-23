@@ -13,3 +13,12 @@ database:
     version: '18'
 use_dns_when_possible: true
 composer_version: "2"
+
+web_environment:
+  - VITE_SERVER_URI=https://vite.tactica.ddev.site
+  - VITE_PACKAGE_MANAGER=bun
+
+web_extra_daemons:
+  - name: vite
+    command: bash -c 'bun run dev'
+    directory: /var/www/html
