@@ -4,8 +4,10 @@ use App\Http\Controllers\Units\DashboardController;
 use App\Http\Controllers\Units\InviteAcceptanceController;
 use App\Http\Controllers\Units\InvitesController;
 use App\Http\Controllers\Units\MembersController;
+use App\Http\Controllers\Units\OrbatController;
 use App\Http\Controllers\Units\RanksController;
 use App\Http\Controllers\Units\RolesController;
+use App\Http\Controllers\Units\SectionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
@@ -54,6 +56,30 @@ Route::prefix('/roles')
 
         Route::post('/{role}/bindings', [RolesController::class, 'addBinding'])->name('addBinding');
         Route::delete('/{role}/bindings/{member}', [RolesController::class, 'removeBinding'])->name('removeBinding');
+    });
+
+Route::prefix('/structure')
+    ->name('structure.')
+    ->scopeBindings()
+    ->group(function () {
+        Route::get('/orbat', OrbatController::class)->name('orbat');
+
+        Route::prefix('/sections')
+            ->name('sections.')
+            ->scopeBindings()
+            ->group(function () {
+                Route::get('/', [SectionsController::class, 'list'])->name('list');
+
+                Route::get('/create', [SectionsController::class, 'create'])->name('create');
+                Route::post('/', [SectionsController::class, 'store'])->name('store');
+
+                Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
+
+                Route::get('/{section}/edit', [SectionsController::class, 'edit'])->name('edit');
+                Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
+
+                Route::delete('/{section}', [SectionsController::class, 'destroy'])->name('destroy');
+            });
     });
 
 Route::prefix('/invites')

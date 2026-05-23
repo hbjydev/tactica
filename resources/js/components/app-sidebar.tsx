@@ -1,4 +1,4 @@
-import { LayoutGrid, Mail, Medal, Shield, Users } from 'lucide-react';
+import { Grid, LayoutGrid, Mail, Medal, Shield, Users, Users2 } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -12,10 +12,12 @@ import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
 import { list as listMembers } from '@/wayfinder/routes/unit/members';
 import { list as listRoles } from '@/wayfinder/routes/unit/roles';
 import { list as listInvites } from '@/wayfinder/routes/unit/invites';
+import { list as listSections } from '@/wayfinder/routes/unit/structure/sections';
 import type { NavItem } from '@/types';
 import { UnitSwitcher } from './unit-switcher';
 import { App } from '@/wayfinder/types';
 import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
+import { orbat } from '@/wayfinder/routes/unit/structure';
 
 export function AppSidebar({
     currentUnit,
@@ -39,6 +41,31 @@ export function AppSidebar({
                     href: dashboard({ unit: currentUnit.slug }),
                     icon: LayoutGrid,
                     matchExact: true,
+                    requiredPermissions: UnitPermission.VIEW_UNIT,
+                },
+            ],
+        },
+
+        {
+            id: 'structure',
+            type: 'section',
+            title: 'Structure',
+            requiredPermissions: UnitPermission.VIEW_UNIT,
+            items: [
+                {
+                    id: 'orbat',
+                    type: 'link',
+                    title: 'ORBAT',
+                    href: orbat({ unit: currentUnit.slug }),
+                    icon: Grid,
+                    requiredPermissions: UnitPermission.VIEW_UNIT,
+                },
+                {
+                    id: 'sections',
+                    type: 'link',
+                    title: 'Sections',
+                    href: listSections({ unit: currentUnit.slug }),
+                    icon: Users2,
                     requiredPermissions: UnitPermission.VIEW_UNIT,
                 },
             ],
@@ -108,7 +135,7 @@ export function AppSidebar({
             </SidebarContent>
 
             <SidebarFooter>
-                <NavUser member={member} unit={currentUnit} />
+                <NavUser unit={currentUnit} />
             </SidebarFooter>
         </Sidebar>
     );
