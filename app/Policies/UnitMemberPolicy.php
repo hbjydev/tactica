@@ -39,6 +39,6 @@ class UnitMemberPolicy
             return false;
         }
 
-        return $user->member->id == $member->id;
+        return $user->member?->id == $member->id;
     }
 }

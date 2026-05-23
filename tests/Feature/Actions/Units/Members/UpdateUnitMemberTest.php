@@ -2,7 +2,6 @@
 
 use App\Actions\Units\Members\UpdateUnitMember;
 use App\Models\Enums\UnitMemberStatus;
-use App\Models\Enums\UnitRoleType;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\UnitMember;
@@ -42,7 +41,7 @@ describe('UpdateUnitMember', function () {
             ]);
 
         $role = UnitRole::administratorRole($unit);
-        $roleBinding = new UnitRoleBinding();
+        $roleBinding = new UnitRoleBinding;
         $roleBinding->unit_member_id = $member->id;
         $roleBinding->unit_role_id = $role->id;
         $roleBinding->save();

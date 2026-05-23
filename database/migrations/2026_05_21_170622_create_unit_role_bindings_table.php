@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('unit_role_bindings', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('unit_role_id')->constrained('unit_roles')->cascadeOnDelete();
-            $table->ulid('unit_member_id')->constrained('unit_members')->cascadeOnDelete();
+            $table->foreignUlid('unit_role_id')
+                ->constrained('unit_roles')
+                ->cascadeOnDelete();
+            $table->foreignUlid('unit_member_id')
+                ->constrained('unit_members')
+                ->cascadeOnDelete();
             $table->unique(['unit_role_id', 'unit_member_id']);
             $table->timestamps();
         });

@@ -98,7 +98,13 @@ class UnitMember extends Model
     public function formalName(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->rank()->pluck('abbreviation')->first().' '.$this->display_name,
+            get: function () {
+                $abbreviation = $this->rank()->pluck('abbreviation')->first();
+
+                return $abbreviation
+                    ? "{$abbreviation} {$this->display_name}"
+                    : $this->display_name;
+            },
         );
     }
 

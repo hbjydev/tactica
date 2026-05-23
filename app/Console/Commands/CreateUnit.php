@@ -14,8 +14,7 @@ class CreateUnit extends Command
 {
     public function __construct(
         protected CreateNewUnit $action,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -32,6 +31,6 @@ class CreateUnit extends Command
         ]);
 
         $this->info('Unit created successfully.');
-        $this->info('-> https://' . $unit->slug . '.' . config('app.domain'));
+        $this->info('-> https://'.$unit->slug.'.'.config('app.domain'));
     }
 }

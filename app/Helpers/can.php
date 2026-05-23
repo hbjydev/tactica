@@ -7,7 +7,7 @@ use App\Models\UnitRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-if (!function_exists('can')) {
+if (! function_exists('can')) {
     function can(
         UnitPermission $permission,
         ?Unit $unit = null,
@@ -20,14 +20,20 @@ if (!function_exists('can')) {
             throw new RuntimeException('No unit context available for permission check.');
         }
 
-        if ($user === null || $user->member === null) {
+        $member = $user === null
+            ? null
+            : $user->unitMemberships()
+                ->where('unit_id', $unit->id)
+                ->with('rank')
+                ->first();
+
+        if ($member === null) {
             /** @var UnitRole $everyoneRole */
             $everyoneRole = UnitRole::type($unit, UnitRoleType::EVERYONE);
 
             return $everyoneRole->hasPermission($permission);
-        } else {
-            // User is a unit member, we can check their permissions.
-            return $user->member->can($permission);
         }
+
+        return $member->can($permission);
     }
 }

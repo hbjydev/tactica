@@ -40,9 +40,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function member(): HasOne
     {
+        $unit = Unit::current();
+
         return $this
             ->hasOne(UnitMember::class)
-            ->where('unit_id', Unit::current()->id)
+            ->where('unit_id', $unit?->id)
             ->with('rank');
     }
 

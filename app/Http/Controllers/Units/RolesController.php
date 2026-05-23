@@ -6,6 +6,7 @@ use App\Actions\Units\Roles\CreateUnitRole;
 use App\Actions\Units\Roles\DeleteUnitRole;
 use App\Actions\Units\Roles\UpdateUnitRole;
 use App\Http\Controllers\Controller;
+use App\Models\Enums\UnitPermission;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use App\Models\UnitRole;
@@ -92,8 +93,16 @@ class RolesController extends Controller
     {
         Gate::authorize('update', $role);
 
+        $maxPermissions = array_reduce(
+            UnitPermission::cases(),
+            fn ($carry, $p) => $carry | $p->value,
+            0,
+        );
+
         $validated = $request->validate([
-            'permissions' => ['required', 'integer', 'min:0'],
+            'permissions' => [
+                'required', 'integer', 'min:0', "max:{$maxPermissions}",
+            ],
         ]);
 
         $role->update(['permissions' => $validated['permissions']]);
@@ -117,12 +126,16 @@ class RolesController extends Controller
             ->where('unit_member_id', $validated['member_id'])
             ->exists();
 
-        if (! $existing) {
-            UnitRoleBinding::create([
-                'unit_role_id' => $role->id,
-                'unit_member_id' => $validated['member_id'],
-            ]);
+        if ($existing) {
+            Inertia::flash('toast', ['type' => 'warning', 'message' => __('Member already in role.')]);
+
+            return back();
         }
+
+        UnitRoleBinding::create([
+            'unit_role_id' => $role->id,
+            'unit_member_id' => $validated['member_id'],
+        ]);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Member added to role.')]);
 
