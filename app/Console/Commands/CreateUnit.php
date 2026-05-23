@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Rank;
-use App\Models\Unit;
-use App\Models\UnitMember;
+use App\Actions\Units\CreateNewUnit;
+use App\Models\User;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -13,39 +12,26 @@ use Illuminate\Console\Command;
 #[Description('Create a new unit')]
 class CreateUnit extends Command
 {
+    public function __construct(
+        protected CreateNewUnit $action,
+    )
+    {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $unit = Unit::create([
+        $user = User::firstOrFail($this->argument('owner_id'));
+
+        $unit = $this->action->create($user, [
             'slug' => $this->argument('slug'),
             'display_name' => $this->argument('display_name'),
         ]);
 
-        Rank::create([
-            'unit_id' => $unit->id,
-            'display_name' => 'Private',
-            'abbreviation' => 'Pvt.',
-        ]);
-
-        Rank::create([
-            'unit_id' => $unit->id,
-            'display_name' => 'Sergeant',
-            'abbreviation' => 'Sgt.',
-        ]);
-
-        $captain = Rank::create([
-            'unit_id' => $unit->id,
-            'display_name' => 'Captain',
-            'abbreviation' => 'Cpt.',
-        ]);
-
-        UnitMember::create([
-            'unit_id' => $unit->id,
-            'user_id' => $this->argument('owner_id'),
-            'rank_id' => $captain->id,
-            'display_name' => 'Admin',
-        ]);
+        $this->info('Unit created successfully.');
+        $this->info('-> https://' . $unit->slug . '.' . config('app.domain'));
     }
 }
