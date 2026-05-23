@@ -25,11 +25,11 @@ const RenderNavItem = ({ item }: { item: NavItem }) => {
             : publicPermissions as number
         : publicPermissions as number;
 
-    if (item.type === 'link') {
-        if (!hasPermission(perms, item.requiredPermissions)) {
-            return null;
-        }
+    if (!hasPermission(perms, item.requiredPermissions)) {
+        return null;
+    }
 
+    if (item.type === 'link') {
         return (
             <SidebarMenuItem>
                 <SidebarMenuButton
