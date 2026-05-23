@@ -1,9 +1,13 @@
 import AppLayout from '@/layouts/app-layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Heading from '@/components/heading';
 import { dashboard } from '@/wayfinder/routes/unit';
 import { Inertia } from '@/wayfinder/types';
 import { MedalIcon, UsersIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
+import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
+import { list as listMembers } from '@/wayfinder/routes/unit/members';
 
 type Props = Inertia.Pages.Units.Dashboard;
 
@@ -27,6 +31,13 @@ const Dashboard = ({ unit, ...data }: Props) => {
                                 <MedalIcon />
                                 <span>{data.ranks_count as number}</span>
                             </CardTitle>
+                            <CardAction>
+                                <Button variant="outline" asChild>
+                                    <Link href={listRanks({ unit: unit?.slug! })}>
+                                        View all
+                                    </Link>
+                                </Button>
+                            </CardAction>
                         </CardHeader>
                     </Card>
 
@@ -39,6 +50,13 @@ const Dashboard = ({ unit, ...data }: Props) => {
                                 <UsersIcon />
                                 <span>{data.members_count as number}</span>
                             </CardTitle>
+                            <CardAction>
+                                <Button variant="outline" asChild>
+                                    <Link href={listMembers({ unit: unit?.slug! })}>
+                                        View all
+                                    </Link>
+                                </Button>
+                            </CardAction>
                         </CardHeader>
                     </Card>
 
