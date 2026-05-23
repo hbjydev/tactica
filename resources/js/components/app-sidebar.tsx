@@ -1,4 +1,4 @@
-import { LayoutGrid, Medal, Shield, Users } from 'lucide-react';
+import { LayoutGrid, Mail, Medal, Shield, Users } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -11,6 +11,7 @@ import { dashboard } from '@/wayfinder/routes/unit';
 import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
 import { list as listMembers } from '@/wayfinder/routes/unit/members';
 import { list as listRoles } from '@/wayfinder/routes/unit/roles';
+import { list as listInvites } from '@/wayfinder/routes/unit/invites';
 import type { NavItem } from '@/types';
 import { UnitSwitcher } from './unit-switcher';
 import { App } from '@/wayfinder/types';
@@ -72,7 +73,9 @@ export function AppSidebar({
             id: 'settings',
             type: 'section',
             title: 'Unit Settings',
-            requiredPermissions: UnitPermission.MANAGE_ROLES,
+            // Gate the section on `0` so any visible child surfaces it.
+            // Per-item gates below handle the real authorization.
+            requiredPermissions: 0,
             items: [
                 {
                     id: 'roles',
@@ -81,6 +84,14 @@ export function AppSidebar({
                     href: listRoles({ unit: currentUnit.slug }),
                     icon: Shield,
                     requiredPermissions: UnitPermission.MANAGE_ROLES,
+                },
+                {
+                    id: 'invites',
+                    type: 'link',
+                    title: 'Invites',
+                    href: listInvites({ unit: currentUnit.slug }),
+                    icon: Mail,
+                    requiredPermissions: UnitPermission.MANAGE_INVITES,
                 },
             ],
         },

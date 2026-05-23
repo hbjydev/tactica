@@ -41,7 +41,7 @@ class CreateNewUnit
             $captain = $this->newRankAction->create($unit, [
                 'display_name' => 'Captain',
                 'abbreviation' => 'Cpt.',
-                'ord' => 0,
+                'ord' => 2,
             ]);
 
             $this->newRankAction->create($unit, [
@@ -53,7 +53,7 @@ class CreateNewUnit
             $this->newRankAction->create($unit, [
                 'display_name' => 'Private',
                 'abbreviation' => 'Pvt.',
-                'ord' => 2,
+                'ord' => 0,
             ]);
 
             ['admin' => $role] = $unit->createDefaultRoles();

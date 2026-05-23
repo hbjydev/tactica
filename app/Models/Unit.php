@@ -52,6 +52,11 @@ class Unit extends Model
         return $this->hasMany(UnitRole::class);
     }
 
+    public function invites(): HasMany
+    {
+        return $this->hasMany(UnitInvite::class);
+    }
+
     /**
      * @return array<string, UnitRole> The created default roles.
      */
