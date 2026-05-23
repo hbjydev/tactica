@@ -8,6 +8,10 @@ export default defineConfig({
         'typescript',
     ],
 
+    rules: {
+        'typescript/no-non-null-asserted-optional-chain': 'off',
+    },
+
     ignorePatterns: [
         'public',
         'tailwind.config.js',
