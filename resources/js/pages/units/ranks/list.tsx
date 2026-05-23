@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@/wayfinder/types';
-import { hasPermission } from '@/lib/utils';
 import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
 import { AuthGuard } from '@/components/auth-guard';
 
