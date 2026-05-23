@@ -7,10 +7,13 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@/wayfinder/types';
+import { hasPermission } from '@/lib/utils';
+import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
+import { AuthGuard } from '@/components/auth-guard';
 
 type Props = Inertia.Pages.Units.Ranks.List;
 
-const RanksList = ({ unit, ranks }: Props) => {
+const RanksList = ({ auth, unit, ranks }: Props) => {
     return (
         <div className="flex flex-col p-4">
             <div className="mb-8 flex items-center justify-between">
@@ -20,16 +23,18 @@ const RanksList = ({ unit, ranks }: Props) => {
                     className="mb-0! max-w-3xl!"
                 />
 
-                <Button variant="outline" asChild>
-                    {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
-                    <Link href={create({ unit: unit?.slug! })}>
-                        <PlusIcon />
-                        Create
-                    </Link>
-                </Button>
+                <AuthGuard permission={UnitPermission.MANAGE_RANKS}>
+                    <Button variant="outline" asChild>
+                        {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
+                        <Link href={create({ unit: unit?.slug! })}>
+                            <PlusIcon />
+                            Create
+                        </Link>
+                    </Button>
+                </AuthGuard>
             </div>
 
-            <DataTable columns={createRankColumns(unit!, ranks)} data={ranks} />
+            <DataTable columns={createRankColumns(unit!, ranks, auth)} data={ranks} />
         </div>
     );
 };

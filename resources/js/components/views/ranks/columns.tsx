@@ -8,11 +8,14 @@ import {
     TrashIcon,
 } from 'lucide-react';
 import { destroy, edit, update } from '@/wayfinder/routes/unit/ranks';
-import { App } from '@/wayfinder/types';
+import { App, Inertia } from '@/wayfinder/types';
+import { hasPermission } from '@/lib/utils';
+import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
 
 export const createRankColumns = (
     unit: App.Models.Unit,
     ranks: App.Models.Rank[],
+    auth: Inertia.SharedData['auth'],
 ): ColumnDef<App.Models.Rank>[] => {
     const maxOrd = Math.max(...ranks.map((r) => r.ord));
     const minOrd = Math.min(...ranks.map((r) => r.ord));
@@ -31,7 +34,7 @@ export const createRankColumns = (
         );
     };
 
-    return [
+    let data: ColumnDef<App.Models.Rank>[] = [
         {
             accessorKey: 'display_name',
             header: 'Display Name',
@@ -51,7 +54,14 @@ export const createRankColumns = (
                 );
             },
         },
-        {
+    ];
+
+    if (
+        auth.user
+        && auth.user.member
+        && hasPermission(auth.user.member.permissions as number, UnitPermission.MANAGE_RANKS)
+    ) {
+        data.push({
             id: 'actions',
             header: 'Actions',
             cell: ({ row }) => {
@@ -99,6 +109,8 @@ export const createRankColumns = (
                     </div>
                 );
             },
-        },
-    ];
+        });
+    }
+
+    return data;
 };
