@@ -80,7 +80,7 @@ export function AppSidebar({
                     title: 'Roles',
                     href: listRoles({ unit: currentUnit.slug }),
                     icon: Shield,
-                    requiredPermissions: UnitPermission.MANAGE_RANKS,
+                    requiredPermissions: UnitPermission.MANAGE_ROLES,
                 },
             ],
         },

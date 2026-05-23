@@ -57,9 +57,12 @@ export const createRankColumns = (
     ];
 
     if (
-        auth.user
-        && auth.user.member
-        && hasPermission(auth.user.member.permissions as number, UnitPermission.MANAGE_RANKS)
+        auth.user &&
+        auth.user.member &&
+        hasPermission(
+            auth.user.member.permissions as number,
+            UnitPermission.MANAGE_RANKS,
+        )
     ) {
         data.push({
             id: 'actions',

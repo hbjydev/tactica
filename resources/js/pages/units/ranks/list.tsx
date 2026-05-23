@@ -34,7 +34,10 @@ const RanksList = ({ auth, unit, ranks }: Props) => {
                 </AuthGuard>
             </div>
 
-            <DataTable columns={createRankColumns(unit!, ranks, auth)} data={ranks} />
+            <DataTable
+                columns={createRankColumns(unit!, ranks, auth)}
+                data={ranks}
+            />
         </div>
     );
 };

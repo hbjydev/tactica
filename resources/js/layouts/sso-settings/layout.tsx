@@ -23,21 +23,33 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
 
     const sidebarNavItems: NavItem[] = [
         {
+            id: 'profile',
+            type: 'link',
+            requiredPermissions: 0,
             title: 'Profile',
             href: profile(),
             icon: UserIcon,
         },
         {
+            id: 'security',
+            type: 'link',
+            requiredPermissions: 0,
             title: 'Security',
             href: editSecurity(),
             icon: LockIcon,
         },
         {
+            id: 'appearance',
+            type: 'link',
+            requiredPermissions: 0,
             title: 'Appearance',
             href: editAppearance(),
             icon: MonitorIcon,
         },
         {
+            id: 'logout',
+            type: 'link',
+            requiredPermissions: 0,
             title: 'Log out',
             href: logout(),
             icon: LogOutIcon,
@@ -52,7 +64,7 @@ export default function SsoSettingsLayout({ children }: PropsWithChildren) {
                         className="flex flex-col space-y-1 space-x-0"
                         aria-label="Settings"
                     >
-                        {sidebarNavItems.map((item, index) => (
+                        {sidebarNavItems.filter(x => x.type == 'link').map((item, index) => (
                             <Button
                                 key={`${toUrl(item.href)}-${index}`}
                                 size="sm"

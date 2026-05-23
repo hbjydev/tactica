@@ -12,6 +12,7 @@ use App\Models\UnitRole;
 use App\Models\UnitRoleBinding;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class RolesController extends Controller
@@ -107,7 +108,7 @@ class RolesController extends Controller
         Gate::authorize('manageMembers', $role);
 
         $validated = $request->validate([
-            'member_id' => ['required', 'string', 'exists:unit_members,id'],
+            'member_id' => ['required', 'string', Rule::exists('unit_members', 'id')->where('unit_id', $unit->id)],
         ]);
 
         // Prevent duplicate bindings.

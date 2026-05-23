@@ -16,7 +16,11 @@ export default function AppLayout({
 }) {
     return (
         <AuthProvider auth={auth}>
-            <AppLayoutTemplate unit={unit} auth={auth} breadcrumbs={breadcrumbs}>
+            <AppLayoutTemplate
+                unit={unit}
+                auth={auth}
+                breadcrumbs={breadcrumbs}
+            >
                 {children}
             </AppLayoutTemplate>
         </AuthProvider>

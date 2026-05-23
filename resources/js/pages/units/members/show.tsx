@@ -63,12 +63,14 @@ const UnitMemberShow = ({ auth, member, unit }: Props) => {
                     className="!mb-0"
                 />
 
-                <AuthGuard permission={UnitPermission.MANAGE_MEMBERS} bypass={
-                    (auth.user
-                    && auth.user.member
-                    && (auth.user.member.id === member.id))
-                    === true
-                }>
+                <AuthGuard
+                    permission={UnitPermission.MANAGE_MEMBERS}
+                    bypass={
+                        (auth.user &&
+                            auth.user.member &&
+                            auth.user.member.id === member.id) === true
+                    }
+                >
                     <div className="flex items-center gap-x-2">
                         <Button size="icon" asChild>
                             {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}

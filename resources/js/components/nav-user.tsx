@@ -41,7 +41,7 @@ export function NavUser({
                             className="group text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent"
                             data-test="sidebar-menu-button"
                         >
-                            <UserInfo member={member} user={auth.user} />
+                            <UserInfo user={auth.user} />
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
@@ -58,7 +58,6 @@ export function NavUser({
                     >
                         <UserMenuContent
                             user={auth.user}
-                            member={member}
                             unit={unit}
                         />
                     </DropdownMenuContent>

@@ -58,7 +58,7 @@ class MembersController extends Controller
     {
         Gate::authorize('update', $member);
 
-        if ($member->rank_id != $request->post('rank_id')) {
+        if ($request->has('rank_id') && $member->rank_id != $request->post('rank_id')) {
             can(UnitPermission::MANAGE_MEMBERS)
                 || throw new UnauthorizedException(
                     'You do not have permission to change this member\'s rank.',

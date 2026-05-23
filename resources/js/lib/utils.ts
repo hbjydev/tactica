@@ -19,9 +19,8 @@ export function toMemberName(member: App.Models.UnitMember): string {
 }
 
 export function hasPermission(self: number, check: number): boolean {
-    const admin = (
-        (self & UnitPermission.ADMINISTRATOR) === UnitPermission.ADMINISTRATOR
-    );
+    const admin =
+        (self & UnitPermission.ADMINISTRATOR) === UnitPermission.ADMINISTRATOR;
 
     const hasPerm = (self & check) === check;
 
