@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Units;
 
+use App\Actions\Units\Roles\CreateUnitRole;
+use App\Actions\Units\Roles\DeleteUnitRole;
+use App\Actions\Units\Roles\UpdateUnitRole;
 use App\Http\Controllers\Controller;
-use App\Models\Enums\UnitRoleType;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use App\Models\UnitRole;
@@ -14,6 +16,12 @@ use Inertia\Inertia;
 
 class RolesController extends Controller
 {
+    public function __construct(
+        private CreateUnitRole $createRole,
+        private UpdateUnitRole $updateRole,
+        private DeleteUnitRole $deleteRole,
+    ) {}
+
     public function list(Unit $unit)
     {
         Gate::authorize('viewAny', UnitRole::class);
@@ -42,18 +50,7 @@ class RolesController extends Controller
     {
         Gate::authorize('create', UnitRole::class);
 
-        $validated = $request->validate([
-            'display_name' => ['required', 'string', 'max:64'],
-            'description' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $role = UnitRole::create([
-            'unit_id' => $unit->id,
-            'display_name' => $validated['display_name'],
-            'description' => $validated['description'] ?? null,
-            'permissions' => 0,
-            'type' => UnitRoleType::CUSTOM,
-        ]);
+        $role = $this->createRole->create($unit, $request->all());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Role created.')]);
 
@@ -68,15 +65,7 @@ class RolesController extends Controller
             abort(403, 'This role cannot be edited.');
         }
 
-        $validated = $request->validate([
-            'display_name' => ['required', 'string', 'max:64'],
-            'description' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $role->update([
-            'display_name' => $validated['display_name'],
-            'description' => $validated['description'] ?? null,
-        ]);
+        $this->updateRole->update($role, $request->all());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Role updated.')]);
 
@@ -91,8 +80,7 @@ class RolesController extends Controller
             abort(403, 'This role cannot be deleted.');
         }
 
-        $role->bindings()->delete();
-        $role->delete();
+        $this->deleteRole->delete($role);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Role deleted.')]);
 

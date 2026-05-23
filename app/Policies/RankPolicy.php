@@ -18,6 +18,11 @@ class RankPolicy
         return can(UnitPermission::VIEW_UNIT);
     }
 
+    public function create(User $user): bool
+    {
+        return can(UnitPermission::MANAGE_RANKS);
+    }
+
     public function update(User $user, Rank $rank): bool
     {
         return can(UnitPermission::MANAGE_RANKS);

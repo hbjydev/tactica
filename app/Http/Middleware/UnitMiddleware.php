@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Unit;
+use App\Models\UnitRole;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,8 +23,8 @@ class UnitMiddleware
             ->firstOrFail();
 
         Unit::setCurrent($unit);
-
-        Inertia::shareOnce('unit', fn () => $unit);
+        Inertia::share('unit', $unit);
+        Inertia::shareOnce('publicPermissions', fn () => UnitRole::everyoneRole($unit)->permissions);
 
         return $next($request);
     }
