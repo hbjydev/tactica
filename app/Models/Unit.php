@@ -69,7 +69,7 @@ class Unit extends Model
             'unit_id' => $this->id,
             'display_name' => 'Member',
             'description' => 'The role assigned to regular members of the unit.',
-            'permissions' => UnitPermission::NONE,
+            'permissions' => UnitPermission::VIEW_UNIT,
             'type' => UnitRoleType::MEMBERS,
         ]);
 
@@ -77,7 +77,7 @@ class Unit extends Model
             'unit_id' => $this->id,
             'display_name' => 'Everyone',
             'description' => 'The role non-members and members without a specific role are assigned to.',
-            'permissions' => UnitPermission::NONE,
+            'permissions' => UnitPermission::VIEW_UNIT,
             'type' => UnitRoleType::EVERYONE,
         ]);
 
