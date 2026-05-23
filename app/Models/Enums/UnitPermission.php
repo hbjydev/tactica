@@ -13,4 +13,5 @@ enum UnitPermission: int
 
     case MANAGE_MEMBERS = 1 << 3;
     case MANAGE_RANKS = 1 << 4;
+    case MANAGE_INVITES = 1 << 5;
 }

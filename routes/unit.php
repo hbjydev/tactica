@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Units\DashboardController;
+use App\Http\Controllers\Units\InviteAcceptanceController;
+use App\Http\Controllers\Units\InvitesController;
 use App\Http\Controllers\Units\MembersController;
 use App\Http\Controllers\Units\RanksController;
 use App\Http\Controllers\Units\RolesController;
@@ -53,3 +55,20 @@ Route::prefix('/roles')
         Route::post('/{role}/bindings', [RolesController::class, 'addBinding'])->name('addBinding');
         Route::delete('/{role}/bindings/{member}', [RolesController::class, 'removeBinding'])->name('removeBinding');
     });
+
+Route::prefix('/invites')
+    ->name('invites.')
+    ->scopeBindings()
+    ->group(function () {
+        Route::get('/', [InvitesController::class, 'list'])->name('list');
+        Route::get('/{invite}', [InvitesController::class, 'show'])->name('show');
+        Route::post('/', [InvitesController::class, 'store'])->name('store');
+        Route::patch('/{invite}', [InvitesController::class, 'update'])->name('update');
+        Route::post('/{invite}/revoke', [InvitesController::class, 'revoke'])->name('revoke');
+        Route::delete('/{invite}', [InvitesController::class, 'destroy'])->name('destroy');
+    });
+
+// Public invite-acceptance endpoint. The unit subdomain has no auth middleware,
+// so this slots in like any other route.
+Route::get('/invite/{token}', [InviteAcceptanceController::class, 'show'])
+    ->name('invite.show');
