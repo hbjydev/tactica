@@ -23,7 +23,7 @@ class CreateUnit extends Command
      */
     public function handle()
     {
-        $user = User::firstOrFail($this->argument('owner_id'));
+        $user = User::query()->where('id', $this->argument('owner_id'))->firstOrFail();
 
         $unit = $this->action->create($user, [
             'slug' => $this->argument('slug'),

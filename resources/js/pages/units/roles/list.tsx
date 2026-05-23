@@ -676,6 +676,7 @@ const RolesList = ({ roles, members, unit }: Props) => {
                                 {selected.type !== 'admin' && (
                                     <div className="flex shrink-0 items-center gap-1">
                                         <RenameRoleDialog
+                                            key={selected.id}
                                             role={selected}
                                             unit={unitData}
                                         />
