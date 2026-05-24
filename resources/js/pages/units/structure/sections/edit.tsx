@@ -14,7 +14,11 @@ const SectionEdit = ({ section, unit, otherSections }: Props) => {
 
             <Card>
                 <CardContent className="flex flex-col gap-8">
-                    <SectionForm section={section} unit={unit!} sections={otherSections} />
+                    <SectionForm
+                        section={section}
+                        unit={unit!}
+                        sections={otherSections}
+                    />
                 </CardContent>
             </Card>
         </div>

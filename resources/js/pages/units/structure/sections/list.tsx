@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
+import { Paginated } from '@/types/units';
 
 type Props = Inertia.Pages.Units.Structure.Sections.List;
 
@@ -34,7 +35,7 @@ const SectionsList = ({ sections, unit }: Props) => {
             <DataTable
                 columns={sectionColumns}
                 // @ts-expect-error This fails because of some Wayfinder issues (it doesn't typecast pagination)
-                data={sections.data as App.Models.Section[]}
+                data={sections as Paginated<App.Models.Section>}
             />
         </div>
     );

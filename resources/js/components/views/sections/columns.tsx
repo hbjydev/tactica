@@ -56,7 +56,9 @@ export const sectionColumns: ColumnDef<App.Models.Section>[] = [
     },
 ];
 
-export const slotColumns = (section: App.Models.Section): ColumnDef<App.Models.Slot>[] => [
+export const slotColumns = (
+    section: App.Models.Section,
+): ColumnDef<App.Models.Slot>[] => [
     {
         accessorKey: 'display_name',
         header: 'Display Name',
@@ -79,21 +81,19 @@ export const slotColumns = (section: App.Models.Section): ColumnDef<App.Models.S
         header: 'Member',
         cell: ({ row }) => {
             const unit = usePage().props.unit!;
-            return (
-                row.original.member
-                    ? (
-                        <Link
-                            href={showMember({
-                                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
-                                unit: unit.slug,
-                                member: row.original.member.id,
-                            })}
-                            className="underline hover:text-primary"
-                        >
-                            {row.original.member.formal_name as string}
-                        </Link>
-                    )
-                    : <span className="text-muted-foreground">&mdash;</span>
+            return row.original.member ? (
+                <Link
+                    href={showMember({
+                        // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
+                        unit: unit.slug,
+                        member: row.original.member.id,
+                    })}
+                    className="underline hover:text-primary"
+                >
+                    {row.original.member.formal_name as string}
+                </Link>
+            ) : (
+                <span className="text-muted-foreground">&mdash;</span>
             );
         },
     },
@@ -108,9 +108,7 @@ export const slotColumns = (section: App.Models.Section): ColumnDef<App.Models.S
     {
         id: 'actions',
         cell: ({ row }) => {
-            return (
-                <SlotModal section={section} slot={row.original} />
-            )
+            return <SlotModal section={section} slot={row.original} />;
         },
-    }
+    },
 ];

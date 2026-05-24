@@ -4,6 +4,8 @@ use App\Actions\Units\Invites\CreateUnitInvite;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\UnitInvite;
+use App\Models\UnitMember;
+use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 describe('CreateUnitInvite', function () {
@@ -61,6 +63,40 @@ describe('CreateUnitInvite', function () {
 
         expect(fn () => app(CreateUnitInvite::class)->create($unitA, null, [
             'default_rank_id' => $foreignRank->id,
+        ]))->toThrow(ValidationException::class);
+    });
+
+    it('creates a scoped invite linked to a user-less member', function () {
+        $unit = Unit::factory()->create();
+        $rank = Rank::factory()->for($unit)->create(['ord' => 0]);
+        $placeholder = UnitMember::factory()->for($unit)->for($rank)->userless()->create();
+
+        $invite = app(CreateUnitInvite::class)->create($unit, null, [
+            'member_id' => $placeholder->id,
+        ]);
+
+        expect($invite->member_id)->toBe($placeholder->id);
+    });
+
+    it('rejects a member_id that belongs to a different unit', function () {
+        $unitA = Unit::factory()->create();
+        $unitB = Unit::factory()->create();
+        $rank = Rank::factory()->for($unitB)->create(['ord' => 0]);
+        $placeholder = UnitMember::factory()->for($unitB)->for($rank)->create();
+
+        expect(fn () => app(CreateUnitInvite::class)->create($unitA, null, [
+            'member_id' => $placeholder->id,
+        ]))->toThrow(ValidationException::class);
+    });
+
+    it('rejects a member_id for a member who already has a user account', function () {
+        $unit = Unit::factory()->create();
+        $rank = Rank::factory()->for($unit)->create(['ord' => 0]);
+        $user = User::factory()->create();
+        $member = UnitMember::factory()->for($unit)->for($rank)->for($user)->create();
+
+        expect(fn () => app(CreateUnitInvite::class)->create($unit, null, [
+            'member_id' => $member->id,
         ]))->toThrow(ValidationException::class);
     });
 

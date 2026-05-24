@@ -13,9 +13,10 @@ class CreateNewUnitMember
     use UnitMemberValidationRules;
 
     /**
-     * Update a unit member's profile with the given input data.
+     * Create a new unit member, optionally linked to a user account.
+     * Pass null for $user to create a user-less (placeholder) member.
      */
-    public function create(Unit $unit, User $user, array $input): UnitMember
+    public function create(Unit $unit, ?User $user, array $input): UnitMember
     {
         $validated = Validator::make(
             $input,
@@ -26,7 +27,7 @@ class CreateNewUnitMember
         $member = UnitMember::create([
             ...$validated,
             'unit_id' => $unit->id,
-            'user_id' => $user->id,
+            'user_id' => $user?->id,
             'rank_changed_at' => now(),
             'status_changed_at' => now(),
         ]);

@@ -20,7 +20,12 @@ import {
 } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
-import { destroy, edit, list, show } from '@/wayfinder/routes/unit/structure/sections';
+import {
+    destroy,
+    edit,
+    list,
+    show,
+} from '@/wayfinder/routes/unit/structure/sections';
 import { Link, router } from '@inertiajs/react';
 import { App, Inertia } from '@/wayfinder/types';
 import { Button } from '@/components/ui/button';
@@ -32,6 +37,7 @@ import { memberColumns } from '@/components/views/members/columns';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
 import { SlotModal } from '@/components/views/sections/slot-modal';
+import { ORBAT } from '@/components/orbat';
 
 type Props = Inertia.Pages.Units.Structure.Sections.Show;
 
@@ -39,9 +45,9 @@ const SectionShow = ({ section, unit }: Props) => {
     const getInitials = useInitials();
 
     return (
-        <div className="flex flex-col p-4 gap-y-4">
+        <div className="flex flex-col gap-y-4 p-4">
             <Card>
-                <CardContent className="flex gap-4 flex-col md:flex-row items-center">
+                <CardContent className="flex flex-col items-center gap-4 md:flex-row">
                     <Avatar size="huge">
                         <AvatarImage
                             src={section.avatar_url as any as string}
@@ -52,10 +58,13 @@ const SectionShow = ({ section, unit }: Props) => {
                         </AvatarFallback>
                     </Avatar>
 
-                    <div className="flex-1 flex items-center justify-between xl:col-span-7">
+                    <div className="flex flex-1 items-center justify-between xl:col-span-7">
                         <Heading
                             title={`${section.display_name}`}
-                            description={section.description || 'No description provided.'}
+                            description={
+                                section.description ||
+                                'No description provided.'
+                            }
                             className="!mb-0"
                         />
 
@@ -75,7 +84,10 @@ const SectionShow = ({ section, unit }: Props) => {
 
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
-                                        <Button size="icon-lg" variant="destructive">
+                                        <Button
+                                            size="icon-lg"
+                                            variant="destructive"
+                                        >
                                             <TrashIcon />
                                         </Button>
                                     </AlertDialogTrigger>
@@ -86,9 +98,10 @@ const SectionShow = ({ section, unit }: Props) => {
                                             </AlertDialogTitle>
                                             <AlertDialogDescription>
                                                 This will permanently delete{' '}
-                                                {section.display_name} and unassign all
-                                                members in this section. This action
-                                                cannot be undone.
+                                                {section.display_name} and
+                                                unassign all members in this
+                                                section. This action cannot be
+                                                undone.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
@@ -118,20 +131,26 @@ const SectionShow = ({ section, unit }: Props) => {
                 </CardContent>
             </Card>
 
-            <div className="grid lg:grid-cols-2 gap-4">
+            <div className="grid gap-4 lg:grid-cols-2">
                 <div className="flex flex-col gap-y-4">
                     <Card>
                         <CardHeader>
                             <CardTitle>Slots</CardTitle>
-                            <CardDescription>Organize your members into slots within the section.</CardDescription>
+                            <CardDescription>
+                                Organize your members into slots within the
+                                section.
+                            </CardDescription>
                             <CardAction>
                                 <SlotModal section={section} />
                             </CardAction>
                         </CardHeader>
 
                         <CardContent>
-                            {(section.slots && section.slots.length > 0) && (
-                                <DataTable columns={slotColumns(section)} data={section.slots} />
+                            {section.slots && section.slots.length > 0 && (
+                                <DataTable
+                                    columns={slotColumns(section)}
+                                    data={section.slots}
+                                />
                             )}
                         </CardContent>
                     </Card>
@@ -144,20 +163,32 @@ const SectionShow = ({ section, unit }: Props) => {
                         </CardHeader>
 
                         <CardContent>
-                            {(section.members && section.members.length > 0) && (
+                            {section.members && section.members.length > 0 && (
                                 <DataTable
                                     columns={memberColumns}
-                                    data={
-                                        section.members.map(member => ({
-                                            ...member,
-                                            unit: { slug: unit?.slug! }
-                                        } as App.Models.UnitMember))
-                                    } />
+                                    data={section.members.map(
+                                        (member) =>
+                                            ({
+                                                ...member,
+                                                unit: { slug: unit?.slug! },
+                                            }) as App.Models.UnitMember,
+                                    )}
+                                />
                             )}
                         </CardContent>
                     </Card>
                 </div>
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>ORBAT</CardTitle>
+                </CardHeader>
+
+                <CardContent>
+                    <ORBAT sections={[section]} />
+                </CardContent>
+            </Card>
         </div>
     );
 };

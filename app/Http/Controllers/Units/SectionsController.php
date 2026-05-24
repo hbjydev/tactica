@@ -28,6 +28,7 @@ class SectionsController extends Controller
         /** @var LengthAwarePaginator<int, UnitMember> $members */
         $sections = $unit
             ->sections()
+            ->orderBy('parent_id', 'desc')
             ->orderBy('ord', 'asc')
             ->orderBy('created_at', 'asc')
             ->with('slots', 'unit:id,slug')
@@ -43,7 +44,7 @@ class SectionsController extends Controller
         Gate::authorize('view', $section);
 
         return Inertia::render('units/structure/sections/show', [
-            'section' => $section->load('slots', 'slots.member', 'members', 'members.rank'),
+            'section' => $section->load('slots', 'slots.member', 'members', 'members.rank', 'children'),
         ]);
     }
 

@@ -2,6 +2,7 @@ import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReact
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { Paginated } from "@/types/units";
 import { Button } from "./button";
+import { router } from "@inertiajs/react";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -35,6 +36,12 @@ export const DataTable = <TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
         manualPagination: isPaginated(data),
         rowCount: isPaginated(data) ? data.total : undefined,
+        state: {
+            pagination: {
+                pageIndex: isPaginated(data) ? data.current_page - 1 : 0,
+                pageSize: isPaginated(data) ? data.per_page : 0,
+            }
+        },
     });
 
     return (
@@ -88,7 +95,9 @@ export const DataTable = <TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.previousPage()}
+                        onClick={() => {
+                            router.visit(data.prev_page_url as any as string);
+                        }}
                         disabled={!table.getCanPreviousPage()}
                     >
                         Previous
@@ -97,7 +106,9 @@ export const DataTable = <TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.nextPage()}
+                        onClick={() => {
+                            router.visit(data.next_page_url as any as string);
+                        }}
                         disabled={!table.getCanNextPage()}
                     >
                         Next

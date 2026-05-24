@@ -25,8 +25,10 @@ class CreateNewSection
         )->validate();
 
         /** @var \Illuminate\Http\UploadedFile|null $avatar */
-        $avatar = clone($validated['avatar']);
-        if ($avatar !== null) {
+        $avatar = null;
+
+        if (array_key_exists('avatar', $validated) && $validated['avatar'] instanceof UploadedFile) {
+            $avatar = clone($validated['avatar']);
             unset($validated['avatar']);
         } else {
             $validated['avatar_id'] = null;

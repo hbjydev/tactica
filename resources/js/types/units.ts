@@ -25,6 +25,7 @@ export type Rank = {
 export type UnitMember = {
     id: string;
     display_name: string;
+    formal_name: string;
     rank_id: string;
     rank_changed_at: string;
     unit_id: string;
@@ -44,5 +45,8 @@ export type Paginated<T> = {
     current_page: number;
     data: T[];
     last_page: number;
+    per_page: number;
     total: number;
+    next_page_url: string | null;
+    prev_page_url: string | null;
 };

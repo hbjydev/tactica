@@ -6,7 +6,13 @@ import {
     FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { store, update } from '@/wayfinder/routes/unit/structure/sections';
@@ -24,14 +30,19 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
 
     return (
         <Form
-            {...mode.form({ unit: unit.slug, section: section ? section.id : undefined })}
+            {...mode.form({
+                unit: unit.slug,
+                section: section ? section.id : undefined,
+            })}
             className="flex flex-col gap-6"
         >
             {({ errors, processing }) => (
                 <>
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="display_name">Display Name</FieldLabel>
+                            <FieldLabel htmlFor="display_name">
+                                Display Name
+                            </FieldLabel>
                             <Input
                                 id="display_name"
                                 type="text"
@@ -39,21 +50,29 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                                 required
                                 autoFocus
                                 tabIndex={1}
-                                defaultValue={section ? section.display_name : undefined}
+                                defaultValue={
+                                    section ? section.display_name : undefined
+                                }
                                 placeholder="Alpha 1-1"
                             />
-                            {errors.display_name && <FieldError>{errors.display_name}</FieldError>}
+                            {errors.display_name && (
+                                <FieldError>{errors.display_name}</FieldError>
+                            )}
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="avatar">Section Avatar</FieldLabel>
+                            <FieldLabel htmlFor="avatar">
+                                Section Avatar
+                            </FieldLabel>
                             <Input
                                 id="avatar"
                                 type="file"
                                 name="avatar"
                                 tabIndex={2}
                             />
-                            {errors.avatar && <FieldError>{errors.avatar}</FieldError>}
+                            {errors.avatar && (
+                                <FieldError>{errors.avatar}</FieldError>
+                            )}
                         </Field>
 
                         <Field>
@@ -72,20 +91,28 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                                 }
                             />
 
-                            {errors.description && <FieldError>{errors.description}</FieldError>}
+                            {errors.description && (
+                                <FieldError>{errors.description}</FieldError>
+                            )}
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="callsign">Callsign (optional)</FieldLabel>
+                            <FieldLabel htmlFor="callsign">
+                                Callsign (optional)
+                            </FieldLabel>
                             <Input
                                 id="callsign"
                                 type="text"
                                 name="callsign"
                                 tabIndex={3}
-                                defaultValue={section ? section.callsign : undefined}
+                                defaultValue={
+                                    section ? section.callsign : undefined
+                                }
                                 placeholder="1-1"
                             />
-                            {errors.callsign && <FieldError>{errors.callsign}</FieldError>}
+                            {errors.callsign && (
+                                <FieldError>{errors.callsign}</FieldError>
+                            )}
                         </Field>
 
                         <Field>
@@ -98,14 +125,22 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                                 tabIndex={4}
                                 defaultValue={section ? section.ord : 0}
                             />
-                            {errors.ord && <FieldError>{errors.ord}</FieldError>}
+                            {errors.ord && (
+                                <FieldError>{errors.ord}</FieldError>
+                            )}
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="parent_id">Parent Section</FieldLabel>
+                            <FieldLabel htmlFor="parent_id">
+                                Parent Section
+                            </FieldLabel>
                             <Select
                                 name="parent_id"
-                                defaultValue={section ? (section.parent_id ?? undefined) : undefined}
+                                defaultValue={
+                                    section
+                                        ? (section.parent_id ?? undefined)
+                                        : undefined
+                                }
                             >
                                 <SelectTrigger
                                     id="section_id"
@@ -115,12 +150,15 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                                     <SelectValue placeholder="Select a section" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value={"null"}>
+                                    <SelectItem value={'null'}>
                                         No parent section
                                     </SelectItem>
 
                                     {sections.map((section) => (
-                                        <SelectItem key={section.id} value={section.id}>
+                                        <SelectItem
+                                            key={section.id}
+                                            value={section.id}
+                                        >
                                             {section.display_name}
                                         </SelectItem>
                                     ))}
@@ -128,7 +166,9 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                             </Select>
                             <FieldError
                                 errors={
-                                    errors.parent_id ? [{ message: errors.parent_id }] : []
+                                    errors.parent_id
+                                        ? [{ message: errors.parent_id }]
+                                        : []
                                 }
                             />
                         </Field>

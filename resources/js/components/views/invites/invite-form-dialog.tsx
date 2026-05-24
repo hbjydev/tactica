@@ -35,6 +35,7 @@ type Props = {
     unit: App.Models.Unit;
     ranks: App.Models.Rank[];
     roles: App.Models.UnitRole[];
+    userlessMembers?: App.Models.UnitMember[];
     invite?: App.Models.UnitInvite | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -42,6 +43,7 @@ type Props = {
 
 const DEFAULT_EXPIRES_DAYS = 7;
 const NO_RANK = '__none__';
+const NO_MEMBER = '__none__';
 
 const toLocalInput = (iso: string | null | undefined): string => {
     if (!iso) return '';
@@ -57,6 +59,7 @@ export const InviteFormDialog = ({
     unit,
     ranks,
     roles,
+    userlessMembers,
     invite,
     open,
     onOpenChange,
@@ -84,6 +87,7 @@ export const InviteFormDialog = ({
             max_uses: invite?.max_uses?.toString() ?? '',
             default_rank_id: defaultRankId,
             default_role_ids: (invite?.default_roles ?? []).map((r) => r.id),
+            member_id: '',
         });
 
     useEffect(() => {
@@ -96,6 +100,7 @@ export const InviteFormDialog = ({
             max_uses: invite?.max_uses?.toString() ?? '',
             default_rank_id: defaultRankId,
             default_role_ids: (invite?.default_roles ?? []).map((r) => r.id),
+            member_id: '',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, invite]);
@@ -114,6 +119,7 @@ export const InviteFormDialog = ({
                 current.default_rank_id === NO_RANK
                     ? ''
                     : current.default_rank_id,
+            member_id: current.member_id === NO_MEMBER ? '' : current.member_id,
         }));
 
         const onSuccess = () => {
@@ -184,6 +190,64 @@ export const InviteFormDialog = ({
                         </Field>
                     </FieldGroup>
 
+                    {!invite &&
+                        userlessMembers &&
+                        userlessMembers.length > 0 && (
+                            <FieldGroup>
+                                <Field>
+                                    <FieldLabel htmlFor="member_id">
+                                        Link to existing member (optional)
+                                    </FieldLabel>
+                                    <p className="text-sm text-muted-foreground">
+                                        Invite someone to log in as a
+                                        pre-created member. Once accepted, the
+                                        link becomes inactive.
+                                    </p>
+                                    <Select
+                                        value={data.member_id || NO_MEMBER}
+                                        onValueChange={(v) =>
+                                            setData(
+                                                'member_id',
+                                                v === NO_MEMBER ? '' : v,
+                                            )
+                                        }
+                                    >
+                                        <SelectTrigger
+                                            id="member_id"
+                                            className="w-full"
+                                        >
+                                            <SelectValue placeholder="No member linked" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value={NO_MEMBER}>
+                                                No member linked
+                                            </SelectItem>
+                                            {userlessMembers.map((m) => (
+                                                <SelectItem
+                                                    key={m.id}
+                                                    value={m.id}
+                                                >
+                                                    {m.formal_name as string}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FieldError
+                                        errors={
+                                            errors.member_id
+                                                ? [
+                                                      {
+                                                          message:
+                                                              errors.member_id,
+                                                      },
+                                                  ]
+                                                : []
+                                        }
+                                    />
+                                </Field>
+                            </FieldGroup>
+                        )}
+
                     <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <Field>
                             <FieldLabel htmlFor="expires_at">
@@ -232,43 +296,51 @@ export const InviteFormDialog = ({
                         </Field>
                     </FieldGroup>
 
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="default_rank_id">
-                                Default rank
-                            </FieldLabel>
-                            <Select
-                                value={data.default_rank_id}
-                                onValueChange={(v) =>
-                                    setData('default_rank_id', v)
-                                }
-                            >
-                                <SelectTrigger
-                                    id="default_rank_id"
-                                    className="w-full"
+                    {!data.member_id && (
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="default_rank_id">
+                                    Default rank
+                                </FieldLabel>
+                                <Select
+                                    value={data.default_rank_id}
+                                    onValueChange={(v) =>
+                                        setData('default_rank_id', v)
+                                    }
                                 >
-                                    <SelectValue placeholder="Select a rank" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value={NO_RANK}>
-                                        Use unit's entry rank
-                                    </SelectItem>
-                                    {ranks.map((r) => (
-                                        <SelectItem key={r.id} value={r.id}>
-                                            {r.display_name} ({r.abbreviation})
+                                    <SelectTrigger
+                                        id="default_rank_id"
+                                        className="w-full"
+                                    >
+                                        <SelectValue placeholder="Select a rank" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value={NO_RANK}>
+                                            Use unit's entry rank
                                         </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FieldError
-                                errors={
-                                    errors.default_rank_id
-                                        ? [{ message: errors.default_rank_id }]
-                                        : []
-                                }
-                            />
-                        </Field>
-                    </FieldGroup>
+                                        {ranks.map((r) => (
+                                            <SelectItem key={r.id} value={r.id}>
+                                                {r.display_name} (
+                                                {r.abbreviation})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FieldError
+                                    errors={
+                                        errors.default_rank_id
+                                            ? [
+                                                  {
+                                                      message:
+                                                          errors.default_rank_id,
+                                                  },
+                                              ]
+                                            : []
+                                    }
+                                />
+                            </Field>
+                        </FieldGroup>
+                    )}
 
                     {roles.length > 0 && (
                         <FieldGroup>

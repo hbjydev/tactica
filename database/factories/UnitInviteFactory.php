@@ -28,6 +28,11 @@ class UnitInviteFactory extends Factory
         ];
     }
 
+    public function scoped(string $memberId): static
+    {
+        return $this->state(fn () => ['member_id' => $memberId]);
+    }
+
     public function expired(): static
     {
         return $this->state(fn () => ['expires_at' => now()->subDay()]);

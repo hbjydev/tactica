@@ -1,5 +1,11 @@
 import AppLayout from '@/layouts/app-layout';
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardAction,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import Heading from '@/components/heading';
 import { dashboard } from '@/wayfinder/routes/unit';
 import { Inertia } from '@/wayfinder/types';
@@ -23,7 +29,7 @@ const Dashboard = ({ unit, ...data }: Props) => {
             />
 
             <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-                <div className="grid xl:grid-cols-3 gap-4 xl:col-span-2">
+                <div className="grid gap-4 xl:col-span-2 xl:grid-cols-3">
                     <StatCard
                         name="Ranks"
                         icon={MedalIcon}
@@ -68,7 +74,17 @@ const Dashboard = ({ unit, ...data }: Props) => {
     );
 };
 
-const StatCard = ({ name, value, icon: Icon, link }: { name: string, value: number, icon: LucideIcon, link?: string | UrlMethodPair | undefined }) => {
+const StatCard = ({
+    name,
+    value,
+    icon: Icon,
+    link,
+}: {
+    name: string;
+    value: number;
+    icon: LucideIcon;
+    link?: string | UrlMethodPair | undefined;
+}) => {
     return (
         <Card>
             <CardHeader>
@@ -79,15 +95,13 @@ const StatCard = ({ name, value, icon: Icon, link }: { name: string, value: numb
                 </CardTitle>
                 <CardAction>
                     <Button variant="outline" asChild>
-                        <Link href={link}>
-                            View all
-                        </Link>
+                        <Link href={link}>View all</Link>
                     </Button>
                 </CardAction>
             </CardHeader>
         </Card>
-    )
-}
+    );
+};
 
 Dashboard.layout = (props: Props) => [
     AppLayout,

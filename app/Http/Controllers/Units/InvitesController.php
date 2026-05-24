@@ -33,6 +33,7 @@ class InvitesController extends Controller
                 'createdByMember.rank',
                 'defaultRank',
                 'defaultRoles',
+                'member.rank',
             ])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -44,10 +45,17 @@ class InvitesController extends Controller
             ->orderBy('display_name')
             ->get();
 
+        $userlessMembers = $unit->members()
+            ->whereNull('user_id')
+            ->with('rank')
+            ->orderBy('display_name')
+            ->get();
+
         return Inertia::render('units/invites/list', [
             'invites' => $invites,
             'ranks' => $ranks,
             'roles' => $roles,
+            'userlessMembers' => $userlessMembers,
         ]);
     }
 

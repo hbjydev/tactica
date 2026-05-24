@@ -32,6 +32,10 @@ Route::prefix('/members')
     ->scopeBindings()
     ->group(function () {
         Route::get('/', [MembersController::class, 'list'])->name('list');
+        Route::get('/search', [MembersController::class, 'search'])->name('search');
+
+        Route::get('/create', [MembersController::class, 'create'])->name('create');
+        Route::post('/', [MembersController::class, 'store'])->name('store');
 
         Route::get('/{member}', [MembersController::class, 'show'])->name('show');
 
