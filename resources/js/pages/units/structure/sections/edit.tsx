@@ -32,7 +32,7 @@ SectionEdit.layout = (props: Props) => [
         auth: props.auth,
         breadcrumbs: [
             {
-                title: 'Members',
+                title: 'Sections',
                 href: list({ unit: props.unit?.slug! }),
             },
             {

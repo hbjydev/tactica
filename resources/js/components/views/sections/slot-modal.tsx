@@ -124,6 +124,11 @@ export const SlotModal = ({ slot, section }: Props) => {
                                     </Field>
 
                                     <Field orientation="horizontal">
+                                        <input
+                                            type="hidden"
+                                            name="is_leader"
+                                            value="0"
+                                        />
                                         <Checkbox
                                             id="is_leader"
                                             name="is_leader"

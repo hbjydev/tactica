@@ -98,7 +98,7 @@ class MembersController extends Controller
         Gate::authorize('view', $member);
 
         return Inertia::render('units/members/show', [
-            'member' => $member->load('rank', 'user'),
+            'member' => $member->load('rank', 'user', 'serviceRecords'),
         ]);
     }
 

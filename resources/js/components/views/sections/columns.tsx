@@ -1,8 +1,22 @@
 import { show } from '@/wayfinder/routes/unit/structure/sections';
+import { destroy } from '@/wayfinder/routes/unit/structure/sections/slot';
 import { show as showMember } from '@/wayfinder/routes/unit/members';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { App } from '@/wayfinder/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { TrashIcon } from 'lucide-react';
 import moment from 'moment';
 import { ReactNode } from 'react';
 import { SlotModal } from './slot-modal';
@@ -108,7 +122,48 @@ export const slotColumns = (
     {
         id: 'actions',
         cell: ({ row }) => {
-            return <SlotModal section={section} slot={row.original} />;
+            const unit = usePage().props.unit!;
+            return (
+                <div className="flex items-center justify-end gap-x-2">
+                    <SlotModal section={section} slot={row.original} />
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button size="icon" variant="destructive">
+                                <TrashIcon />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Delete {row.original.display_name}?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This will permanently delete this slot and
+                                    unassign any member currently assigned to
+                                    it. This action cannot be undone.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={() =>
+                                        router.delete(
+                                            destroy.url({
+                                                unit: unit.slug,
+                                                section: section.id,
+                                                slot: row.original.id,
+                                            }),
+                                        )
+                                    }
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                    Delete slot
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+            );
         },
     },
 ];

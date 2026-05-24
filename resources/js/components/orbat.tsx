@@ -1,11 +1,17 @@
-import { useInitials } from "@/hooks/use-initials";
-import { App } from "@/wayfinder/types";
-import { Link, usePage } from "@inertiajs/react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { show } from "@/wayfinder/routes/unit/structure/sections";
+import { useInitials } from '@/hooks/use-initials';
+import { App } from '@/wayfinder/types';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from './ui/card';
+import { show } from '@/wayfinder/routes/unit/structure/sections';
 import { show as showMember } from '@/wayfinder/routes/unit/members';
-import { AvatarImage, AvatarFallback, Avatar } from "./ui/avatar";
-import { Separator } from "./ui/separator";
+import { AvatarImage, AvatarFallback, Avatar } from './ui/avatar';
+import { Separator } from './ui/separator';
 
 type Props = {
     sections: App.Models.Section[];
@@ -23,7 +29,7 @@ export const ORBAT = ({ sections }: Props) => {
             </div>
         </div>
     );
-}
+};
 
 const TreeNode = ({ section }: { section: App.Models.Section }) => {
     const getInitials = useInitials();
