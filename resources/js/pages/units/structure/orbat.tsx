@@ -3,8 +3,8 @@ import AppLayout from "@/layouts/app-layout";
 import { orbat } from "@/wayfinder/routes/unit/structure";
 import { App, Inertia } from "@/wayfinder/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { useInitials } from "@/hooks/use-initials";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useInitials } from "@/hooks/use-initials";
 import { Separator } from "@/components/ui/separator";
 import { show } from "@/wayfinder/routes/unit/structure/sections";
 import { show as showMember } from "@/wayfinder/routes/unit/members";
@@ -35,7 +35,7 @@ const ORBAT = ({ sections }: Props) => {
 };
 
 const TreeNode = ({ section }: { section: App.Models.Section }) => {
-    // const getInitials = useInitials();
+    const getInitials = useInitials();
     const { props: { unit } } = usePage();
 
     return (
@@ -43,12 +43,10 @@ const TreeNode = ({ section }: { section: App.Models.Section }) => {
             <div className="tf-nc">
                 <Card className="gap-0! pb-0!">
                     <CardHeader className="flex flex-col items-center gap-y-2 mb-6!">
-                        {/* {section.avatar_url && ( */}
-                        {/*     <Avatar className="size-16 text-xl"> */}
-                        {/*         <AvatarImage src="#" /> */}
-                        {/*         <AvatarFallback>{getInitials(section.display_name)}</AvatarFallback> */}
-                        {/*     </Avatar> */}
-                        {/* )} */}
+                        <Avatar className="size-16 text-xl">
+                            <AvatarImage src={section.avatar_url!} />
+                            <AvatarFallback>{getInitials(section.display_name)}</AvatarFallback>
+                        </Avatar>
                         <CardTitle className="underline">
                             <Link href={show({ unit: unit?.slug!, section: section.id })}>
                                 {section.display_name}
@@ -62,28 +60,30 @@ const TreeNode = ({ section }: { section: App.Models.Section }) => {
                             <Separator />
                             <CardContent className="px-0!">
                                 <table className="w-full text-left">
-                                    {section.slots.map(slot => (
-                                        <tr className="odd:bg-muted h-8">
-                                            <td className="px-4!">{slot.display_name}</td>
-                                            <td className="px-4!">
-                                                {slot.member
-                                                    ? (
-                                                        <Link
-                                                            href={showMember({ unit: unit?.slug!, member: slot.member?.id! })}
-                                                            className="underline"
-                                                        >
-                                                            {slot.member.formal_name as string}
-                                                        </Link>
-                                                    )
-                                                    : (
-                                                        <span className="italic text-muted-foreground">
-                                                            &mdash;
-                                                        </span>
-                                                    )
-                                                }
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    <tbody>
+                                        {section.slots.map(slot => (
+                                            <tr className="odd:bg-muted h-8" key={slot.id}>
+                                                <td className="px-4!">{slot.display_name}</td>
+                                                <td className="px-4!">
+                                                    {slot.member
+                                                        ? (
+                                                            <Link
+                                                                href={showMember({ unit: unit?.slug!, member: slot.member?.id! })}
+                                                                className="underline"
+                                                            >
+                                                                {slot.member.formal_name as string}
+                                                            </Link>
+                                                        )
+                                                        : (
+                                                            <span className="italic text-muted-foreground">
+                                                                &mdash;
+                                                            </span>
+                                                        )
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
                                 </table>
                             </CardContent>
                         </>

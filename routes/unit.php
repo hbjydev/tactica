@@ -75,6 +75,10 @@ Route::prefix('/structure')
 
                 Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
 
+                Route::post('/{section}/slots', [SectionsController::class, 'storeSlot'])->name('slot.store');
+                Route::patch('/{section}/slots/{slot}', [SectionsController::class, 'updateSlot'])->name('slot.update');
+                Route::delete('/{section}/slots/{slot}', [SectionsController::class, 'destroySlot'])->name('slot.destroy');
+
                 Route::get('/{section}/edit', [SectionsController::class, 'edit'])->name('edit');
                 Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
 

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('slots', function (Blueprint $table) {
-            $table->ulid()->primary();
+            $table->ulid('id')->primary();
             $table->foreignUlid('section_id')->constrained('sections', 'id')->cascadeOnDelete();
             $table->text('display_name');
             $table->boolean('is_leader')->default(false);

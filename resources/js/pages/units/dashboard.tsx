@@ -41,7 +41,7 @@ const Dashboard = ({ unit, ...data }: Props) => {
                     <StatCard
                         name="Sections"
                         icon={Users2Icon}
-                        value={0}
+                        value={data.sections_count as number}
                         link={listSections({ slug: unit?.slug! })}
                     />
 

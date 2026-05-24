@@ -12,94 +12,111 @@ import {
 } from '@/components/ui/alert-dialog';
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
-import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
-import { toMemberName } from '@/lib/utils';
 import { destroy, edit, list, show } from '@/wayfinder/routes/unit/structure/sections';
 import { Link, router } from '@inertiajs/react';
 import { App, Inertia } from '@/wayfinder/types';
-import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { AuthGuard } from '@/components/auth-guard';
 import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
 import { slotColumns } from '@/components/views/sections/columns';
 import { memberColumns } from '@/components/views/members/columns';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
+import { SlotModal } from '@/components/views/sections/slot-modal';
 
 type Props = Inertia.Pages.Units.Structure.Sections.Show;
 
 const SectionShow = ({ section, unit }: Props) => {
+    const getInitials = useInitials();
+
     return (
         <div className="flex flex-col p-4 gap-y-4">
-            <div className="flex items-center justify-between xl:col-span-7">
-                <Heading
-                    title={`${section.display_name}`}
-                    description={section.description || 'No description provided.'}
-                    className="!mb-0"
-                />
+            <Card>
+                <CardContent className="flex gap-4 flex-col md:flex-row items-center">
+                    <Avatar size="huge">
+                        <AvatarImage
+                            src={section.avatar_url as any as string}
+                            alt={`${section.display_name} avatar`}
+                        />
+                        <AvatarFallback>
+                            {getInitials(section.display_name)}
+                        </AvatarFallback>
+                    </Avatar>
 
-                <AuthGuard permission={UnitPermission.MANAGE_SECTIONS}>
-                    <div className="flex items-center gap-x-2">
-                        <Button size="icon" asChild>
-                            {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
-                            <Link
-                                href={edit({
-                                    unit: unit?.slug!,
-                                    section: section.id,
-                                })}
-                            >
-                                <PencilIcon />
-                            </Link>
-                        </Button>
+                    <div className="flex-1 flex items-center justify-between xl:col-span-7">
+                        <Heading
+                            title={`${section.display_name}`}
+                            description={section.description || 'No description provided.'}
+                            className="!mb-0"
+                        />
 
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button size="icon" variant="destructive">
-                                    <TrashIcon />
-                                </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        Delete {section.display_name}?
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This will permanently delete{' '}
-                                        {section.display_name} and unassign all
-                                        members in this section. This action
-                                        cannot be undone.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction
-                                        onClick={() =>
-                                            router.delete(
-                                                destroy.url({
-                                                    // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
-                                                    unit: unit?.slug!,
-                                                    section: section.id,
-                                                }),
-                                            )
-                                        }
-                                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        <AuthGuard permission={UnitPermission.MANAGE_SECTIONS}>
+                            <div className="flex items-center gap-x-2">
+                                <Button size="icon-lg" asChild>
+                                    {/* oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain */}
+                                    <Link
+                                        href={edit({
+                                            unit: unit?.slug!,
+                                            section: section.id,
+                                        })}
                                     >
-                                        Delete section
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                                        <PencilIcon />
+                                    </Link>
+                                </Button>
+
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button size="icon-lg" variant="destructive">
+                                            <TrashIcon />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>
+                                                Delete {section.display_name}?
+                                            </AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This will permanently delete{' '}
+                                                {section.display_name} and unassign all
+                                                members in this section. This action
+                                                cannot be undone.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={() =>
+                                                    router.delete(
+                                                        destroy.url({
+                                                            // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
+                                                            unit: unit?.slug!,
+                                                            section: section.id,
+                                                        }),
+                                                    )
+                                                }
+                                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                            >
+                                                Delete section
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                        </AuthGuard>
                     </div>
-                </AuthGuard>
-            </div>
+                </CardContent>
+            </Card>
 
             <div className="grid lg:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-y-4">
@@ -107,11 +124,14 @@ const SectionShow = ({ section, unit }: Props) => {
                         <CardHeader>
                             <CardTitle>Slots</CardTitle>
                             <CardDescription>Organize your members into slots within the section.</CardDescription>
+                            <CardAction>
+                                <SlotModal section={section} />
+                            </CardAction>
                         </CardHeader>
 
                         <CardContent>
                             {(section.slots && section.slots.length > 0) && (
-                                <DataTable columns={slotColumns} data={section.slots} />
+                                <DataTable columns={slotColumns(section)} data={section.slots} />
                             )}
                         </CardContent>
                     </Card>

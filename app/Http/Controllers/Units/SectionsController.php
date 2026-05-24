@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Units;
 use App\Actions\Units\Sections\CreateNewSection;
 use App\Actions\Units\Sections\DeleteSection;
 use App\Actions\Units\Sections\UpdateSection;
+use App\Actions\Units\Slots\CreateNewSlot;
+use App\Actions\Units\Slots\DeleteSlot;
+use App\Actions\Units\Slots\UpdateSlot;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
+use App\Models\Slot;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use Illuminate\Http\Request;
@@ -39,7 +43,7 @@ class SectionsController extends Controller
         Gate::authorize('view', $section);
 
         return Inertia::render('units/structure/sections/show', [
-            'section' => $section->load('slots', 'slots.member', 'members'),
+            'section' => $section->load('slots', 'slots.member', 'members', 'members.rank'),
         ]);
     }
 
@@ -59,11 +63,22 @@ class SectionsController extends Controller
     {
         Gate::authorize('create', Section::class);
 
-        $action->create($unit, $request->post());
+        $action->create($unit, $request->all());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully created section.')]);
 
         return to_route('unit.structure.sections.list', ['unit' => $unit]);
+    }
+
+    public function storeSlot(Unit $unit, Section $section, Request $request, CreateNewSlot $action)
+    {
+        Gate::authorize('create', Slot::class);
+
+        $action->create($section, $request->post());
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully created slot.')]);
+
+        return to_route('unit.structure.sections.show', ['unit' => $unit, 'section' => $section]);
     }
 
     public function edit(Unit $unit, Section $section)
@@ -79,12 +94,23 @@ class SectionsController extends Controller
         ]);
     }
 
+    public function updateSlot(Unit $unit, Section $section, Slot $slot, Request $request, UpdateSlot $action)
+    {
+        Gate::authorize('update', $slot);
+
+        $action->update($section, $slot, $request->post());
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully updated slot.')]);
+
+        return to_route('unit.structure.sections.show', ['unit' => $unit, 'section' => $section]);
+    }
+
     public function update(Unit $unit, Section $section, Request $request, UpdateSection $action)
     {
         Gate::authorize('update', $section);
 
         try {
-            $action->update($section, $request->post());
+            $action->update($section, $request->all());
         } catch (\Exception $e) {
             if ($e instanceof ValidationException) {
                 throw $e;
@@ -106,5 +132,15 @@ class SectionsController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully removed section.')]);
 
         return to_route('unit.structure.sections.list', ['unit' => $unit]);
+    }
+
+    public function destroySlot(Unit $unit, Section $section, Slot $slot, DeleteSlot $action)
+    {
+        Gate::authorize('destroy', $slot);
+
+        $action->delete($slot);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully removed slot from section.')]);
+
+        return to_route('unit.structure.sections.show', ['unit' => $unit, 'section' => $section]);
     }
 }

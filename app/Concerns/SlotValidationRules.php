@@ -5,25 +5,24 @@ namespace App\Concerns;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-trait SectionValidationRules
+trait SlotValidationRules
 {
     /**
      * Get the validation rules used to validate unit member profiles.
      *
      * @return array<string, array<int, ValidationRule|array<mixed>|string>>
      */
-    protected function sectionRules(string $unitId): array
+    protected function slotRules(string $unitId): array
     {
         return [
             'display_name' => ['required', 'string', 'max:255'],
-            'avatar' => ['nullable', 'image', 'max:12288'], // max 12mb
-            'ord' => ['required', 'integer'],
+            'is_leader' => ['boolean'], // max 12mb
             'callsign' => ['nullable', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:512'],
-            'parent_id' => [
+            'ord' => ['required', 'integer'],
+            'unit_member_id' => [
                 'nullable',
                 'string',
-                Rule::exists('sections', 'id')->where('unit_id', $unitId),
+                Rule::exists('unit_members', 'id')->where('unit_id', $unitId),
             ],
         ];
     }

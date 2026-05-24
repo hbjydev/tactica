@@ -1,8 +1,7 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { show } from '@/wayfinder/routes/unit/structure/sections';
+import { show as showMember } from '@/wayfinder/routes/unit/members';
 import { App } from '@/wayfinder/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import moment from 'moment';
 import { ReactNode } from 'react';
@@ -57,11 +56,12 @@ export const sectionColumns: ColumnDef<App.Models.Section>[] = [
     },
 ];
 
-export const slotColumns: ColumnDef<App.Models.Slot>[] = [
+export const slotColumns = (section: App.Models.Section): ColumnDef<App.Models.Slot>[] => [
     {
         accessorKey: 'display_name',
         header: 'Display Name',
     },
+
     {
         accessorKey: 'callsign',
         header: 'Callsign',
@@ -73,6 +73,31 @@ export const slotColumns: ColumnDef<App.Models.Slot>[] = [
             );
         },
     },
+
+    {
+        accessorKey: 'member',
+        header: 'Member',
+        cell: ({ row }) => {
+            const unit = usePage().props.unit!;
+            return (
+                row.original.member
+                    ? (
+                        <Link
+                            href={showMember({
+                                // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
+                                unit: unit.slug,
+                                member: row.original.member.id,
+                            })}
+                            className="underline hover:text-primary"
+                        >
+                            {row.original.member.formal_name as string}
+                        </Link>
+                    )
+                    : <span className="text-muted-foreground">&mdash;</span>
+            );
+        },
+    },
+
     {
         accessorKey: 'created_at',
         header: 'Created',
@@ -84,7 +109,7 @@ export const slotColumns: ColumnDef<App.Models.Slot>[] = [
         id: 'actions',
         cell: ({ row }) => {
             return (
-                <SlotModal slot={row.original} />
+                <SlotModal section={section} slot={row.original} />
             )
         },
     }

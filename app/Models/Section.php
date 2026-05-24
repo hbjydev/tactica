@@ -2,24 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property List<\App\Models\UnitMember> $members
  */
 #[Fillable(['unit_id', 'display_name', 'description', 'callsign', 'ord', 'parent_id'])]
-class Section extends Model
+#[Appends(['avatar_url'])]
+class Section extends Model implements HasMedia
 {
-    use HasUlids;
+    use HasUlids, InteractsWithMedia;
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')->singleFile();
+    }
 
     public function slots(): HasMany
     {
-        return $this->hasMany(Slot::class)->orderBy('ord', 'asc');
+        return $this
+            ->hasMany(Slot::class)
+            ->orderBy('ord', 'asc');
     }
 
     public function parent(): BelongsTo
@@ -44,5 +56,17 @@ class Section extends Model
     public function members(): HasManyThrough
     {
         return $this->hasManyThrough(UnitMember::class, Slot::class, 'section_id', 'id', 'id', 'unit_member_id');
+    }
+
+    public function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->getMedia('avatar')->count() == 1) {
+                    return $this->getFirstMediaUrl('avatar');
+                }
+                return null;
+            },
+        );
     }
 }

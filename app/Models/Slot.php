@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('section_id', 'unit_member_id', 'display_name', 'ord')]
+#[Fillable('section_id', 'unit_member_id', 'display_name', 'callsign', 'is_leader', 'ord')]
 class Slot extends Model
 {
     use HasUlids;

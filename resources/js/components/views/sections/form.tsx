@@ -46,6 +46,17 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                         </Field>
 
                         <Field>
+                            <FieldLabel htmlFor="avatar">Section Avatar</FieldLabel>
+                            <Input
+                                id="avatar"
+                                type="file"
+                                name="avatar"
+                                tabIndex={2}
+                            />
+                            {errors.avatar && <FieldError>{errors.avatar}</FieldError>}
+                        </Field>
+
+                        <Field>
                             <FieldLabel htmlFor="description">
                                 Description (optional)
                             </FieldLabel>

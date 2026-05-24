@@ -16,6 +16,7 @@ class DashboardController extends Controller
         return Inertia::render('units/dashboard', [
             'members_count' => $unit->members()->count(),
             'ranks_count' => $unit->ranks()->count(),
+            'sections_count' => $unit->sections()->count(),
         ]);
     }
 }

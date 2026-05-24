@@ -18,7 +18,7 @@ class OrbatController extends Controller
         $sections = $unit
             ->sections()
             ->where('parent_id', null) // only top-level
-            ->with('unit:id,slug', 'children') // load children
+            ->with('slots', 'unit:id,slug', 'children') // load children
             ->orderBy('ord', 'desc')
             ->orderBy('created_at', 'asc')
             ->get();
