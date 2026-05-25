@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.4",
         "ext-opentelemetry": "*",
+        "ext-exif": "*",
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/fortify": "^1.34",
         "laravel/framework": "^13.7",
