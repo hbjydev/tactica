@@ -4,6 +4,7 @@ namespace App\Actions\Units\Sections;
 
 use App\Concerns\SectionValidationRules;
 use App\Models\Section;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateSection
@@ -15,8 +16,12 @@ class UpdateSection
      */
     public function update(Section $section, array $input): void
     {
-        if (($input['parent_id'] ?? null) === 'null') $input['parent_id'] = null;
-        if (($input['avatar'] ?? null) === 'null') $input['avatar'] = null;
+        if (($input['parent_id'] ?? null) === 'null') {
+            $input['parent_id'] = null;
+        }
+        if (($input['avatar'] ?? null) === 'null') {
+            $input['avatar'] = null;
+        }
 
         // Capture intent before validation; absent key = don't touch media.
         $avatarPresent = array_key_exists('avatar', $input);
@@ -26,7 +31,7 @@ class UpdateSection
             $this->sectionRules($section->unit_id),
         )->validate();
 
-        /** @var \Illuminate\Http\UploadedFile|null $avatar */
+        /** @var UploadedFile|null $avatar */
         $avatar = $validated['avatar'] ?? null;
         unset($validated['avatar']);
 

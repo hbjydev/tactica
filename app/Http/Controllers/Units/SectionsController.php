@@ -127,10 +127,12 @@ class SectionsController extends Controller
             }
 
             Inertia::flash('toast', ['type' => 'error', 'message' => __('Failed to update section.')]);
+
             return to_route('unit.structure.sections.edit', ['unit' => $unit, 'section' => $section]);
         }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully updated section.')]);
+
         return to_route('unit.structure.sections.show', ['unit' => $unit, 'section' => $section]);
     }
 

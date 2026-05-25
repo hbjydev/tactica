@@ -16,7 +16,7 @@ class CreateNewSlot
      */
     public function create(Section $section, array $input): Slot
     {
-        if ($input['unit_member_id'] === "null") {
+        if ($input['unit_member_id'] === 'null') {
             $input['unit_member_id'] = null;
         }
 

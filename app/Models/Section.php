@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
- * @property List<\App\Models\UnitMember> $members
+ * @property List<UnitMember> $members
  */
 #[Fillable(['unit_id', 'display_name', 'description', 'callsign', 'ord', 'parent_id'])]
 #[Appends(['avatar_url'])]
@@ -65,6 +65,7 @@ class Section extends Model implements HasMedia
                 if ($this->getMedia('avatar')->count() == 1) {
                     return $this->getFirstMediaUrl('avatar');
                 }
+
                 return null;
             },
         );

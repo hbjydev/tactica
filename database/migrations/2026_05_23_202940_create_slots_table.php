@@ -19,9 +19,9 @@ return new class extends Migration
             $table->text('callsign')->nullable();
             $table->bigInteger('ord')->default(0);
             $table->foreignUlid('unit_member_id')
-                  ->nullable()
-                  ->constrained('unit_members', 'id')
-                  ->nullOnDelete();
+                ->nullable()
+                ->constrained('unit_members', 'id')
+                ->nullOnDelete();
 
             $table->timestamps();
         });

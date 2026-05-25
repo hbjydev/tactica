@@ -16,7 +16,9 @@ class UpdateSlot
      */
     public function update(Section $section, Slot $slot, array $input): void
     {
-        if (($input['unit_member_id'] ?? null) === 'null') $input['unit_member_id'] = null;
+        if (($input['unit_member_id'] ?? null) === 'null') {
+            $input['unit_member_id'] = null;
+        }
 
         $validated = Validator::make(
             $input,
