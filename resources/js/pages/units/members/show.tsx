@@ -17,22 +17,33 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { createServiceRecordColumns } from '@/components/views/members/service-record-columns';
 import { DataTable } from '@/components/ui/data-table';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { toMemberName } from '@/lib/utils';
 import { destroy, edit, list, show } from '@/wayfinder/routes/unit/members';
+import { App, Inertia } from '@/wayfinder/types';
 import { Link, router } from '@inertiajs/react';
-import { Inertia } from '@/wayfinder/types';
 import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { AuthGuard } from '@/components/auth-guard';
 import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
+import { IconListCheck } from '@tabler/icons-react';
 
-type Props = Inertia.Pages.Units.Members.Show;
+type Props = Inertia.Pages.Units.Members.Show & {
+    ranks_lookup: Record<string, App.Models.Rank>;
+    sections_lookup: Record<string, App.Models.Section>;
+};
 
-const UnitMemberShow = ({ auth, member, unit }: Props) => {
+const UnitMemberShow = ({
+    auth,
+    member,
+    unit,
+    ranks_lookup,
+    sections_lookup,
+}: Props) => {
     let memberStatusText;
     let memberStatusColor;
     switch (member.status) {
@@ -215,7 +226,20 @@ const UnitMemberShow = ({ auth, member, unit }: Props) => {
                     title="Service history"
                     description={`A detailed record of ${toMemberName(member)}'s service in ${unit?.display_name}, including deployments, awards, and disciplinary actions.`}
                 />
-                <DataTable data={[]} columns={[]} />
+                <DataTable
+                    data={member.service_records ?? []}
+                    columns={createServiceRecordColumns({
+                        // oxlint-disable-next-line typescript/no-non-null-asserted-optional-chain
+                        unit: unit!,
+                        ranksLookup: ranks_lookup,
+                        sectionsLookup: sections_lookup,
+                    })}
+                    empty={{
+                        icon: IconListCheck,
+                        title: 'No service records',
+                        description: `${member.formal_name} has no recorded service history in ${unit?.display_name}.`,
+                    }}
+                />
             </div>
         </div>
     );

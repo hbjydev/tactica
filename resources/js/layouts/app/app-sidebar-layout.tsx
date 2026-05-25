@@ -5,14 +5,14 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import type { AppLayoutProps } from '@/types';
 
 export default function AppSidebarLayout({
-    auth: { units, member },
+    auth: { units },
     unit,
     children,
     breadcrumbs = [],
 }: AppLayoutProps) {
     return (
         <AppShell variant="sidebar">
-            <AppSidebar currentUnit={unit} units={units} member={member} />
+            <AppSidebar currentUnit={unit} units={units} />
             <AppContent variant="sidebar" className="overflow-x-hidden">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}

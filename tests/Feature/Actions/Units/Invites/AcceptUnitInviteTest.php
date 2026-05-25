@@ -149,4 +149,100 @@ describe('AcceptUnitInvite', function () {
             ->accept($invite, User::factory()->create()))
             ->toThrow(InviteNotUsableException::class);
     });
+
+    describe('scoped invites', function () {
+        it('links the user to the target member instead of creating a new one', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $placeholder = UnitMember::factory()->for($unit)->for($entryRank)->userless()->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($placeholder->id)->create();
+            $user = User::factory()->create();
+
+            $result = app(AcceptUnitInvite::class)->accept($invite, $user);
+
+            expect($result['alreadyMember'])->toBeFalse()
+                ->and($result['member']->id)->toBe($placeholder->id)
+                ->and($result['member']->user_id)->toBe($user->id);
+
+            $this->assertDatabaseHas('unit_members', [
+                'id' => $placeholder->id,
+                'user_id' => $user->id,
+            ]);
+        });
+
+        it('does not create a new unit_members row', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $placeholder = UnitMember::factory()->for($unit)->for($entryRank)->userless()->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($placeholder->id)->create();
+
+            $before = UnitMember::where('unit_id', $unit->id)->count();
+
+            app(AcceptUnitInvite::class)->accept($invite, User::factory()->create());
+
+            expect(UnitMember::where('unit_id', $unit->id)->count())->toBe($before);
+        });
+
+        it('sends the welcome notification', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $placeholder = UnitMember::factory()->for($unit)->for($entryRank)->userless()->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($placeholder->id)->create();
+            $user = User::factory()->create();
+
+            app(AcceptUnitInvite::class)->accept($invite, $user);
+
+            Notification::assertSentTo($user, WelcomeToUnitNotification::class);
+        });
+
+        it('increments the uses counter', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $placeholder = UnitMember::factory()->for($unit)->for($entryRank)->userless()->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($placeholder->id)->create();
+
+            app(AcceptUnitInvite::class)->accept($invite, User::factory()->create());
+
+            expect($invite->fresh()->uses)->toBe(1);
+        });
+
+        it('throws when the target member is already claimed', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $claimedUser = User::factory()->create();
+            $claimed = UnitMember::factory()->for($unit)->for($entryRank)->for($claimedUser)->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($claimed->id)->create();
+
+            expect(fn () => app(AcceptUnitInvite::class)
+                ->accept($invite, User::factory()->create()))
+                ->toThrow(InviteNotUsableException::class);
+        });
+
+        it('assigns default roles to the target member', function () {
+            Notification::fake();
+
+            [$unit, $entryRank] = bootUnitForInvites();
+            $custom = UnitRole::factory()
+                ->for($unit)
+                ->withPermissions(0)
+                ->create(['type' => UnitRoleType::CUSTOM]);
+
+            $placeholder = UnitMember::factory()->for($unit)->for($entryRank)->userless()->create();
+            $invite = UnitInvite::factory()->for($unit)->scoped($placeholder->id)->create();
+            $invite->defaultRoles()->attach($custom->id);
+
+            $result = app(AcceptUnitInvite::class)->accept($invite, User::factory()->create());
+
+            $memberRole = UnitRole::membersRole($unit);
+            $boundRoleIds = $result['member']->roles()->pluck('unit_roles.id')->all();
+
+            expect($boundRoleIds)->toContain($memberRole->id)
+                ->and($boundRoleIds)->toContain($custom->id);
+        });
+    });
 });

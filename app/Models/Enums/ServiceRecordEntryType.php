@@ -9,4 +9,5 @@ enum ServiceRecordEntryType: string
     case Award = 'award';
     case DisciplinaryAction = 'disciplinary_action';
     case Note = 'note';
+    case Assignment = 'assignment';
 }

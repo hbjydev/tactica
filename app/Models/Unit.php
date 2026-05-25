@@ -42,6 +42,11 @@ class Unit extends Model
         return $this->hasMany(UnitMember::class);
     }
 
+    public function sections(): HasMany
+    {
+        return $this->hasMany(Section::class);
+    }
+
     public function ranks(): HasMany
     {
         return $this->hasMany(Rank::class);

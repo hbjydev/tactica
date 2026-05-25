@@ -35,6 +35,13 @@ class CreateUnitInvite
                 'string',
                 Rule::exists('unit_roles', 'id')->where('unit_id', $unit->id),
             ],
+            'member_id' => [
+                'nullable',
+                'string',
+                Rule::exists('unit_members', 'id')
+                    ->where('unit_id', $unit->id)
+                    ->whereNull('user_id'),
+            ],
         ])->validate();
 
         return DB::transaction(function () use ($unit, $createdBy, $validated) {
@@ -42,6 +49,7 @@ class CreateUnitInvite
                 'unit_id' => $unit->id,
                 'token' => $this->generateToken(),
                 'created_by_member_id' => $createdBy?->id,
+                'member_id' => $validated['member_id'] ?? null,
                 'default_rank_id' => $validated['default_rank_id'] ?? null,
                 'expires_at' => $validated['expires_at'] ?? null,
                 'max_uses' => $validated['max_uses'] ?? null,
@@ -52,7 +60,7 @@ class CreateUnitInvite
                 $invite->defaultRoles()->sync($validated['default_role_ids']);
             }
 
-            return $invite->fresh(['defaultRank', 'defaultRoles', 'createdByMember.user']);
+            return $invite->fresh(['defaultRank', 'defaultRoles', 'createdByMember.user', 'member']);
         });
     }
 

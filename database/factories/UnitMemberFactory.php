@@ -30,4 +30,9 @@ class UnitMemberFactory extends Factory
             'rank_changed_at' => now(),
         ];
     }
+
+    public function userless(): static
+    {
+        return $this->state(fn () => ['user_id' => null]);
+    }
 }

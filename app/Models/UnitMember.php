@@ -84,14 +84,14 @@ class UnitMember extends Model
     public function discordId(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->user->discord_id,
+            get: fn () => $this->user?->discord_id,
         );
     }
 
     public function steamid64(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->user->steamid64,
+            get: fn () => $this->user?->steamid64,
         );
     }
 

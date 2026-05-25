@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Units;
 
+use App\Actions\Units\Members\CreateNewUnitMember;
 use App\Actions\Units\Members\DeleteUnitMember;
 use App\Actions\Units\Members\UpdateUnitMember;
 use App\Http\Controllers\Controller;
 use App\Models\Enums\UnitPermission;
+use App\Models\Rank;
+use App\Models\Section;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use Illuminate\Http\Request;
@@ -36,12 +39,94 @@ class MembersController extends Controller
         ]);
     }
 
+    public function search(Unit $unit, Request $request)
+    {
+        Gate::authorize('viewAny', UnitMember::class);
+
+        $q = $request->query('q', '');
+
+        $members = $unit
+            ->members()
+            ->select('unit_members.id', 'unit_members.display_name', 'unit_members.rank_id')
+            ->join('ranks', 'ranks.id', '=', 'unit_members.rank_id')
+            ->where('unit_members.display_name', 'ilike', "%{$q}%")
+            ->orderBy('ranks.ord', 'desc')
+            ->orderBy('unit_members.display_name', 'asc')
+            ->with('rank:id,abbreviation')
+            ->limit(20)
+            ->get()
+            ->map(fn (UnitMember $m) => [
+                'id' => $m->id,
+                'label' => $m->formal_name,
+            ]);
+
+        return response()->json($members);
+    }
+
+    public function create(Unit $unit)
+    {
+        Gate::authorize('create', UnitMember::class);
+
+        $ranks = $unit->ranks()->orderBy('ord', 'desc')->get();
+
+        return Inertia::render('units/members/create', [
+            'ranks' => $ranks,
+        ]);
+    }
+
+    public function store(Unit $unit, Request $request, CreateNewUnitMember $action)
+    {
+        Gate::authorize('create', UnitMember::class);
+
+        try {
+            $member = $action->create($unit, null, $request->post());
+        } catch (\Exception $e) {
+            if ($e instanceof ValidationException) {
+                throw $e;
+            }
+
+            Inertia::flash('toast', ['type' => 'error', 'message' => __('Failed to create member.')]);
+
+            return to_route('unit.members.create', ['unit' => $unit]);
+        }
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully created member.')]);
+
+        return to_route('unit.members.show', ['unit' => $unit, 'member' => $member]);
+    }
+
     public function show(Unit $unit, UnitMember $member)
     {
         Gate::authorize('view', $member);
 
+        $member->load('rank', 'user', 'serviceRecords.performedBy.rank');
+
+        $rankIds = $member->serviceRecords
+            ->whereIn('type', ['promotion', 'demotion'])
+            ->pluck('data.rank_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $ranksLookup = Rank::whereIn('id', $rankIds)
+            ->get(['id', 'display_name', 'abbreviation'])
+            ->keyBy('id');
+
+        $sectionIds = $member->serviceRecords
+            ->where('type', 'assignment')
+            ->pluck('data.section_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $sectionsLookup = Section::whereIn('id', $sectionIds)
+            ->get(['id', 'display_name'])
+            ->keyBy('id');
+
         return Inertia::render('units/members/show', [
-            'member' => $member->load('rank', 'user'),
+            'member' => $member,
+            'ranks_lookup' => $ranksLookup,
+            'sections_lookup' => $sectionsLookup,
         ]);
     }
 

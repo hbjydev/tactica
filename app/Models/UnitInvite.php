@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $unit_id
  * @property string $token
  * @property string|null $created_by_member_id
+ * @property string|null $member_id
  * @property string|null $default_rank_id
  * @property CarbonInterface|null $expires_at
  * @property int|null $max_uses
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'unit_id',
     'token',
     'created_by_member_id',
+    'member_id',
     'default_rank_id',
     'expires_at',
     'max_uses',
@@ -57,6 +59,11 @@ class UnitInvite extends Model
     public function createdByMember(): BelongsTo
     {
         return $this->belongsTo(UnitMember::class, 'created_by_member_id');
+    }
+
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(UnitMember::class, 'member_id');
     }
 
     public function defaultRank(): BelongsTo
@@ -93,6 +100,10 @@ class UnitInvite extends Model
             return false;
         }
 
+        if ($this->member_id !== null && $this->member?->user_id !== null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -110,6 +121,10 @@ class UnitInvite extends Model
 
                 if ($this->max_uses !== null && $this->uses >= $this->max_uses) {
                     return 'exhausted';
+                }
+
+                if ($this->member_id !== null && $this->member?->user_id !== null) {
+                    return 'claimed';
                 }
 
                 return 'active';

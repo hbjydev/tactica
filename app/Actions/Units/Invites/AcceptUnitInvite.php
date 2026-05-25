@@ -51,6 +51,42 @@ class AcceptUnitInvite
                 ];
             }
 
+            // Scoped invite: link user to a pre-existing user-less member.
+            if ($locked->member_id !== null) {
+                $target = UnitMember::query()
+                    ->whereKey($locked->member_id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                // Race: another request may have claimed it first.
+                if ($target->user_id !== null) {
+                    throw new InviteNotUsableException;
+                }
+
+                $target->update(['user_id' => $user->id]);
+
+                $roleIds = collect()
+                    ->push(UnitRole::membersRole($unit)->id)
+                    ->merge($locked->defaultRoles()->pluck('unit_roles.id'))
+                    ->unique()
+                    ->values();
+
+                foreach ($roleIds as $roleId) {
+                    UnitRoleBinding::firstOrCreate([
+                        'unit_role_id' => $roleId,
+                        'unit_member_id' => $target->id,
+                    ]);
+                }
+
+                $locked->increment('uses');
+
+                return [
+                    'member' => $target->fresh(),
+                    'alreadyMember' => false,
+                    'unit' => $unit,
+                ];
+            }
+
             $rankId = $locked->default_rank_id ?? Rank::query()
                 ->where('unit_id', $unit->id)
                 ->orderBy('ord')

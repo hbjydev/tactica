@@ -1,13 +1,21 @@
 import AppLayout from '@/layouts/app-layout';
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardAction,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import Heading from '@/components/heading';
 import { dashboard } from '@/wayfinder/routes/unit';
 import { Inertia } from '@/wayfinder/types';
-import { MedalIcon, UsersIcon } from 'lucide-react';
+import { LucideIcon, MedalIcon, Users2Icon, UsersIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { list as listRanks } from '@/wayfinder/routes/unit/ranks';
 import { list as listMembers } from '@/wayfinder/routes/unit/members';
+import { list as listSections } from '@/wayfinder/routes/unit/structure/sections';
+import { type UrlMethodPair } from '@inertiajs/core';
 
 type Props = Inertia.Pages.Units.Dashboard;
 
@@ -21,46 +29,29 @@ const Dashboard = ({ unit, ...data }: Props) => {
             />
 
             <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-                <div className="grid xl:grid-cols-2 gap-4 xl:col-span-2">
-                    <Card>
-                        <CardHeader>
-                            <CardDescription className="text-lg">
-                                Ranks
-                            </CardDescription>
-                            <CardTitle className="flex items-center gap-4 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                                <MedalIcon />
-                                <span>{data.ranks_count as number}</span>
-                            </CardTitle>
-                            <CardAction>
-                                <Button variant="outline" asChild>
-                                    <Link href={listRanks({ unit: unit?.slug! })}>
-                                        View all
-                                    </Link>
-                                </Button>
-                            </CardAction>
-                        </CardHeader>
-                    </Card>
+                <div className="grid gap-4 xl:col-span-2 xl:grid-cols-3">
+                    <StatCard
+                        name="Ranks"
+                        icon={MedalIcon}
+                        value={data.ranks_count as number}
+                        link={listRanks({ slug: unit?.slug! })}
+                    />
 
-                    <Card>
-                        <CardHeader>
-                            <CardDescription className="text-lg">
-                                Members
-                            </CardDescription>
-                            <CardTitle className="flex items-center gap-4 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                                <UsersIcon />
-                                <span>{data.members_count as number}</span>
-                            </CardTitle>
-                            <CardAction>
-                                <Button variant="outline" asChild>
-                                    <Link href={listMembers({ unit: unit?.slug! })}>
-                                        View all
-                                    </Link>
-                                </Button>
-                            </CardAction>
-                        </CardHeader>
-                    </Card>
+                    <StatCard
+                        name="Members"
+                        icon={UsersIcon}
+                        value={data.members_count as number}
+                        link={listMembers({ slug: unit?.slug! })}
+                    />
 
-                    <Card className="col-span-2">
+                    <StatCard
+                        name="Sections"
+                        icon={Users2Icon}
+                        value={data.sections_count as number}
+                        link={listSections({ slug: unit?.slug! })}
+                    />
+
+                    <Card className="col-span-3">
                         <CardHeader>
                             <CardTitle className="text-lg">
                                 Welcome to your unit dashboard!
@@ -80,6 +71,35 @@ const Dashboard = ({ unit, ...data }: Props) => {
                 </div>
             </div>
         </div>
+    );
+};
+
+const StatCard = ({
+    name,
+    value,
+    icon: Icon,
+    link,
+}: {
+    name: string;
+    value: number;
+    icon: LucideIcon;
+    link?: string | UrlMethodPair | undefined;
+}) => {
+    return (
+        <Card>
+            <CardHeader>
+                <CardDescription className="text-lg">{name}</CardDescription>
+                <CardTitle className="flex items-center gap-4 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                    <Icon />
+                    <span>{value}</span>
+                </CardTitle>
+                <CardAction>
+                    <Button variant="outline" asChild>
+                        <Link href={link}>View all</Link>
+                    </Button>
+                </CardAction>
+            </CardHeader>
+        </Card>
     );
 };
 

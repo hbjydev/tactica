@@ -4,8 +4,10 @@ use App\Http\Controllers\Units\DashboardController;
 use App\Http\Controllers\Units\InviteAcceptanceController;
 use App\Http\Controllers\Units\InvitesController;
 use App\Http\Controllers\Units\MembersController;
+use App\Http\Controllers\Units\OrbatController;
 use App\Http\Controllers\Units\RanksController;
 use App\Http\Controllers\Units\RolesController;
+use App\Http\Controllers\Units\SectionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
@@ -30,6 +32,10 @@ Route::prefix('/members')
     ->scopeBindings()
     ->group(function () {
         Route::get('/', [MembersController::class, 'list'])->name('list');
+        Route::get('/search', [MembersController::class, 'search'])->name('search');
+
+        Route::get('/create', [MembersController::class, 'create'])->name('create');
+        Route::post('/', [MembersController::class, 'store'])->name('store');
 
         Route::get('/{member}', [MembersController::class, 'show'])->name('show');
 
@@ -54,6 +60,34 @@ Route::prefix('/roles')
 
         Route::post('/{role}/bindings', [RolesController::class, 'addBinding'])->name('addBinding');
         Route::delete('/{role}/bindings/{member}', [RolesController::class, 'removeBinding'])->name('removeBinding');
+    });
+
+Route::prefix('/structure')
+    ->name('structure.')
+    ->scopeBindings()
+    ->group(function () {
+        Route::get('/orbat', OrbatController::class)->name('orbat');
+
+        Route::prefix('/sections')
+            ->name('sections.')
+            ->scopeBindings()
+            ->group(function () {
+                Route::get('/', [SectionsController::class, 'list'])->name('list');
+
+                Route::get('/create', [SectionsController::class, 'create'])->name('create');
+                Route::post('/', [SectionsController::class, 'store'])->name('store');
+
+                Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
+
+                Route::post('/{section}/slots', [SectionsController::class, 'storeSlot'])->name('slot.store');
+                Route::patch('/{section}/slots/{slot}', [SectionsController::class, 'updateSlot'])->name('slot.update');
+                Route::delete('/{section}/slots/{slot}', [SectionsController::class, 'destroySlot'])->name('slot.destroy');
+
+                Route::get('/{section}/edit', [SectionsController::class, 'edit'])->name('edit');
+                Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
+
+                Route::delete('/{section}', [SectionsController::class, 'destroy'])->name('destroy');
+            });
     });
 
 Route::prefix('/invites')

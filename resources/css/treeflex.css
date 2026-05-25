@@ -1,0 +1,22 @@
+@import 'treeflex/dist/css/treeflex.css';
+
+.tf-tree .tf-nc {
+    @apply flex flex-col border-none p-0;
+    width: 300px;
+}
+
+.tf-tree .tf-nc:before {
+    @apply border-border!;
+}
+
+.tf-tree .tf-nc:after {
+    @apply border-border!;
+}
+
+.tf-tree li li::before {
+    @apply border-border!;
+}
+
+.tf-tree li li::after {
+    @apply border-border!;
+}

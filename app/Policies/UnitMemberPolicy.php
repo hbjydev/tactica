@@ -13,6 +13,11 @@ class UnitMemberPolicy
         return can(UnitPermission::VIEW_UNIT);
     }
 
+    public function create(User $user): bool
+    {
+        return can(UnitPermission::MANAGE_MEMBERS);
+    }
+
     public function view(?User $user, UnitMember $member): bool
     {
         return $this->isSelf($user, $member) || can(UnitPermission::VIEW_UNIT);

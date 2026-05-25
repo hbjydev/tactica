@@ -38,33 +38,40 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { PlusIcon, Trash2Icon, ShieldIcon, PencilIcon } from 'lucide-react';
+import UnitPermission from '@/wayfinder/App/Models/Enums/UnitPermission';
 
 // Mirrors App\Models\Enums\UnitPermission
 const PERMISSIONS = [
     {
-        value: 1,
+        value: UnitPermission.VIEW_UNIT,
         label: 'View Unit',
         description: 'Can view the unit and its public information.',
     },
     {
-        value: 2,
+        value: UnitPermission.ADMINISTRATOR,
         label: 'Administrator',
         description: 'Full access to all unit features and settings.',
     },
     {
-        value: 4,
+        value: UnitPermission.MANAGE_ROLES,
         label: 'Manage Roles',
         description: 'Can create, edit, and delete roles and assign members.',
     },
     {
-        value: 8,
+        value: UnitPermission.MANAGE_MEMBERS,
         label: 'Manage Members',
         description: 'Can add, remove, and update member profiles.',
     },
     {
-        value: 16,
+        value: UnitPermission.MANAGE_RANKS,
         label: 'Manage Ranks',
         description: 'Can create, edit, and delete ranks.',
+    },
+    {
+        value: UnitPermission.MANAGE_SECTIONS,
+        label: 'Manage Sections',
+        description:
+            'Can create, edit, and delete sections and their associated slots.',
     },
 ] as const;
 

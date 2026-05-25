@@ -27,9 +27,17 @@ type Props = {
     invites: App.Models.UnitInvite[];
     ranks: App.Models.Rank[];
     roles: App.Models.UnitRole[];
+    userlessMembers: App.Models.UnitMember[];
 } & Inertia.SharedData;
 
-const InvitesList = ({ auth, unit, invites, ranks, roles }: Props) => {
+const InvitesList = ({
+    auth,
+    unit,
+    invites,
+    ranks,
+    roles,
+    userlessMembers,
+}: Props) => {
     const [createOpen, setCreateOpen] = useState(false);
     const [editInvite, setEditInvite] = useState<App.Models.UnitInvite | null>(
         null,
@@ -88,6 +96,7 @@ const InvitesList = ({ auth, unit, invites, ranks, roles }: Props) => {
                 unit={unit!}
                 ranks={ranks}
                 roles={roles}
+                userlessMembers={userlessMembers}
                 open={createOpen}
                 onOpenChange={setCreateOpen}
             />
