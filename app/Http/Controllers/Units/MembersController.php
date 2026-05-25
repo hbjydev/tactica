@@ -7,6 +7,8 @@ use App\Actions\Units\Members\DeleteUnitMember;
 use App\Actions\Units\Members\UpdateUnitMember;
 use App\Http\Controllers\Controller;
 use App\Models\Enums\UnitPermission;
+use App\Models\Rank;
+use App\Models\Section;
 use App\Models\Unit;
 use App\Models\UnitMember;
 use Illuminate\Http\Request;
@@ -97,8 +99,34 @@ class MembersController extends Controller
     {
         Gate::authorize('view', $member);
 
+        $member->load('rank', 'user', 'serviceRecords.performedBy.rank');
+
+        $rankIds = $member->serviceRecords
+            ->whereIn('type', ['promotion', 'demotion'])
+            ->pluck('data.rank_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $ranksLookup = Rank::whereIn('id', $rankIds)
+            ->get(['id', 'display_name', 'abbreviation'])
+            ->keyBy('id');
+
+        $sectionIds = $member->serviceRecords
+            ->where('type', 'assignment')
+            ->pluck('data.section_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $sectionsLookup = Section::whereIn('id', $sectionIds)
+            ->get(['id', 'display_name'])
+            ->keyBy('id');
+
         return Inertia::render('units/members/show', [
-            'member' => $member->load('rank', 'user', 'serviceRecords'),
+            'member' => $member,
+            'ranks_lookup' => $ranksLookup,
+            'sections_lookup' => $sectionsLookup,
         ]);
     }
 

@@ -3,9 +3,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Paginated } from "@/types/units";
 import { Button } from "./button";
 import { router } from "@inertiajs/react";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./empty";
+import { IconListDetails, ReactNode } from "@tabler/icons-react";
+import { LucideIcon } from "lucide-react";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
+
+    empty?: {
+        title?: string;
+        icon?: LucideIcon;
+        description?: string;
+        content?: ReactNode;
+    };
 } & ({
     data: TData[];
 } | {
@@ -21,6 +31,12 @@ function isPaginated<TData>(data: TData[] | Paginated<TData>): data is Paginated
 export const DataTable = <TData, TValue>({
     columns,
     data,
+    empty = {
+        title: "No results",
+        icon: IconListDetails,
+        description: undefined,
+        content: undefined,
+    },
 }: DataTableProps<TData, TValue>) => {
     let innerData: TData[] = [];
 
@@ -83,7 +99,24 @@ export const DataTable = <TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    <Empty>
+                                        <EmptyHeader>
+                                            {empty.icon && (
+                                                <EmptyMedia variant="icon">
+                                                    <empty.icon />
+                                                </EmptyMedia>
+                                            )}
+                                            <EmptyTitle>{empty.title}</EmptyTitle>
+                                            {empty.description && (
+                                                <EmptyDescription>{empty.description}</EmptyDescription>
+                                            )}
+                                        </EmptyHeader>
+                                        {empty.content && (
+                                            <EmptyContent className="flex-row justify-center gap-2">
+                                                {empty.content}
+                                            </EmptyContent>
+                                        )}
+                                    </Empty>
                                 </TableCell>
                             </TableRow>
                         )}

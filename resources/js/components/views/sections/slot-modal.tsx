@@ -25,6 +25,7 @@ import { store, update } from '@/wayfinder/routes/unit/structure/sections/slot';
 import { App } from '@/wayfinder/types';
 import { Form, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { Pencil, Plus } from 'lucide-react';
 
 type Props = {
     slot?: App.Models.Slot;
@@ -45,7 +46,17 @@ export const SlotModal = ({ slot, section }: Props) => {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Button className="cursor-pointer" variant="outline" size={slot ? 'icon' : 'default'}>
+                    {slot
+                        ? <Pencil />
+                        : (
+                            <>
+                                <Plus />
+                                Create
+                            </>
+                        )
+                    }
+                </Button>
             </SheetTrigger>
 
             <SheetContent>

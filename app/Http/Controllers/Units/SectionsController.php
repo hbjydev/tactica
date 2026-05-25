@@ -44,7 +44,16 @@ class SectionsController extends Controller
         Gate::authorize('view', $section);
 
         return Inertia::render('units/structure/sections/show', [
-            'section' => $section->load('slots', 'slots.member', 'members', 'members.rank', 'children'),
+            'section' => $section
+                ->load([
+                    'slots',
+                    'slots.member',
+                    'children',
+                    'members' => fn ($q) => $q->join('ranks', 'ranks.id', '=', 'unit_members.rank_id')
+                        ->orderBy('ranks.ord', 'desc')
+                        ->select('unit_members.*'),
+                    'members.rank',
+                ]),
         ]);
     }
 
