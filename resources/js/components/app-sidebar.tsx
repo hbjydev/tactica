@@ -30,11 +30,9 @@ import { orbat } from '@/wayfinder/routes/unit/structure';
 export function AppSidebar({
     currentUnit,
     units,
-    member,
 }: {
     currentUnit: App.Models.Unit;
     units: App.Models.Unit[];
-    member: App.Models.UnitMember | null;
 }) {
     const mainNavItems: NavItem[] = [
         {

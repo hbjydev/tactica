@@ -77,7 +77,7 @@ export const SlotModal = ({ slot, section }: Props) => {
                         section: section?.id!,
                         slot: slot ? slot.id : undefined,
                     })}
-                    onSuccess={(response) => {
+                    onSuccess={() => {
                         setOpen(false);
                     }}
                 >
