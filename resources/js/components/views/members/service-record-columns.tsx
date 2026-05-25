@@ -72,13 +72,12 @@ export const createServiceRecordColumns = ({
                     return (
                         <span className="text-muted-foreground">&mdash;</span>
                     );
-                const verb = type === 'promotion' ? 'Promoted to' : 'Demoted to';
+                const verb =
+                    type === 'promotion' ? 'Promoted to' : 'Demoted to';
                 return (
                     <span>
                         {verb}{' '}
-                        <span className="font-medium">
-                            {rank.display_name}
-                        </span>
+                        <span className="font-medium">{rank.display_name}</span>
                     </span>
                 );
             }
@@ -97,10 +96,12 @@ export const createServiceRecordColumns = ({
                     <span>
                         Assigned to{' '}
                         <Link
-                            href={showSection({
-                                unit: unit.slug,
-                                section: section.id,
-                            }).url}
+                            href={
+                                showSection({
+                                    unit: unit.slug,
+                                    section: section.id,
+                                }).url
+                            }
                             className="font-medium underline hover:text-primary"
                         >
                             {section.display_name}
@@ -121,9 +122,7 @@ export const createServiceRecordColumns = ({
                 | null
                 | undefined;
             if (!performer)
-                return (
-                    <span className="text-muted-foreground">System</span>
-                );
+                return <span className="text-muted-foreground">System</span>;
             return (
                 <span>
                     {(performer.formal_name as string | null) ??

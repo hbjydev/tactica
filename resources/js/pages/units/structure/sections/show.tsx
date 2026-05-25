@@ -38,7 +38,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
 import { SlotModal } from '@/components/views/sections/slot-modal';
 import { ORBAT } from '@/components/orbat';
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty';
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyTitle,
+} from '@/components/ui/empty';
 import moment from 'moment';
 
 type Props = Inertia.Pages.Units.Structure.Sections.Show;
@@ -71,9 +76,16 @@ const SectionShow = ({ section, unit }: Props) => {
                                 className="!mb-0"
                             />
 
-                            {section.callsign && <span>Callsign: {section.callsign}</span>}
+                            {section.callsign && (
+                                <span>Callsign: {section.callsign}</span>
+                            )}
 
-                            <span className="text-muted-foreground">Created at: {moment(section.created_at).local().format('DD/MM/YYYY')}</span>
+                            <span className="text-muted-foreground">
+                                Created at:{' '}
+                                {moment(section.created_at)
+                                    .local()
+                                    .format('DD/MM/YYYY')}
+                            </span>
                         </div>
 
                         <AuthGuard permission={UnitPermission.MANAGE_SECTIONS}>
@@ -154,26 +166,22 @@ const SectionShow = ({ section, unit }: Props) => {
                         </CardHeader>
 
                         <CardContent>
-                            {
-                                section.slots && section.slots.length > 0
-                                    ? (
-                                        <DataTable
-                                        columns={slotColumns(section)}
-                                        data={section.slots}
-                                        />
-                                    )
-                                    : (
-                                        <Empty className="border">
-                                            <EmptyHeader>
-                                                <EmptyTitle>No slots</EmptyTitle>
-                                                <EmptyDescription>
-                                                    No slots have been created for
-                                                    this section yet.
-                                                </EmptyDescription>
-                                            </EmptyHeader>
-                                        </Empty>
-                                    )
-                            }
+                            {section.slots && section.slots.length > 0 ? (
+                                <DataTable
+                                    columns={slotColumns(section)}
+                                    data={section.slots}
+                                />
+                            ) : (
+                                <Empty className="border">
+                                    <EmptyHeader>
+                                        <EmptyTitle>No slots</EmptyTitle>
+                                        <EmptyDescription>
+                                            No slots have been created for this
+                                            section yet.
+                                        </EmptyDescription>
+                                    </EmptyHeader>
+                                </Empty>
+                            )}
                         </CardContent>
                     </Card>
                 </div>
@@ -182,32 +190,34 @@ const SectionShow = ({ section, unit }: Props) => {
                     <Card>
                         <CardHeader>
                             <CardTitle>Members</CardTitle>
-                            <CardDescription>See all of the members within the section</CardDescription>
+                            <CardDescription>
+                                See all of the members within the section
+                            </CardDescription>
                         </CardHeader>
 
                         <CardContent>
-                            {
-                                section.members && section.members.length > 0
-                                    ? (
-                                        <DataTable
-                                            columns={memberColumns}
-                                            data={section.members.map(member => ({
+                            {section.members && section.members.length > 0 ? (
+                                <DataTable
+                                    columns={memberColumns}
+                                    data={section.members.map(
+                                        (member) =>
+                                            ({
                                                 ...member,
                                                 unit: { slug: unit?.slug },
-                                            } as App.Models.UnitMember))}
-                                        />
-                                    )
-                                    : (
-                                        <Empty className="border">
-                                            <EmptyHeader>
-                                                <EmptyTitle>No members</EmptyTitle>
-                                                <EmptyDescription>
-                                                    This section has no members assigned to it yet.
-                                                </EmptyDescription>
-                                            </EmptyHeader>
-                                        </Empty>
-                                    )
-                            }
+                                            }) as App.Models.UnitMember,
+                                    )}
+                                />
+                            ) : (
+                                <Empty className="border">
+                                    <EmptyHeader>
+                                        <EmptyTitle>No members</EmptyTitle>
+                                        <EmptyDescription>
+                                            This section has no members assigned
+                                            to it yet.
+                                        </EmptyDescription>
+                                    </EmptyHeader>
+                                </Empty>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

@@ -46,16 +46,19 @@ export const SlotModal = ({ slot, section }: Props) => {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button className="cursor-pointer" variant="outline" size={slot ? 'icon' : 'default'}>
-                    {slot
-                        ? <Pencil />
-                        : (
-                            <>
-                                <Plus />
-                                Create
-                            </>
-                        )
-                    }
+                <Button
+                    className="cursor-pointer"
+                    variant="outline"
+                    size={slot ? 'icon' : 'default'}
+                >
+                    {slot ? (
+                        <Pencil />
+                    ) : (
+                        <>
+                            <Plus />
+                            Create
+                        </>
+                    )}
                 </Button>
             </SheetTrigger>
 

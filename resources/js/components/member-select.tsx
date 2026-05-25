@@ -94,100 +94,108 @@ export function MemberSelect({
         setSearch('');
     };
 
-    const handleClear = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const handleClear = () => {
         setSelected(null);
     };
 
     return (
         <>
             <input type="hidden" name={name} value={hiddenValue} />
-            <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className="w-full justify-between font-normal"
-                    >
-                        <span
-                            className={cn(
-                                'truncate',
-                                !selected && 'text-muted-foreground',
-                            )}
+            <div className="flex w-full items-center gap-1">
+                <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={open}
+                            className="flex-1 justify-between font-normal"
                         >
-                            {selected ? selected.label : 'No member assigned'}
-                        </span>
-                        <span className="ml-2 flex shrink-0 items-center gap-1 opacity-50">
-                            {selected && (
-                                <IconX
-                                    className="size-3.5"
-                                    onClick={handleClear}
-                                    aria-label="Clear member"
-                                />
-                            )}
-                            <IconSelector className="size-4" />
-                        </span>
-                    </Button>
-                </PopoverTrigger>
+                            <span
+                                className={cn(
+                                    'truncate',
+                                    !selected && 'text-muted-foreground',
+                                )}
+                            >
+                                {selected
+                                    ? selected.label
+                                    : 'No member assigned'}
+                            </span>
+                            <IconSelector className="ml-2 size-4 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
 
-                <PopoverContent
-                    className="w-[--radix-popover-trigger-width] p-0"
-                    align="start"
-                >
-                    <Command shouldFilter={false}>
-                        <CommandInput
-                            placeholder="Type a name to search..."
-                            value={search}
-                            onValueChange={setSearch}
-                        />
-                        <CommandList>
-                            {loading && (
-                                <div className="flex items-center justify-center py-4">
-                                    <Spinner className="size-4" />
-                                </div>
-                            )}
-                            {!loading && search.length < 3 && (
-                                <CommandEmpty>
-                                    Type at least 3 characters to search.
-                                </CommandEmpty>
-                            )}
-                            {!loading &&
-                                search.length >= 3 &&
-                                options.length === 0 && (
+                    <PopoverContent
+                        className="w-[--radix-popover-trigger-width] p-0"
+                        align="start"
+                    >
+                        <Command shouldFilter={false}>
+                            <CommandInput
+                                placeholder="Type a name to search..."
+                                value={search}
+                                onValueChange={setSearch}
+                            />
+                            <CommandList>
+                                {loading && (
+                                    <div className="flex items-center justify-center py-4">
+                                        <Spinner className="size-4" />
+                                    </div>
+                                )}
+                                {!loading && search.length < 3 && (
                                     <CommandEmpty>
-                                        No members found.
+                                        Type at least 3 characters to search.
                                     </CommandEmpty>
                                 )}
-                            {options.length > 0 && (
-                                <CommandGroup>
-                                    {options.map((opt) => (
-                                        <CommandItem
-                                            key={opt.id}
-                                            value={opt.id}
-                                            onSelect={() => handleSelect(opt)}
-                                            data-checked={
-                                                selected?.id === opt.id
-                                            }
-                                        >
-                                            <IconCheck
-                                                className={cn(
-                                                    'mr-2 size-4',
+                                {!loading &&
+                                    search.length >= 3 &&
+                                    options.length === 0 && (
+                                        <CommandEmpty>
+                                            No members found.
+                                        </CommandEmpty>
+                                    )}
+                                {options.length > 0 && (
+                                    <CommandGroup>
+                                        {options.map((opt) => (
+                                            <CommandItem
+                                                key={opt.id}
+                                                value={opt.id}
+                                                onSelect={() =>
+                                                    handleSelect(opt)
+                                                }
+                                                data-checked={
                                                     selected?.id === opt.id
-                                                        ? 'opacity-100'
-                                                        : 'opacity-0',
-                                                )}
-                                            />
-                                            {opt.label}
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
-                            )}
-                        </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover>
+                                                }
+                                            >
+                                                <IconCheck
+                                                    className={cn(
+                                                        'mr-2 size-4',
+                                                        selected?.id === opt.id
+                                                            ? 'opacity-100'
+                                                            : 'opacity-0',
+                                                    )}
+                                                />
+                                                {opt.label}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                )}
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
+                {selected && (
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleClear}
+                        aria-label="Clear member"
+                        className="shrink-0"
+                    >
+                        <IconX className="size-3.5" />
+                    </Button>
+                )}
+            </div>
         </>
     );
 }

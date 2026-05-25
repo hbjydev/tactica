@@ -37,7 +37,13 @@ type Props = Inertia.Pages.Units.Members.Show & {
     sections_lookup: Record<string, App.Models.Section>;
 };
 
-const UnitMemberShow = ({ auth, member, unit, ranks_lookup, sections_lookup }: Props) => {
+const UnitMemberShow = ({
+    auth,
+    member,
+    unit,
+    ranks_lookup,
+    sections_lookup,
+}: Props) => {
     let memberStatusText;
     let memberStatusColor;
     switch (member.status) {
