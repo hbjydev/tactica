@@ -86,8 +86,6 @@ Route::prefix('/structure')
             ->scopeBindings()
             ->group(function () {
                 Route::get('/', [SectionsController::class, 'list'])->name('list');
-                Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
-
                 Route::middleware('can:MANAGE_SECTIONS')->group(function () {
                     Route::get('/create', [SectionsController::class, 'create'])->name('create');
                     Route::post('/', [SectionsController::class, 'store'])->name('store');
@@ -98,6 +96,7 @@ Route::prefix('/structure')
                     Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
                     Route::delete('/{section}', [SectionsController::class, 'destroy'])->name('destroy');
                 });
+                Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
             });
     });
 
