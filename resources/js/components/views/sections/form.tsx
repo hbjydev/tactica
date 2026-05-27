@@ -15,12 +15,11 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AvatarInput } from '@/components/avatar-input';
 import { useInitials } from '@/hooks/use-initials';
 import { store, update } from '@/wayfinder/routes/unit/structure/sections';
 import { App } from '@/wayfinder/types';
 import { Form } from '@inertiajs/react';
-import { useRef, useState } from 'react';
 
 type Props = {
     section?: App.Models.Section;
@@ -31,28 +30,6 @@ type Props = {
 export const SectionForm = ({ section, sections, unit }: Props) => {
     const mode = section != undefined ? update : store;
     const getInitials = useInitials();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [removeAvatar, setRemoveAvatar] = useState(false);
-
-    const currentAvatarUrl = section?.avatar_url as string | null | undefined;
-    const hasAvatar = !removeAvatar && (previewUrl ?? currentAvatarUrl);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setRemoveAvatar(false);
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-    };
-
-    const handleRemove = () => {
-        setRemoveAvatar(true);
-        setPreviewUrl(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
 
     return (
         <Form
@@ -86,74 +63,19 @@ export const SectionForm = ({ section, sections, unit }: Props) => {
                             )}
                         </Field>
 
-                        <Field>
-                            <FieldLabel>Section Avatar</FieldLabel>
-                            <div className="flex items-center gap-4">
-                                <Avatar size="lg">
-                                    {hasAvatar ? (
-                                        <AvatarImage
-                                            src={
-                                                (previewUrl ??
-                                                    currentAvatarUrl) as string
-                                            }
-                                            alt="Section avatar preview"
-                                        />
-                                    ) : null}
-                                    <AvatarFallback>
-                                        {section?.display_name
-                                            ? getInitials(section.display_name)
-                                            : '?'}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex gap-2">
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="xs"
-                                            onClick={() =>
-                                                fileInputRef.current?.click()
-                                            }
-                                        >
-                                            {hasAvatar ? 'Change' : 'Upload'}
-                                        </Button>
-                                        {hasAvatar ? (
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                size="xs"
-                                                onClick={handleRemove}
-                                            >
-                                                Remove
-                                            </Button>
-                                        ) : null}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">
-                                        Max 12MB. JPEG, PNG, GIF or WebP.
-                                    </p>
-                                </div>
-                            </div>
-                            <input
-                                ref={fileInputRef}
-                                id="avatar"
-                                type="file"
-                                name={removeAvatar ? undefined : 'avatar'}
-                                className="sr-only"
-                                accept="image/*"
-                                tabIndex={-1}
-                                onChange={handleFileChange}
-                            />
-                            {section && removeAvatar ? (
-                                <input
-                                    type="hidden"
-                                    name="avatar"
-                                    value="null"
-                                />
-                            ) : null}
-                            {errors.avatar && (
-                                <FieldError>{errors.avatar}</FieldError>
-                            )}
-                        </Field>
+                        <AvatarInput
+                            label="Section Avatar"
+                            currentUrl={
+                                section?.avatar_url as string | null | undefined
+                            }
+                            fallback={
+                                section?.display_name
+                                    ? getInitials(section.display_name)
+                                    : '?'
+                            }
+                            sendNullOnRemove={section != undefined}
+                            error={errors.avatar}
+                        />
 
                         <Field>
                             <FieldLabel htmlFor="description">

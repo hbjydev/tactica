@@ -3,6 +3,7 @@ import {
     LayoutGrid,
     Mail,
     Medal,
+    Paintbrush,
     Shield,
     Users,
     Users2,
@@ -21,6 +22,7 @@ import { list as listMembers } from '@/wayfinder/routes/unit/members';
 import { list as listRoles } from '@/wayfinder/routes/unit/roles';
 import { list as listInvites } from '@/wayfinder/routes/unit/invites';
 import { list as listSections } from '@/wayfinder/routes/unit/structure/sections';
+import { show as branding } from '@/wayfinder/routes/unit/branding';
 import type { NavItem } from '@/types';
 import { UnitSwitcher } from './unit-switcher';
 import { App } from '@/wayfinder/types';
@@ -110,6 +112,14 @@ export function AppSidebar({
             // Per-item gates below handle the real authorization.
             requiredPermissions: 0,
             items: [
+                {
+                    id: 'branding',
+                    type: 'link',
+                    title: 'Branding',
+                    href: branding({ unit: currentUnit.slug }),
+                    icon: Paintbrush,
+                    requiredPermissions: UnitPermission.MANAGE_UNIT_PROFILE,
+                },
                 {
                     id: 'roles',
                     type: 'link',

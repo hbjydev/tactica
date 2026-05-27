@@ -22,16 +22,22 @@ export const ORBAT = ({ sections }: Props) => {
         <div className="flex flex-1 justify-center">
             <div className="tf-tree p-4">
                 <ul>
-                    {sections.map(
-                        (section) => <TreeNode key={section.id} section={section} />
-                    )}
+                    {sections.map((section) => (
+                        <TreeNode key={section.id} section={section} />
+                    ))}
                 </ul>
             </div>
         </div>
     );
 };
 
-const TreeNode = ({ section, skipParent = false }: { section: App.Models.Section, skipParent?: boolean }) => {
+const TreeNode = ({
+    section,
+    skipParent = false,
+}: {
+    section: App.Models.Section;
+    skipParent?: boolean;
+}) => {
     const getInitials = useInitials();
     const {
         props: { unit },
@@ -44,13 +50,17 @@ const TreeNode = ({ section, skipParent = false }: { section: App.Models.Section
                     <Card className="gap-0! pb-0!">
                         <CardHeader className="mb-6! flex flex-col items-center gap-y-2 border-dashed!">
                             <Avatar className="size-16 text-xl">
-                                <AvatarImage src={section.direct_parent.avatar_url!} />
+                                <AvatarImage
+                                    src={section.direct_parent.avatar_url!}
+                                />
                                 <AvatarFallback>
-                                    {getInitials(section.direct_parent.display_name)}
+                                    {getInitials(
+                                        section.direct_parent.display_name,
+                                    )}
                                 </AvatarFallback>
                             </Avatar>
 
-                            <CardTitle className="underline text-center">
+                            <CardTitle className="text-center underline">
                                 <Link
                                     href={show({
                                         unit: unit?.slug!,
@@ -63,7 +73,9 @@ const TreeNode = ({ section, skipParent = false }: { section: App.Models.Section
 
                             {section.callsign && (
                                 <CardDescription className="text-center">
-                                    &quot;{section.direct_parent.callsign?.toUpperCase()}&quot;
+                                    &quot;
+                                    {section.direct_parent.callsign?.toUpperCase()}
+                                    &quot;
                                 </CardDescription>
                             )}
 
@@ -94,7 +106,7 @@ const TreeNode = ({ section, skipParent = false }: { section: App.Models.Section
                                 {getInitials(section.display_name)}
                             </AvatarFallback>
                         </Avatar>
-                        <CardTitle className="underline text-center">
+                        <CardTitle className="text-center underline">
                             <Link
                                 href={show({
                                     unit: unit?.slug!,

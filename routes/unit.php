@@ -8,6 +8,7 @@ use App\Http\Controllers\Units\OrbatController;
 use App\Http\Controllers\Units\RanksController;
 use App\Http\Controllers\Units\Settings\RolesController;
 use App\Http\Controllers\Units\SectionsController;
+use App\Http\Controllers\Units\Settings\BrandingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
@@ -44,7 +45,6 @@ Route::prefix('/members')
     ->group(function () {
         Route::get('/', [MembersController::class, 'list'])->name('list');
         Route::get('/search', [MembersController::class, 'search'])->name('search');
-        Route::get('/{member}', [MembersController::class, 'show'])->name('show');
 
         Route::middleware('can:MANAGE_MEMBERS')->group(function () {
             Route::get('/create', [MembersController::class, 'create'])->name('create');
@@ -55,6 +55,8 @@ Route::prefix('/members')
 
             Route::delete('/{member}', [MembersController::class, 'destroy'])->name('destroy');
         });
+
+        Route::get('/{member}', [MembersController::class, 'show'])->name('show');
     });
 
 Route::prefix('/roles')
@@ -118,3 +120,12 @@ Route::prefix('/invites')
 Route::get('/invite/{token}', [InviteAcceptanceController::class, 'show'])
     ->withoutMiddleware('can:VIEW_UNIT')
     ->name('invite.show');
+
+Route::prefix('/branding')
+    ->name('branding.')
+    ->scopeBindings()
+    ->middleware('can:MANAGE_UNIT_PROFILE')
+    ->group(function () {
+        Route::get('/', [BrandingController::class, 'show'])->name('show');
+        Route::post('/', [BrandingController::class, 'update'])->name('update');
+    });

@@ -15,4 +15,6 @@ enum UnitPermission: int
     case MANAGE_RANKS = 1 << 4;
     case MANAGE_INVITES = 1 << 5;
     case MANAGE_SECTIONS = 1 << 6;
+
+    case MANAGE_UNIT_PROFILE = 1 << 7;
 }

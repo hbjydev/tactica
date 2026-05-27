@@ -4,12 +4,17 @@ namespace App\Models;
 
 use App\Models\Enums\UnitPermission;
 use App\Models\Enums\UnitRoleType;
+use Carbon\Carbon;
 use Database\Factories\UnitFactory;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property string $id
@@ -20,10 +25,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Carbon $updated_at
  */
 #[Fillable(['slug', 'display_name', 'description'])]
-class Unit extends Model
+#[Appends(['avatar_url'])]
+class Unit extends Model implements HasMedia
 {
     /** @use HasFactory<UnitFactory> */
-    use HasFactory, HasUlids;
+    use HasFactory, HasUlids, InteractsWithMedia;
 
     protected static ?Unit $current = null;
 
@@ -35,6 +41,26 @@ class Unit extends Model
     public static function current(): ?Unit
     {
         return static::$current;
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')->singleFile();
+    }
+
+    public function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->getMedia('avatar')->count() == 1) {
+                    return $this
+                        ->getFirstMedia('avatar')
+                        ->getTemporaryUrl(Carbon::now()->addMinutes(5));
+                }
+
+                return null;
+            },
+        );
     }
 
     public function members(): HasMany
