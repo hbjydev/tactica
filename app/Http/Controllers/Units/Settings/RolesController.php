@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Units;
+namespace App\Http\Controllers\Units\Settings;
 
 use App\Actions\Units\Roles\CreateUnitRole;
 use App\Actions\Units\Roles\DeleteUnitRole;
@@ -42,7 +42,7 @@ class RolesController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-        return Inertia::render('units/roles/list', [
+        return Inertia::render('units/settings/roles/list', [
             'roles' => $roles,
             'members' => $members,
         ]);

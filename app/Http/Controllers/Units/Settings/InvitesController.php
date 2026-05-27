@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Units;
+namespace App\Http\Controllers\Units\Settings;
 
 use App\Actions\Units\Invites\CreateUnitInvite;
 use App\Actions\Units\Invites\DeleteUnitInvite;
@@ -51,7 +51,7 @@ class InvitesController extends Controller
             ->orderBy('display_name')
             ->get();
 
-        return Inertia::render('units/invites/list', [
+        return Inertia::render('units/settings/invites/list', [
             'invites' => $invites,
             'ranks' => $ranks,
             'roles' => $roles,

@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\Units\DashboardController;
 use App\Http\Controllers\Units\InviteAcceptanceController;
-use App\Http\Controllers\Units\InvitesController;
+use App\Http\Controllers\Units\Settings\InvitesController;
 use App\Http\Controllers\Units\MembersController;
 use App\Http\Controllers\Units\OrbatController;
 use App\Http\Controllers\Units\RanksController;
-use App\Http\Controllers\Units\RolesController;
+use App\Http\Controllers\Units\Settings\RolesController;
 use App\Http\Controllers\Units\SectionsController;
 use Illuminate\Support\Facades\Route;
 

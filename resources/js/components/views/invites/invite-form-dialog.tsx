@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import InvitesController from '@/wayfinder/App/Http/Controllers/Units/InvitesController';
+import InvitesController from '@/wayfinder/App/Http/Controllers/Units/Settings/InvitesController';
 import { App } from '@/wayfinder/types';
 import { useForm } from '@inertiajs/react';
 import moment from 'moment';
