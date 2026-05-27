@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -63,7 +64,9 @@ class Section extends Model implements HasMedia
         return Attribute::make(
             get: function () {
                 if ($this->getMedia('avatar')->count() == 1) {
-                    return $this->getFirstMediaUrl('avatar');
+                    return $this
+                        ->getFirstMedia('avatar')
+                        ->getTemporaryUrl(Carbon::now()->addMinutes(5));
                 }
 
                 return null;
