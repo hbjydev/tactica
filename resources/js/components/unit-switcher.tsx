@@ -11,6 +11,8 @@ import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { usePage } from '@inertiajs/react';
 import { App } from '@/wayfinder/types';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 
 export const UnitSwitcher = ({
     current,
@@ -24,12 +26,17 @@ export const UnitSwitcher = ({
     const {
         props: { auth },
     } = usePage();
+    const getInitials = useInitials();
 
     if (!auth.user) {
         return (
             <div className="flex items-center gap-2 p-2">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                    <GalleryVerticalEnd className="size-4" />
+                    {
+                        current?.avatar_url
+                            ? <></>
+                            : <GalleryVerticalEnd className="size-4" />
+                    }
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                     <span className="font-medium">
@@ -54,9 +61,23 @@ export const UnitSwitcher = ({
                             : 'h-12 w-full'
                     }
                 >
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                        <GalleryVerticalEnd className="size-4" />
-                    </div>
+
+                    {current
+                        ? (
+                            <Avatar size="lg">
+                                <AvatarImage src={current?.avatar_url as any as string|undefined} alt={current?.display_name ?? 'Unit Avatar'} />
+                                <AvatarFallback>
+                                    {getInitials(current?.display_name)}
+                                </AvatarFallback>
+                            </Avatar>
+                        )
+                        : (
+                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                <GalleryVerticalEnd className="size-4" />
+                            </div>
+                        )
+                    }
+
                     <div className="flex flex-col gap-0.5 leading-none">
                         <span className="font-medium">
                             {current ? current.display_name : 'Select a unit'}
