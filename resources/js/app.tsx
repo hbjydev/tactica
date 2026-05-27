@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { CredentialedXhrClient } from './xhr-client';
 import { FlashToast } from './types';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Tactica';
 
 http.setClient(new CredentialedXhrClient());
 
