@@ -48,6 +48,7 @@ class SectionsController extends Controller
                 ->load([
                     'slots',
                     'slots.member',
+                    'directParent',
                     'children',
                     'members' => fn ($q) => $q->join('ranks', 'ranks.id', '=', 'unit_members.rank_id')
                         ->orderBy('ranks.ord', 'desc')

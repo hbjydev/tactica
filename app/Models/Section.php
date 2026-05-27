@@ -35,6 +35,13 @@ class Section extends Model implements HasMedia
             ->orderBy('ord', 'asc');
     }
 
+    public function directParent(): BelongsTo
+    {
+        return $this
+            ->belongsTo(self::class, 'parent_id')
+            ->with(['slots', 'slots.member']);
+    }
+
     public function parent(): BelongsTo
     {
         return $this
