@@ -22,8 +22,6 @@ class MembersController extends Controller
 {
     public function list(Unit $unit)
     {
-        Gate::authorize('viewAny', UnitMember::class);
-
         /** @var LengthAwarePaginator<int, UnitMember> $members */
         $members = $unit
             ->members()

@@ -12,8 +12,6 @@ class OrbatController extends Controller
 {
     public function __invoke(Unit $unit)
     {
-        Gate::authorize('viewAny', Section::class);
-
         /** @var list<Section> $sections */
         $sections = $unit
             ->sections()

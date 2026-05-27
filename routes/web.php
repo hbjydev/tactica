@@ -28,7 +28,10 @@ Route::domain('sso.'.config('app.domain'))
 
 Route::domain('{unit:slug}.'.config('app.domain'))
     ->name('unit.')
-    ->middleware([UnitMiddleware::class])
+    ->middleware([
+        UnitMiddleware::class,
+        'can:VIEW_UNIT'
+    ])
     ->group(function () {
         require __DIR__.'/unit.php';
     });

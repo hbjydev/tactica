@@ -19,8 +19,6 @@ class RanksController extends Controller
 {
     public function list(Unit $unit)
     {
-        Gate::authorize('viewAny', Rank::class);
-
         /** @var list<Rank> $ranks */
         $ranks = $unit
             ->ranks()
@@ -35,8 +33,6 @@ class RanksController extends Controller
 
     public function create(Unit $unit)
     {
-        Gate::authorize('create', Rank::class);
-
         $nextOrd = $unit->ranks()->max('ord') + 1;
 
         return Inertia::render('units/ranks/create', ['nextOrd' => $nextOrd]);
@@ -44,8 +40,6 @@ class RanksController extends Controller
 
     public function store(Unit $unit, CreateRankRequest $request, CreateNewRank $action)
     {
-        Gate::authorize('create', Rank::class);
-
         $action->create($unit, $request->post());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Successfully created rank.')]);
@@ -55,8 +49,6 @@ class RanksController extends Controller
 
     public function edit(Unit $unit, Rank $rank)
     {
-        Gate::authorize('update', $rank);
-
         return Inertia::render('units/ranks/edit', [
             'rank' => $rank,
         ]);
@@ -64,8 +56,6 @@ class RanksController extends Controller
 
     public function update(Unit $unit, Rank $rank, Request $request, UpdateRank $action)
     {
-        Gate::authorize('update', $rank);
-
         try {
             $action->update($rank, $request->post());
         } catch (\Exception $e) {
@@ -85,8 +75,6 @@ class RanksController extends Controller
 
     public function destroy(Unit $unit, Rank $rank, DeleteRank $action)
     {
-        Gate::authorize('destroy', $rank);
-
         try {
             $action->delete($rank);
         } catch (\Exception $e) {

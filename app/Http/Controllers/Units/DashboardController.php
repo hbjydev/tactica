@@ -11,8 +11,6 @@ class DashboardController extends Controller
 {
     public function show(Unit $unit)
     {
-        can(UnitPermission::VIEW_UNIT) || abort(403);
-
         return Inertia::render('units/dashboard', [
             'members_count' => $unit->members()->count(),
             'ranks_count' => $unit->ranks()->count(),

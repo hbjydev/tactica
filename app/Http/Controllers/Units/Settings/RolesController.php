@@ -26,8 +26,6 @@ class RolesController extends Controller
 
     public function list(Unit $unit)
     {
-        Gate::authorize('viewAny', UnitRole::class);
-
         $roles = $unit
             ->roles()
             ->with([
@@ -50,8 +48,6 @@ class RolesController extends Controller
 
     public function store(Unit $unit, Request $request)
     {
-        Gate::authorize('create', UnitRole::class);
-
         $role = $this->createRole->create($unit, $request->all());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Role created.')]);
@@ -61,8 +57,6 @@ class RolesController extends Controller
 
     public function update(Unit $unit, UnitRole $role, Request $request)
     {
-        Gate::authorize('update', $role);
-
         if (! $role->isEditable()) {
             abort(403, 'This role cannot be edited.');
         }
@@ -76,8 +70,6 @@ class RolesController extends Controller
 
     public function destroy(Unit $unit, UnitRole $role)
     {
-        Gate::authorize('delete', $role);
-
         if (! $role->isEditable()) {
             abort(403, 'This role cannot be deleted.');
         }
@@ -91,8 +83,6 @@ class RolesController extends Controller
 
     public function updatePermissions(Unit $unit, UnitRole $role, Request $request)
     {
-        Gate::authorize('update', $role);
-
         $maxPermissions = array_reduce(
             UnitPermission::cases(),
             fn ($carry, $p) => $carry | $p->value,
@@ -114,8 +104,6 @@ class RolesController extends Controller
 
     public function addBinding(Unit $unit, UnitRole $role, Request $request)
     {
-        Gate::authorize('manageMembers', $role);
-
         $validated = $request->validate([
             'member_id' => ['required', 'string', Rule::exists('unit_members', 'id')->where('unit_id', $unit->id)],
         ]);
@@ -144,8 +132,6 @@ class RolesController extends Controller
 
     public function removeBinding(Unit $unit, UnitRole $role, UnitMember $member)
     {
-        Gate::authorize('manageMembers', $role);
-
         UnitRoleBinding::query()
             ->where('unit_role_id', $role->id)
             ->where('unit_member_id', $member->id)

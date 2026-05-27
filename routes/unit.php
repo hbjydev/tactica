@@ -16,15 +16,26 @@ Route::prefix('/ranks')
     ->name('ranks.')
     ->scopeBindings()
     ->group(function () {
-        Route::get('/', [RanksController::class, 'list'])->name('list');
+        Route::get('/', [RanksController::class, 'list'])
+            ->name('list')
+            ->middleware('can:VIEW_UNIT');
 
-        Route::get('/create', [RanksController::class, 'create'])->name('create');
-        Route::post('/', [RanksController::class, 'store'])->name('store');
+        Route::middleware('can:MANAGE_RANKS')->group(function () {
+            Route::get('/create', [RanksController::class, 'create'])
+                ->name('create');
 
-        Route::get('/{rank}/edit', [RanksController::class, 'edit'])->name('edit');
-        Route::patch('/{rank}', [RanksController::class, 'update'])->name('update');
+            Route::post('/', [RanksController::class, 'store'])
+                ->name('store');
 
-        Route::delete('/{rank}', [RanksController::class, 'destroy'])->name('destroy');
+            Route::get('/{rank}/edit', [RanksController::class, 'edit'])
+                ->name('edit');
+
+            Route::patch('/{rank}', [RanksController::class, 'update'])
+                ->name('update');
+
+            Route::delete('/{rank}', [RanksController::class, 'destroy'])
+                ->name('destroy');
+        });
     });
 
 Route::prefix('/members')
@@ -33,21 +44,23 @@ Route::prefix('/members')
     ->group(function () {
         Route::get('/', [MembersController::class, 'list'])->name('list');
         Route::get('/search', [MembersController::class, 'search'])->name('search');
-
-        Route::get('/create', [MembersController::class, 'create'])->name('create');
-        Route::post('/', [MembersController::class, 'store'])->name('store');
-
         Route::get('/{member}', [MembersController::class, 'show'])->name('show');
 
-        Route::get('/{member}/edit', [MembersController::class, 'edit'])->name('edit');
-        Route::patch('/{member}', [MembersController::class, 'update'])->name('update');
+        Route::middleware('can:MANAGE_MEMBERS')->group(function () {
+            Route::get('/create', [MembersController::class, 'create'])->name('create');
+            Route::post('/', [MembersController::class, 'store'])->name('store');
 
-        Route::delete('/{member}', [MembersController::class, 'destroy'])->name('destroy');
+            Route::get('/{member}/edit', [MembersController::class, 'edit'])->name('edit');
+            Route::patch('/{member}', [MembersController::class, 'update'])->name('update');
+
+            Route::delete('/{member}', [MembersController::class, 'destroy'])->name('destroy');
+        });
     });
 
 Route::prefix('/roles')
     ->name('roles.')
     ->scopeBindings()
+    ->middleware('can:MANAGE_ROLES')
     ->group(function () {
         Route::get('/', [RolesController::class, 'list'])->name('list');
 
@@ -73,26 +86,25 @@ Route::prefix('/structure')
             ->scopeBindings()
             ->group(function () {
                 Route::get('/', [SectionsController::class, 'list'])->name('list');
-
-                Route::get('/create', [SectionsController::class, 'create'])->name('create');
-                Route::post('/', [SectionsController::class, 'store'])->name('store');
-
                 Route::get('/{section}', [SectionsController::class, 'show'])->name('show');
 
-                Route::post('/{section}/slots', [SectionsController::class, 'storeSlot'])->name('slot.store');
-                Route::patch('/{section}/slots/{slot}', [SectionsController::class, 'updateSlot'])->name('slot.update');
-                Route::delete('/{section}/slots/{slot}', [SectionsController::class, 'destroySlot'])->name('slot.destroy');
-
-                Route::get('/{section}/edit', [SectionsController::class, 'edit'])->name('edit');
-                Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
-
-                Route::delete('/{section}', [SectionsController::class, 'destroy'])->name('destroy');
+                Route::middleware('can:MANAGE_SECTIONS')->group(function () {
+                    Route::get('/create', [SectionsController::class, 'create'])->name('create');
+                    Route::post('/', [SectionsController::class, 'store'])->name('store');
+                    Route::post('/{section}/slots', [SectionsController::class, 'storeSlot'])->name('slot.store');
+                    Route::patch('/{section}/slots/{slot}', [SectionsController::class, 'updateSlot'])->name('slot.update');
+                    Route::delete('/{section}/slots/{slot}', [SectionsController::class, 'destroySlot'])->name('slot.destroy');
+                    Route::get('/{section}/edit', [SectionsController::class, 'edit'])->name('edit');
+                    Route::patch('/{section}', [SectionsController::class, 'update'])->name('update');
+                    Route::delete('/{section}', [SectionsController::class, 'destroy'])->name('destroy');
+                });
             });
     });
 
 Route::prefix('/invites')
     ->name('invites.')
     ->scopeBindings()
+    ->middleware('can:MANAGE_INVITES')
     ->group(function () {
         Route::get('/', [InvitesController::class, 'list'])->name('list');
         Route::get('/{invite}', [InvitesController::class, 'show'])->name('show');
@@ -105,4 +117,5 @@ Route::prefix('/invites')
 // Public invite-acceptance endpoint. The unit subdomain has no auth middleware,
 // so this slots in like any other route.
 Route::get('/invite/{token}', [InviteAcceptanceController::class, 'show'])
+    ->withoutMiddleware('can:VIEW_UNIT')
     ->name('invite.show');

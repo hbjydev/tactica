@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -32,13 +31,13 @@ class AppServiceProvider extends ServiceProvider
             $firstUnit = $request->user()->units()->first(['units.slug']);
 
             if (! $firstUnit) {
-                return route(
+                return to_route(
                     'home.unit.create',
                     []
                 );
             }
 
-            return route(
+            return to_route(
                 'unit.dashboard',
                 ['unit' => $firstUnit?->slug],
             );

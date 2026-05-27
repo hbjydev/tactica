@@ -24,8 +24,6 @@ class InvitesController extends Controller
 
     public function list(Unit $unit)
     {
-        Gate::authorize('viewAny', UnitInvite::class);
-
         $invites = $unit
             ->invites()
             ->with([
@@ -61,8 +59,6 @@ class InvitesController extends Controller
 
     public function show(Unit $unit, UnitInvite $invite)
     {
-        Gate::authorize('view', $invite);
-
         $events = $invite
             ->events()
             ->with('user')
@@ -78,8 +74,6 @@ class InvitesController extends Controller
 
     public function store(Unit $unit, Request $request)
     {
-        Gate::authorize('create', UnitInvite::class);
-
         $member = $request->user()
             ? $request->user()->unitMemberships()->where('unit_id', $unit->id)->first()
             : null;
@@ -93,8 +87,6 @@ class InvitesController extends Controller
 
     public function update(Unit $unit, UnitInvite $invite, Request $request)
     {
-        Gate::authorize('update', $invite);
-
         $this->updateInvite->update($invite, $request->all());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Invite updated.')]);
@@ -104,8 +96,6 @@ class InvitesController extends Controller
 
     public function revoke(Unit $unit, UnitInvite $invite)
     {
-        Gate::authorize('revoke', $invite);
-
         $this->revokeInvite->revoke($invite);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Invite revoked.')]);
@@ -115,8 +105,6 @@ class InvitesController extends Controller
 
     public function destroy(Unit $unit, UnitInvite $invite)
     {
-        Gate::authorize('delete', $invite);
-
         $this->deleteInvite->delete($invite);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Invite deleted.')]);
